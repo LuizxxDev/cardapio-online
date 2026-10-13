@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:#0a0a0a}
+button,a,label,input,select,textarea{touch-action:manipulation}
+html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.no-sb{scrollbar-width:none}.no-sb::-webkit-scrollbar{display:none}
+@keyframes up{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
+.up{animation:up .25s ease-out}
+@media(prefers-reduced-motion:reduce){.up{animation:none}}
