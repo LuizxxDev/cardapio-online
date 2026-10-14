@@ -4,11 +4,20 @@
 
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{background:#0a0a0a}
+body{background:radial-gradient(ellipse 70% 100% at 50% 0,rgba(193,38,18,.28),transparent) no-repeat top/100% 640px,#0a0a0a}
 button,a,label,input,select,textarea{touch-action:manipulation}
 html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
 :focus-visible{outline:3px solid #fff;outline-offset:2px}
 .no-sb{scrollbar-width:none}.no-sb::-webkit-scrollbar{display:none}
+@keyframes mq{to{transform:translateX(-50%)}}
+.marquee{animation:mq 28s linear infinite}
+@keyframes bump{40%{transform:scale(1.04)}}
+.bump{animation:bump .35s}
+.veil{opacity:0;transition:opacity .25s ease}.veil.open{opacity:1}
+.sheet{opacity:0;transform:translateY(28px) scale(.97);transition:opacity .25s ease,transform .35s cubic-bezier(.2,.9,.25,1)}
+.sheet.open{opacity:1;transform:none}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.rise{animation:rise .45s ease-out both}
 @keyframes up{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
 .up{animation:up .25s ease-out}
-@media(prefers-reduced-motion:reduce){.up{animation:none}}
+@media(prefers-reduced-motion:reduce){.up,.marquee,.bump,.rise{animation:none}.veil,.sheet{transition:none}}
