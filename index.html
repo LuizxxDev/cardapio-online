@@ -13,11 +13,12 @@
   <meta name="theme-color" content="#000000">
   <link rel="icon"
     href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍔%3C/text%3E%3C/svg%3E">
+  <script src="https://unpkg.com/lucide@0.469.0"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Nunito:wght@400;600;800&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap"
     rel="stylesheet">
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script>tailwind.config = { future: { hoverOnlyWhenSupported: true }, theme: { extend: { transitionTimingFunction: { DEFAULT: 'cubic-bezier(.23,1,.32,1)' }, transitionDuration: { DEFAULT: '180ms' }, colors: { red: { 400: '#e5604d', 500: '#d93b27', 600: '#c12612', 700: '#a11f0e', 950: '#2b0c07' } }, fontFamily: { display: ['"Bowlby One"', 'Impact', 'sans-serif'], body: ['Nunito', 'system-ui', 'sans-serif'] } } } }</script>
+  <script>tailwind.config = { future: { hoverOnlyWhenSupported: true }, theme: { extend: { transitionTimingFunction: { DEFAULT: 'cubic-bezier(.23,1,.32,1)' }, transitionDuration: { DEFAULT: '180ms' }, colors: { red: { 400: '#e5604d', 500: '#d93b27', 600: '#c12612', 700: '#a11f0e', 950: '#2b0c07' } }, fontFamily: { display: ['Inter', 'system-ui', 'sans-serif'], body: ['Inter', 'system-ui', 'sans-serif'] } } } }</script>
   <style>
     :root {
       box-sizing: border-box;
@@ -109,6 +110,16 @@
       opacity: 1;
       transform: none;
       transition: opacity .2s ease-out, transform .3s var(--ease)
+    }
+
+    @media(min-width:768px) {
+      #panel.sheet {
+        transform: translateX(100%)
+      }
+
+      #panel.sheet.open {
+        transform: none
+      }
     }
 
     @media(min-width:640px) {
@@ -216,47 +227,55 @@
     <p style="padding:24px;text-align:center;color:#fff">Ative o JavaScript para ver o cardápio, ou peça pelo WhatsApp:
       <a href="https://wa.me/5591991013070" style="color:#e5604d">(91) 99101-3070</a></p>
   </noscript>
-  <header class="bg-black">
-    <h1 class="sr-only">Fabi Burguer – Cardápio online</h1>
-    <div class="relative mx-auto max-w-4xl">
-      <img src="fotos/banner.webp" width="1200" height="800" fetchpriority="high"
-        alt="Fabi Burguer, sabor que vicia. Entrega em casa. Pix, cartão e dinheiro." class="block h-auto w-full">
-      <a href="#cardapio" onclick="goMenu(event)" aria-label="Ver cardápio"
-        class="absolute rounded-full focus-visible:outline focus-visible:outline-4 focus-visible:outline-white"
-        style="left:32.5%;top:81.3%;width:35%;height:9.5%"></a>
-    </div>
-  </header>
-  <div class="bg-red-600 px-3.5 py-2 text-center text-[13px] font-extrabold text-white">Sabor que vicia · Entrega em casa · Pix, cartão e dinheiro</div>
-  <div id="status" role="status"
-    class="hidden border-b border-white/10 bg-neutral-950 px-3.5 py-2 text-center text-sm font-bold"></div>
-  <p id="info" class="px-3.5 pt-2 text-center text-xs text-neutral-400"></p>
+  <header class="sticky top-0 z-40 border-b border-white/10 bg-neutral-950/95 backdrop-blur-md">
+    <div class="mx-auto flex h-20 max-w-6xl items-center justify-between gap-3 px-4">
+      <a href="#" class="flex min-w-0 items-center gap-3"><span data-ic="utensils" class="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-red-600 text-white"></span>
+        <span class="min-w-0"><span class="block truncate text-lg font-black tracking-tight">FABI BURGUER</span><span id="status" role="status" class="hidden"></span></span></a>
+      <nav class="hidden items-center gap-6 text-sm font-medium text-neutral-300 md:flex"><a class="hover:text-white" href="#cardapio">Cardápio</a><a class="hover:text-white" href="#info">Funcionamento</a><button type="button" class="inline-flex items-center gap-2 hover:text-white" onclick="openShare()"><span data-ic="qr"></span>Compartilhar</button></nav>
+      <button type="button" onclick="openCart()" aria-label="Abrir carrinho" class="relative inline-flex min-h-[44px] items-center gap-2.5 rounded-2xl bg-red-600 px-4 text-sm font-extrabold text-white transition hover:brightness-110 active:scale-[.97]"><span data-ic="bag"></span><span id="hbadge" class="absolute -right-1.5 -top-1.5 grid hidden h-5 w-5 place-items-center rounded-full bg-white text-xs font-black text-red-600">0</span><span id="htot" class="num">R$ 0,00</span></button>
+    </div></header>
+  <section class="border-b border-white/10 bg-gradient-to-b from-neutral-900 to-neutral-950 py-10 sm:py-16">
+    <div class="mx-auto grid max-w-6xl items-center gap-8 px-4 lg:grid-cols-2">
+      <div class="space-y-5 text-center lg:text-left"><span class="inline-flex items-center gap-2 rounded-full border border-red-600/30 bg-red-600/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-red-400"><span data-ic="flame" class="h-4 w-4"></span>Hamburgueria artesanal</span>
+        <h1 class="text-4xl font-black leading-tight tracking-tight sm:text-5xl lg:text-6xl">Sabor que vicia</h1>
+        <p class="mx-auto max-w-xl text-base text-neutral-400 sm:text-lg lg:mx-0">Escolha seu lanche, personalize do seu jeito e envie o pedido pelo WhatsApp.</p>
+        <div class="flex flex-col items-center gap-3 pt-1 sm:flex-row lg:justify-start sm:justify-center"><a href="#cardapio" onclick="goMenu(event)" class="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl bg-red-600 px-8 font-extrabold text-white transition hover:brightness-110 active:scale-[.97] sm:w-auto">Ver cardápio completo<span data-ic="down"></span></a>
+          <a href="#info" class="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-neutral-900 px-6 font-medium transition hover:bg-neutral-800 active:scale-[.97] sm:w-auto"><span data-ic="clock" class="text-red-400"></span>Horários e taxas</a></div></div>
+      <div class="mx-auto w-full max-w-md overflow-hidden rounded-3xl border border-white/10 bg-black shadow-2xl lg:max-w-none"><img src="fotos/banner.webp" width="1200" height="800" fetchpriority="high" alt="Fabi Burguer, sabor que vicia. Entrega em casa. Pix, cartão e dinheiro." class="block h-auto w-full"></div>
+    </div></section>
+  <div class="border-b border-white/10 bg-neutral-900 py-4"><div class="mx-auto grid max-w-6xl gap-4 px-4 text-sm sm:grid-cols-3">
+    <div class="flex items-center gap-3"><span data-ic="bike" class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-red-600/10 text-red-400"></span><span><b class="block text-xs font-medium text-neutral-400">Entrega</b>Grátis até 600 m, depois R$ 3,00 por km</span></div>
+    <div class="flex items-center gap-3"><span data-ic="card" class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-red-600/10 text-red-400"></span><span><b class="block text-xs font-medium text-neutral-400">Pagamento</b>Pix, cartões e dinheiro</span></div>
+    <div class="flex items-center gap-3"><span data-ic="store" class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-red-600/10 text-red-400"></span><span><b class="block text-xs font-medium text-neutral-400">Retirada</b>No balcão, sem taxa</span></div></div></div>
+  <p id="info" class="hidden"></p>
   <section id="dest" aria-label="Mais pedidos" class="hidden bg-gradient-to-b from-red-950/40 to-transparent"></section>
   <div id="cardapio">
-    <div class="relative mx-auto max-w-2xl px-3.5 pt-4"><svg viewBox="0 0 24 24" class="pointer-events-none absolute left-7 top-[calc(1rem+1.05rem)] h-5 w-5 text-neutral-500" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg><input id="q" type="search" enterkeyhint="search"
+    <div class="relative mx-auto max-w-6xl px-3.5 pt-4"><i data-lucide="search" class="pointer-events-none absolute left-7 top-[calc(1rem+1.05rem)] h-5 w-5 text-neutral-500"></i><input id="q" type="search" enterkeyhint="search"
         oninput="search(this.value)" placeholder="Buscar lanche, porção ou combo" aria-label="Buscar no cardápio"
         class="w-full rounded-xl border-0 bg-neutral-900 py-3.5 pl-11 pr-4 text-base text-white placeholder-neutral-500 ring-1 ring-white/10 transition-shadow focus:outline-none focus:ring-2 focus:ring-red-400">
     </div>
-    <div class="sticky top-0 z-10 mt-1 border-b border-white/10 bg-neutral-950/95 backdrop-blur">
+    <div class="sticky top-20 z-30 mt-1 border-b border-white/10 bg-neutral-950/95 backdrop-blur">
       <nav id="nav" aria-label="Categorias" class="no-sb mx-auto flex max-w-2xl gap-2 overflow-x-auto px-3.5 py-2.5">
       </nav>
     </div>
-    <main id="menu" class="mx-auto max-w-2xl px-3.5 pb-6"></main>
+    <main id="menu" class="mx-auto max-w-6xl px-3.5 pb-6"></main>
   </div>
-  <footer class="pb-6 text-center text-xs text-neutral-500"><button type="button"
-      class="mb-3 min-h-[44px] rounded-lg bg-neutral-900 px-4 py-2 text-sm font-bold text-neutral-200 ring-1 ring-white/10 transition hover:bg-neutral-800 active:scale-[.97]"
-      onclick="openShare()"><svg viewBox="0 0 24 24" class="mr-2 inline h-5 w-5 align-[-5px]" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h3M20 17v4"/></svg>Compartilhar cardápio · QR code</button><br>Fabi Burguer · Sabor que vicia</footer>
+  <footer id="info" class="mt-16 border-t border-white/10 bg-neutral-900 py-12"><div class="mx-auto grid max-w-6xl gap-8 px-4 text-sm text-neutral-400 md:grid-cols-3">
+    <div><b class="mb-3 flex items-center gap-3 text-lg text-white"><span data-ic="utensils" class="grid h-10 w-10 place-items-center rounded-xl bg-red-600 text-white"></span>Fabi Burguer</b>Hamburgueria artesanal. Sabor que vicia.<p class="mt-4 text-xs text-neutral-500">&copy; 2026 Fabi Burguer</p></div>
+    <div><b class="mb-3 block text-base text-white">Horário de funcionamento</b><p class="flex justify-between border-b border-white/10 pb-2"><span>Dom, seg e qui a sáb</span><span class="font-medium text-white">19:00 às 00:00</span></p><p class="flex justify-between pt-2"><span>Quarta-feira</span><span class="font-medium text-white">Fechado</span></p></div>
+    <div><b class="mb-3 block text-base text-white">Contato e entrega</b><p class="mb-4">Belém, PA · Delivery e retirada. Pedidos pelo WhatsApp.</p><button type="button" onclick="openShare()" class="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-neutral-950 font-medium text-white transition hover:bg-neutral-800 active:scale-[.97]"><span data-ic="qr" class="text-red-400"></span>Compartilhar cardápio</button></div></div></footer>
   <div id="bar"
     class="fixed inset-x-0 bottom-0 z-20 hidden border-t border-white/10 bg-neutral-950/95 px-3.5 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] backdrop-blur">
     <button id="barB"
       class="mx-auto flex w-full max-w-3xl items-center justify-between rounded-xl bg-red-600 px-5 py-4 text-base font-extrabold text-white ring-1 ring-white/15 transition hover:brightness-110 active:scale-[.97]"
-      onclick="openCart()"><span class="flex items-center gap-2.5"><svg viewBox="0 0 24 24" class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-1.8 1.8H8a2 2 0 0 1-1.8-1.8L5 8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span id="barN"></span></span><span id="barT" class="num"></span></button>
+      onclick="openCart()"><span class="flex items-center gap-2.5"><i data-lucide="shopping-bag" class="h-5 w-5 shrink-0"></i><span id="barN"></span></span><span id="barT" class="num"></span></button>
   </div>
   <div id="toast" role="status"
     class="pointer-events-none fixed inset-x-0 bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] z-30 mx-auto w-max max-w-[90%] rounded-full bg-white px-4 py-2 text-sm font-extrabold text-black shadow-xl">
   </div>
   <div id="ov" class="veil fixed inset-0 z-30 hidden bg-black/75" onclick="closeCart()"></div>
   <section id="panel" role="dialog" aria-modal="true" aria-label="Carrinho"
-    class="sheet fixed inset-x-0 bottom-0 top-[5%] z-40 mx-auto hidden max-w-3xl flex-col rounded-t-2xl bg-neutral-950 ring-1 ring-white/10">
+    class="sheet fixed inset-x-0 bottom-0 top-[5%] z-40 mx-auto hidden max-w-3xl flex-col rounded-t-2xl md:inset-y-0 md:left-auto md:right-0 md:mx-0 md:w-full md:max-w-lg md:rounded-none md:rounded-l-3xl bg-neutral-950 ring-1 ring-white/10">
   </section>
   <div id="mod" role="dialog" aria-modal="true" aria-label="Personalizar lanche"
     class="veil fixed inset-0 z-50 hidden items-end justify-center bg-black/75 sm:items-center"
@@ -354,7 +373,7 @@
     var C = {
       stepH: "h-11 w-11 rounded-full bg-black/40 text-xl font-extrabold leading-none text-white ring-1 ring-white/30 transition active:scale-[.92] [&:last-child]:bg-white [&:last-child]:text-red-700 [&:last-child]:ring-0",
       addH: "min-h-[44px] rounded-lg bg-white px-4 py-2 text-sm font-extrabold text-red-700 transition hover:brightness-95 active:scale-[.97]",
-      add: "min-h-[44px] rounded-lg bg-red-600 px-4 py-2 text-sm font-extrabold text-white transition hover:brightness-110 active:scale-[.97]",
+      add: "inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border border-red-600/40 bg-red-600/10 px-3.5 py-2 text-xs font-extrabold text-red-400 transition hover:bg-red-600 hover:text-white active:scale-[.97]",
       step: "h-11 w-11 rounded-full bg-neutral-800 text-xl font-extrabold leading-none ring-1 ring-white/10 active:scale-[.92] [&:last-child]:bg-red-600 [&:last-child]:ring-0 transition hover:brightness-125",
       inp: "mt-1 w-full rounded-lg border-0 bg-neutral-800 px-3.5 py-3 text-base text-white placeholder-neutral-500 ring-1 ring-white/10 transition-shadow focus:outline-none focus:ring-2 focus:ring-red-400",
       lab: "mt-3 block text-sm font-bold text-neutral-300",
@@ -382,9 +401,15 @@
       pin: '<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
       share: '<path d="M12 3v12M8 7l4-4 4 4"/><path d="M5 13v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/>',
       x: '<path d="M6 6l12 12M18 6L6 18"/>',
+      utensils: '<path d="M7 3v8M4 3v5a3 3 0 0 0 6 0V3M7 11v10M17 3c-2 2-3 5-3 8h3v10"/>',
+      flame: '<path d="M12 22c4 0 7-3 7-7 0-3-2-5-3-7-1 2-2 3-3 3 0-3-1-6-4-9 0 4-4 6-4 12 0 4 3 8 7 8z"/>',
+      clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+      plus: '<path d="M12 5v14M5 12h14"/>',
+      down: '<path d="M12 5v14M6 13l6 6 6-6"/>',
       search: '<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/>'
     };
-    function ic(n, c) { return '<svg viewBox="0 0 24 24" class="' + (c || "h-5 w-5") + ' shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + IC[n] + '</svg>' }
+    var LN = { wa: "message-circle", pix: "zap", card: "credit-card", cash: "banknote", bike: "bike", store: "store", copy: "copy", qr: "qr-code", bag: "shopping-bag", pin: "map-pin", share: "share-2", x: "x", search: "search", utensils: "utensils", flame: "flame", clock: "clock", plus: "plus", down: "arrow-down", ok: "check" };
+    function ic(n, c) { return '<i data-lucide="' + (LN[n] || n) + '" class="' + (c || "h-5 w-5") + ' shrink-0"></i>' }
     var PAYI = { "Pix": ["pix", "text-[#32BCAD]"], "Cartão de crédito": ["card", "text-neutral-300"], "Cartão de débito": ["card", "text-neutral-300"], "Dinheiro": ["cash", "text-green-400"] };
     var ICO = '<svg viewBox="0 0 24 24" class="h-8 w-8 text-red-400/70" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10a8 6 0 0 1 16 0z"/><path d="M3 13.5h18"/><path d="M4 17h16"/><path d="M5 17a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3"/></svg>';
     function stp(m, q, p, h) { var c = h ? C.stepH : C.step; return '<div class="flex shrink-0 items-center gap-2 font-extrabold"><button class="' + c + '" onclick="' + m + '" aria-label="Menos">−</button><span class="min-w-4 text-center">' + q + '</span><button class="' + c + '" onclick="' + p + '" aria-label="Mais">+</button></div>' }
@@ -404,25 +429,24 @@
       })
     });
 
-    var TB = 'shrink-0 rounded-full px-4 py-3 text-sm font-extrabold transition-colors duration-150 active:scale-[.97] ', TON = 'bg-red-600 text-white', TOFF = 'bg-neutral-900 text-neutral-300 ring-1 ring-white/10 hover:text-white', spyT = 0, spyF = 0, firstDraw = true;
+    var TB = 'shrink-0 rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors duration-150 active:scale-[.97] ', TON = 'border-red-600 bg-red-600 text-white', TOFF = 'border-white/10 bg-neutral-900 text-neutral-300 hover:text-white', spyT = 0, spyF = 0, firstDraw = true;
     function card(it, i) {
-      return '<div class="' + (firstDraw ? 'rise ' : '') + (off(it) ? 'opacity-60 ' : '') + 'group flex gap-3.5 rounded-2xl bg-neutral-900 p-3 ring-1 ring-white/10 transition-colors hover:bg-neutral-800/80 hover:ring-white/20"' + (firstDraw ? ' style="animation-delay:' + Math.min((i || 0) * 45, 360) + 'ms"' : '') + '><div class="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-xl bg-neutral-800 text-4xl sm:h-24 sm:w-24">' + thumb(it) + '</div>'
-        + '<div class="flex min-w-0 flex-1 flex-col"><div class="flex flex-wrap items-center gap-x-2 gap-y-1"><b class="text-[17px] leading-tight">' + it.n + '</b>' + (it.s ? '<span class="rounded-md bg-red-600 px-1.5 py-0.5 text-[11px] font-extrabold">Especial</span>' : '') + (CFG.maisPedidos.indexOf(it.n) > -1 ? '<span class="rounded-md bg-white px-1.5 py-0.5 text-[11px] font-extrabold text-black">Mais pedido</span>' : '') + '</div>'
-        + (it.d ? '<p class="mt-1 text-[13px] leading-snug text-neutral-400 [text-wrap:pretty]">' + it.d + '</p>' : '')
-        + '<div class="mt-auto flex items-center justify-between gap-2 pt-2">' + pr(it.p) + '<div id="a' + it.id + '"></div></div></div></div>';
+      var tg = CFG.maisPedidos.indexOf(it.n) > -1 ? "Mais pedido" : it.s ? "Especial" : "";
+      return '<div class="' + (firstDraw ? 'rise ' : '') + (off(it) ? 'opacity-60 ' : '') + 'group flex gap-4 rounded-2xl border border-white/10 bg-neutral-900 p-3.5 transition-colors hover:border-red-600/50"' + (firstDraw ? ' style="animation-delay:' + Math.min((i || 0) * 45, 360) + 'ms"' : '') + '><div class="relative grid h-28 w-28 shrink-0 place-items-center overflow-hidden rounded-xl bg-neutral-950 text-4xl sm:h-32 sm:w-32">' + thumb(it) + (tg ? '<span class="absolute left-2 top-2 rounded-full bg-red-600 px-2 py-0.5 text-[10px] font-extrabold">' + tg + '</span>' : '') + '</div>'
+        + '<div class="flex min-w-0 flex-1 flex-col justify-between"><div><h4 class="text-base font-extrabold leading-snug">' + it.n + '</h4>' + (it.d ? '<p class="mt-1 line-clamp-3 text-xs leading-snug text-neutral-400">' + it.d + '</p>' : '') + '</div><div class="mt-3 flex items-center justify-between gap-2">' + pr(it.p) + '<div id="a' + it.id + '"></div></div></div></div>';
     }
     function drawMenu() {
       var n = ""; tabs.forEach(function (gi) { var on = gi === cat && !Q; n += '<button type="button" aria-pressed="' + on + '" class="' + TB + (on ? TON : TOFF) + '" onclick="setCat(' + gi + ')">' + MENU[gi].e + " " + MENU[gi].c + '</button>' });
       var sl = $("nav").scrollLeft; $("nav").innerHTML = n; $("nav").scrollLeft = sl;
-      var h = "", H2 = '<h2 class="cat-title px-1 font-display text-2xl tracking-tight">';
+      var h = "", H2 = '<h2 class="cat-title text-xl font-black tracking-tight">';
       if (Q) {
         var list = all.filter(function (it) { return norm(it.n + " " + it.d).indexOf(Q) > -1 });
-        h = '<section class="pt-5">' + H2 + 'Resultados da busca</h2>' + (list.length ? '' : '<p class="py-10 text-center text-neutral-400">Nenhum item encontrado. Tente buscar por outro nome, como “bacon” ou “combo”.</p>') + '<div class="mt-3 flex flex-col gap-2.5">' + list.map(card).join("") + '</div></section>';
+        h = '<section class="pt-5">' + H2 + 'Resultados da busca</h2>' + (list.length ? '' : '<p class="py-10 text-center text-neutral-400">Nenhum item encontrado. Tente buscar por outro nome, como “bacon” ou “combo”.</p>') + '<div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">' + list.map(card).join("") + '</div></section>';
       } else MENU.forEach(function (g, gi) {
-        h += '<section id="sec' + gi + '" class="scroll-mt-20 pt-6">' + H2 + g.e + " " + g.c + '</h2>'
+        h += '<section id="sec' + gi + '" class="scroll-mt-32 pt-8"><div class="flex items-center justify-between border-b border-white/10 pb-2">' + H2 + g.c + '</h2><span class="text-xs text-neutral-500">' + g.items.length + ' itens</span></div>'
           + (BUR.indexOf(g.c) > -1 ? '<p class="px-1 pt-1 text-sm text-neutral-400">Ao adicionar, você pode incluir extras como bacon, ovo e queijo.</p>' : '')
           + (g.c === "Adicionais" ? '<p class="px-1 pt-1 text-sm text-neutral-400">Para colocar em um hambúrguer, use o botão Adicionar do próprio lanche.</p>' : '')
-          + '<div class="mt-3 flex flex-col gap-2.5">' + all.filter(function (it) { return it.g === gi }).map(card).join("") + '</div></section>';
+          + '<div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">' + all.filter(function (it) { return it.g === gi }).map(card).join("") + '</div></section>';
       });
       $("menu").innerHTML = h;
       all.forEach(function (it) { drawCtl(it.id) }); firstDraw = false;
@@ -452,8 +476,8 @@
       var it = all[id], q = qtyOf(id);
       ["a", "h", "g", "k"].forEach(function (p) {
         var el = $(p + id); if (!el) return; var H = p !== "a"; if (off(it)) { el.innerHTML = '<span class="rounded-lg bg-neutral-800 px-3 py-2 text-xs font-bold text-neutral-400">Esgotado</span>'; return }
-        if (it.b) { el.innerHTML = '<button class="' + (H ? C.addH : C.add) + '" onclick="openOpt(' + id + ')">Adicionar' + (q ? ' (' + q + ')' : '') + '</button>'; el.className = "flex items-center"; return }
-        el.innerHTML = q ? stp("simple(" + id + ",-1)", q, "simple(" + id + ",1)", H) : '<button class="' + (H ? C.addH : C.add) + '" onclick="simple(' + id + ',1)">Adicionar</button>'
+        if (it.b) { el.innerHTML = '<button class="' + (H ? C.addH : C.add) + '" onclick="openOpt(' + id + ')">' + ic("plus", "h-4 w-4") + 'Adicionar' + (q ? ' (' + q + ')' : '') + '</button>'; el.className = "flex items-center"; return }
+        el.innerHTML = q ? stp("simple(" + id + ",-1)", q, "simple(" + id + ",1)", H) : '<button class="' + (H ? C.addH : C.add) + '" onclick="simple(' + id + ',1)">' + ic("plus", "h-4 w-4") + 'Adicionar</button>'
       });
     }
     function thumb(it) { return IMGS[it.n] ? '<img loading="lazy" decoding="async" onerror="this.parentNode.textContent=\'' + MENU[it.g].e + '\'" src="' + IMGS[it.n] + '" alt="' + esc(it.n) + '" class="h-full w-full object-cover transition duration-300 group-hover:scale-105" style="object-position:' + (IMGP[it.n] || "50% 50%") + (IMGC[it.n] ? ';object-fit:contain' : '') + '">' : '<span aria-hidden="true">' + MENU[it.g].e + '</span>' }
@@ -465,7 +489,7 @@
       show(el, true);
       var anim = false;
       var set = function (p) { return l.map(function (it) { var im = IMGS[it.n]; return '<div class="flex w-72 shrink-0 flex-col gap-3 group rounded-2xl bg-neutral-900 p-4 ring-1 ring-white/10 transition-colors hover:ring-white/25">' + (im ? '<div class="-mx-4 -mt-4 h-48 overflow-hidden rounded-t-2xl bg-black">' + thumb(it) + '</div>' : '') + '<div class="flex gap-3">' + (im ? '' : '<div class="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-xl bg-black/30 text-4xl">' + thumb(it) + '</div>') + '<div class="min-w-0"><b class="block text-lg leading-tight">' + it.n + '</b><p class="mt-1 text-[13px] leading-snug text-neutral-400">' + it.d + '</p></div></div><div class="mt-auto flex items-center justify-between">' + pr(it.p, 1) + '<div id="' + p + it.id + '"></div></div></div>' }).join("") };
-      el.innerHTML = '<div class="mx-auto max-w-3xl px-3.5 pb-4 pt-6"><h2 class="cat-title font-display text-2xl tracking-tight">🔥 Mais pedidos</h2><div id="destsc" role="group" aria-label="Mais pedidos" class="no-sb snap-x-track -mx-3.5 mt-4 flex gap-3 overflow-x-auto scroll-pl-3.5 px-3.5 pb-2">' + set("h") + (anim ? set("g") + set("k") : "") + '</div></div>';
+      el.innerHTML = '<div class="mx-auto max-w-6xl px-3.5 pb-4 pt-6"><h2 class="cat-title font-display text-2xl tracking-tight">🔥 Mais pedidos</h2><div id="destsc" role="group" aria-label="Mais pedidos" class="no-sb snap-x-track -mx-3.5 mt-4 flex gap-3 overflow-x-auto scroll-pl-3.5 px-3.5 pb-2">' + set("h") + (anim ? set("g") + set("k") : "") + '</div></div>';
       l.forEach(function (it) { drawCtl(it.id) });
       
     }
@@ -479,7 +503,7 @@
     function unit(l) { var p = all[l.id].p; for (var k in l.ad) p += ADD[k].p * l.ad[k]; return p }
     function sub() { var s = 0; cart.forEach(function (l) { s += unit(l) * l.q }); return s }
     function cnt() { var c = 0; cart.forEach(function (l) { c += l.q }); return c }
-    function bar() { ST("cart", cart); var c = cnt(); show($("bar"), c > 0); if (c > (bar.p || 0)) { var bb = $("barB"); bb.classList.remove("bump"); void bb.offsetWidth; bb.classList.add("bump") } bar.p = c; $("barN").textContent = "Ver carrinho · " + c + (c > 1 ? " itens" : " item"); $("barT").textContent = R(sub() + (fee() || 0)) }
+    function bar() { ST("cart", cart); var c = cnt(); show($("bar"), c > 0); if (c > (bar.p || 0)) { var bb = $("barB"); bb.classList.remove("bump"); void bb.offsetWidth; bb.classList.add("bump") } var hb = $("hbadge"); if (hb) { hb.textContent = c; hb.classList.toggle("hidden", !c) } $("htot").textContent = R(sub() + (fee() || 0)); bar.p = c; $("barN").textContent = "Ver carrinho · " + c + (c > 1 ? " itens" : " item"); $("barT").textContent = R(sub() + (fee() || 0)) }
     var lastFocus = null;
     function rememberFocus() { lastFocus = document.activeElement }
     function restoreFocus() { var f = lastFocus; lastFocus = null; if (f && f.focus && document.body.contains && document.body.contains(f)) f.focus() }
@@ -516,8 +540,8 @@
     function locBtn() {
       var req = CFG.lojaLat != null, base = "mt-4 flex w-full min-h-[64px] items-center gap-3 rounded-xl p-3 text-left transition active:scale-[.97] ";
       var ico = function (d, c) { return '<span class="grid h-10 w-10 shrink-0 place-items-center rounded-full ' + c + '">' + d + '</span>' };
-      var pin = '<svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>';
-      var ok = '<svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>';
+      var pin = ic('pin');
+      var ok = ic('ok');
       var tx = function (a, b) { return '<span class="min-w-0"><span class="block font-extrabold leading-tight">' + a + '</span><span class="mt-0.5 block text-[13px] leading-snug opacity-80">' + b + '</span></span>' };
       if (locBusy) return '<button type="button" id="locBtn" disabled aria-busy="true" class="' + base + 'cursor-wait bg-neutral-800 text-white ring-1 ring-white/10">' + ico('<span class="h-5 w-5 animate-spin rounded-full border-2 border-white/25 border-t-white motion-reduce:animate-none"></span>', 'bg-white/10') + tx("Obtendo localização…", "Se o navegador pedir, toque em Permitir") + '</button>';
       if (loc) { var k = req ? kmTxt() : ""; return '<button type="button" id="locBtn" onclick="getLoc()" class="' + base + 'bg-green-500/10 text-white ring-2 ring-green-500">' + ico(ok, 'bg-green-500 text-black') + tx("Localização compartilhada", (k ? "A " + k + " da loja · " : "") + "toque para atualizar") + '</button>' }
@@ -556,7 +580,7 @@
     }
     function drawStatus() {
       var el = $("status"), x = st(); if (x.open === null) { show(el, false); return }
-      el.className = "border-b border-white/10 bg-neutral-950 px-3.5 py-2 text-center text-sm font-bold " + (x.open ? "text-green-400" : "text-rose-400"); el.textContent = (x.open ? "● " : "○ ") + x.msg
+      el.className = "mt-0.5 inline-flex rounded-full border px-2.5 py-0.5 text-[11px] font-medium " + (x.open ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-400" : "border-rose-500/20 bg-rose-500/10 text-rose-400"); el.textContent = (x.open ? "● " : "○ ") + x.msg
     }
     function copyTxt(t, b) {
       var ok = function () { var o = b.innerHTML; b.textContent = "Copiado ✓"; setTimeout(function () { b.innerHTML = o }, 1800) };
@@ -694,7 +718,10 @@
       var c = ST("cart"); if (Array.isArray(c)) cart = c.filter(function (l) { if (!l || !all[l.id] || off(all[l.id]) || !(l.q > 0)) return false; l.ad = l.ad || {}; for (var k in l.ad) if (!ADD[k]) return false; return true });
       var cl = ST("cli"); if (cl) { if (cl.tipo === "retirada" && CFG.retirada) tipo = "retirada"; if (cl.bairro && CFG.bairros.some(function (b) { return b[0] === cl.bairro })) bairroSel = cl.bairro }
     })();
-    drawMenu(); drawDest(); bar(); drawStatus(); drawInfo(); if (window.addEventListener) window.addEventListener("scroll", onSpy, { passive: true }); setInterval(drawStatus, 60000);
+    document.querySelectorAll('[data-ic]').forEach(function (e) { e.innerHTML = ic(e.getAttribute('data-ic'), e.className.indexOf('h-4') > -1 ? 'h-4 w-4' : 'h-5 w-5') });
+    function lu() { if (window.lucide && document.querySelector('i[data-lucide]')) lucide.createIcons() }
+    new MutationObserver(function () { clearTimeout(lu.t); lu.t = setTimeout(lu, 0) }).observe(document.body, { childList: true, subtree: true });
+    drawMenu(); drawDest(); bar(); drawStatus(); drawInfo(); if (window.addEventListener) window.addEventListener("scroll", onSpy, { passive: true }); setInterval(drawStatus, 60000); lu();
   </script>
 </body>
 
