@@ -10,9 +10,9 @@
   <meta property="og:title" content="Fabi Burguer – Cardápio Online">
   <meta property="og:description" content="Sabor que vicia. Monte seu pedido e receba em casa.">
   <meta property="og:type" content="website">
-  <meta name="theme-color" content="#000000">
-  <link rel="icon"
-    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍔%3C/text%3E%3C/svg%3E">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="icon" type="image/png" href="fotos/logo-192.png">
+  <link rel="apple-touch-icon" href="fotos/logo-192.png">
   <script src="https://unpkg.com/lucide@0.469.0"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap"
@@ -58,6 +58,12 @@
     html {
       -webkit-tap-highlight-color: transparent;
       -webkit-text-size-adjust: 100%
+    }
+
+    button,
+    a,
+    [role="button"] {
+      touch-action: manipulation
     }
 
     button,
@@ -227,21 +233,22 @@
     <p style="padding:24px;text-align:center;color:#fff">Ative o JavaScript para ver o cardápio, ou peça pelo WhatsApp:
       <a href="https://wa.me/5591991013070" style="color:#e5604d">(91) 99101-3070</a></p>
   </noscript>
-  <header class="sticky top-0 z-40 border-b border-white/10 bg-neutral-950/95 backdrop-blur-md">
+  <header class="sticky top-0 z-40 border-b border-white/10 bg-neutral-950/95 pt-[env(safe-area-inset-top,0px)] backdrop-blur-md">
     <div class="mx-auto flex h-20 max-w-6xl items-center justify-between gap-3 px-4">
-      <a href="#" class="flex min-w-0 items-center gap-3"><span data-ic="utensils" class="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-red-600 text-white"></span>
+      <a href="#" class="flex min-w-0 items-center gap-3"><img src="fotos/logo.webp" width="44" height="44" alt="Fabi Burguer" class="h-11 w-11 shrink-0 rounded-full">
         <span class="min-w-0"><span class="block truncate text-lg font-black tracking-tight">FABI BURGUER</span><span id="status" role="status" class="hidden"></span></span></a>
       <nav class="hidden items-center gap-6 text-sm font-medium text-neutral-300 md:flex"><a class="hover:text-white" href="#cardapio">Cardápio</a><a class="hover:text-white" href="#info">Funcionamento</a><button type="button" class="inline-flex items-center gap-2 hover:text-white" onclick="openShare()"><span data-ic="qr"></span>Compartilhar</button></nav>
-      <button type="button" onclick="openCart()" aria-label="Abrir carrinho" class="relative inline-flex min-h-[44px] items-center gap-2.5 rounded-2xl bg-red-600 px-4 text-sm font-extrabold text-white transition hover:brightness-110 active:scale-[.97]"><span data-ic="bag"></span><span id="hbadge" class="absolute -right-1.5 -top-1.5 grid hidden h-5 w-5 place-items-center rounded-full bg-white text-xs font-black text-red-600">0</span><span id="htot" class="num">R$ 0,00</span></button>
+      <button type="button" onclick="openCart()" aria-label="Abrir carrinho" class="relative hidden min-h-[44px] items-center gap-2.5 rounded-2xl bg-red-600 md:inline-flex px-4 text-sm font-extrabold text-white transition hover:brightness-110 active:scale-[.97]"><span data-ic="bag"></span><span id="hbadge" class="absolute -right-1.5 -top-1.5 grid hidden h-5 w-5 place-items-center rounded-full bg-white text-xs font-black text-red-600">0</span><span id="htot" class="num">R$ 0,00</span></button>
     </div></header>
-  <section class="border-b border-white/10 bg-gradient-to-b from-neutral-900 to-neutral-950 py-10 sm:py-16">
-    <div class="mx-auto grid max-w-6xl items-center gap-8 px-4 lg:grid-cols-2">
+  <section class="relative overflow-hidden border-b border-white/10 bg-neutral-950 py-12 sm:py-20">
+    <img src="fotos/hero-bg.webp" width="1600" height="600" alt="" aria-hidden="true" fetchpriority="high" class="pointer-events-none absolute inset-y-0 right-0 h-full w-full select-none object-cover object-right opacity-50 lg:w-[78%]">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-neutral-950/45 lg:bg-transparent"></div>
+    <div class="relative mx-auto grid max-w-6xl items-center gap-8 px-4 lg:grid-cols-2">
       <div class="space-y-5 text-center lg:text-left"><span class="inline-flex items-center gap-2 rounded-full border border-red-600/30 bg-red-600/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-red-400"><span data-ic="flame" class="h-4 w-4"></span>Hamburgueria artesanal</span>
         <h1 class="text-4xl font-black leading-tight tracking-tight sm:text-5xl lg:text-6xl">Sabor que vicia</h1>
         <p class="mx-auto max-w-xl text-base text-neutral-400 sm:text-lg lg:mx-0">Escolha seu lanche, personalize do seu jeito e envie o pedido pelo WhatsApp.</p>
         <div class="flex flex-col items-center gap-3 pt-1 sm:flex-row lg:justify-start sm:justify-center"><a href="#cardapio" onclick="goMenu(event)" class="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl bg-red-600 px-8 font-extrabold text-white transition hover:brightness-110 active:scale-[.97] sm:w-auto">Ver cardápio completo<span data-ic="down"></span></a>
           <a href="#info" class="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-neutral-900 px-6 font-medium transition hover:bg-neutral-800 active:scale-[.97] sm:w-auto"><span data-ic="clock" class="text-red-400"></span>Horários e taxas</a></div></div>
-      <div class="mx-auto w-full max-w-md overflow-hidden rounded-3xl border border-white/10 bg-black shadow-2xl lg:max-w-none"><img src="fotos/banner.webp" width="1200" height="800" fetchpriority="high" alt="Fabi Burguer, sabor que vicia. Entrega em casa. Pix, cartão e dinheiro." class="block h-auto w-full"></div>
     </div></section>
   <div class="border-b border-white/10 bg-neutral-900 py-4"><div class="mx-auto grid max-w-6xl gap-4 px-4 text-sm sm:grid-cols-3">
     <div class="flex items-center gap-3"><span data-ic="bike" class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-red-600/10 text-red-400"></span><span><b class="block text-xs font-medium text-neutral-400">Entrega</b>Grátis até 600 m, depois R$ 3,00 por km</span></div>
@@ -254,24 +261,25 @@
         oninput="search(this.value)" placeholder="Buscar lanche, porção ou combo" aria-label="Buscar no cardápio"
         class="w-full rounded-xl border-0 bg-neutral-900 py-3.5 pl-11 pr-4 text-base text-white placeholder-neutral-500 ring-1 ring-white/10 transition-shadow focus:outline-none focus:ring-2 focus:ring-red-400">
     </div>
-    <div class="sticky top-20 z-30 mt-1 border-b border-white/10 bg-neutral-950/95 backdrop-blur">
-      <nav id="nav" aria-label="Categorias" class="no-sb mx-auto flex max-w-2xl gap-2 overflow-x-auto px-3.5 py-2.5">
+    <div class="sticky top-[calc(5rem+env(safe-area-inset-top,0px))] z-30 mt-1 border-b border-white/10 bg-neutral-950/95 backdrop-blur">
+      <nav id="nav" aria-label="Categorias" class="no-sb mx-auto flex max-w-6xl gap-2 overflow-x-auto px-3.5 py-2.5">
       </nav>
     </div>
     <main id="menu" class="mx-auto max-w-6xl px-3.5 pb-6"></main>
   </div>
-  <footer id="info" class="mt-16 border-t border-white/10 bg-neutral-900 py-12"><div class="mx-auto grid max-w-6xl gap-8 px-4 text-sm text-neutral-400 md:grid-cols-3">
-    <div><b class="mb-3 flex items-center gap-3 text-lg text-white"><span data-ic="utensils" class="grid h-10 w-10 place-items-center rounded-xl bg-red-600 text-white"></span>Fabi Burguer</b>Hamburgueria artesanal. Sabor que vicia.<p class="mt-4 text-xs text-neutral-500">&copy; 2026 Fabi Burguer</p></div>
+  <footer id="info" class="mt-16 border-t border-white/10 bg-neutral-900 pb-28 pt-12 md:pb-12"><div class="mx-auto grid max-w-6xl gap-8 px-4 text-sm text-neutral-400 md:grid-cols-3">
+    <div><b class="mb-3 flex items-center gap-3 text-lg text-white"><img src="fotos/logo.webp" width="40" height="40" alt="" class="h-10 w-10 shrink-0 rounded-full">Fabi Burguer</b>Hamburgueria artesanal. Sabor que vicia.<p class="mt-4 text-xs text-neutral-500">&copy; 2026 Fabi Burguer</p></div>
     <div><b class="mb-3 block text-base text-white">Horário de funcionamento</b><p class="flex justify-between border-b border-white/10 pb-2"><span>Dom, seg e qui a sáb</span><span class="font-medium text-white">19:00 às 00:00</span></p><p class="flex justify-between pt-2"><span>Quarta-feira</span><span class="font-medium text-white">Fechado</span></p></div>
-    <div><b class="mb-3 block text-base text-white">Contato e entrega</b><p class="mb-4">Belém, PA · Delivery e retirada. Pedidos pelo WhatsApp.</p><button type="button" onclick="openShare()" class="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-neutral-950 font-medium text-white transition hover:bg-neutral-800 active:scale-[.97]"><span data-ic="qr" class="text-red-400"></span>Compartilhar cardápio</button></div></div></footer>
+    <div><b class="mb-3 block text-base text-white">Contato e entrega</b><p class="mb-4">Belém, PA · Delivery e retirada. Pedidos pelo WhatsApp.</p><button type="button" onclick="openShare()" class="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-neutral-950 font-medium text-white transition hover:bg-neutral-800 active:scale-[.97]"><span data-ic="qr" class="text-red-400"></span>Compartilhar cardápio</button></div></div><div class="mx-auto mt-10 max-w-6xl border-t border-white/10 px-4 pt-6 text-center text-xs text-neutral-500">Cardápio desenvolvido por <b class="font-extrabold text-neutral-300">Luiz Felipe</b>. Quer um para a sua empresa? <a href="https://wa.me/5591996384242?text=Ol%C3%A1%2C%20Luiz%20Felipe!%20Vi%20o%20card%C3%A1pio%20da%20Fabi%20Burguer%20e%20quero%20um%20para%20a%20minha%20empresa." target="_blank" rel="noopener" class="mt-2 inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/10 bg-neutral-950 px-4 font-bold text-white transition hover:bg-neutral-800 active:scale-[.97] sm:mt-0 sm:ml-2"><span data-ic="wa" class="text-green-400"></span>Chame no WhatsApp: (91) 99638-4242</a></div>
+</footer>
   <div id="bar"
-    class="fixed inset-x-0 bottom-0 z-20 hidden border-t border-white/10 bg-neutral-950/95 px-3.5 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] backdrop-blur">
+    class="fixed inset-x-0 bottom-0 z-20 hidden border-t md:!hidden border-white/10 bg-neutral-950/95 px-3.5 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] backdrop-blur">
     <button id="barB"
       class="mx-auto flex w-full max-w-3xl items-center justify-between rounded-xl bg-red-600 px-5 py-4 text-base font-extrabold text-white ring-1 ring-white/15 transition hover:brightness-110 active:scale-[.97]"
       onclick="openCart()"><span class="flex items-center gap-2.5"><i data-lucide="shopping-bag" class="h-5 w-5 shrink-0"></i><span id="barN"></span></span><span id="barT" class="num"></span></button>
   </div>
   <div id="toast" role="status"
-    class="pointer-events-none fixed inset-x-0 bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] z-30 mx-auto w-max max-w-[90%] rounded-full bg-white px-4 py-2 text-sm font-extrabold text-black shadow-xl">
+    class="pointer-events-none fixed inset-x-0 bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] z-30 mx-auto w-max md:bottom-8 max-w-[90%] rounded-full bg-white px-4 py-2 text-sm font-extrabold text-black shadow-xl">
   </div>
   <div id="ov" class="veil fixed inset-0 z-30 hidden bg-black/75" onclick="closeCart()"></div>
   <section id="panel" role="dialog" aria-modal="true" aria-label="Carrinho"
@@ -362,7 +370,7 @@
     /* Fotos dos lanches: cole uma imagem (data:image/... em base64). Hospedagens externas são bloqueadas. */
     var IMGC = {}; // ex.: {"Nome do item":1} mostra a foto inteira, em tamanho menor, nos cards de destaque
     var IMGP = { "Casal Premium": "50% 68%", "Combo Casal": "50% 75%", "Black Angus": "50% 45%" }; // posição do recorte da foto nos cards largos
-    var IMGS = { "X Dog": "fotos/x-dog.webp", "X Tudo da Casa": "fotos/x-tudo-da-casa.webp", "X Egg Bacon": "fotos/x-egg-bacon.webp", "X Bacon": "fotos/x-bacon.webp", "X Egg Calabresa": "fotos/x-egg-calabresa.webp", "Combo Família": "fotos/combo-familia.webp", "Super Combo": "fotos/super-combo.webp", "Rústico": "fotos/rustico.webp", "Franbacon": "fotos/franbacon.webp", "KFC da Casa": "fotos/kfc-da-casa.webp", "X Frango": "fotos/x-frango.webp", "Big Calabresa": "fotos/big-calabresa.webp", "X Bacon Duplo": "fotos/x-bacon-duplo.webp", "X Burguer": "fotos/x-burguer.webp", "X Egg Burguer": "fotos/x-egg-burguer.webp", "X Calabresa": "fotos/x-calabresa.webp", "Hambúrguer": "fotos/hamburguer.webp", "X Cheddar": "fotos/x-cheddar.webp", "Casal Premium": "fotos/casal-premium.webp", "Black Angus": "fotos/black-angus.webp", "Combo Casal": "fotos/combo-casal.webp" }; // exemplo: IMGS["X Bacon"]="data:image/jpeg;base64,..."
+    var IMGS = { "Coca Cola 1L": "fotos/coca-cola-1l.webp", "Batata com Cheddar": "fotos/batata-cheddar.webp", "Batata Chips": "fotos/batata-chips.webp", "Batata Palito": "fotos/batata-palito.webp", "Batata com Calabresa": "fotos/batata-calabresa.webp", "Batata com Cheddar e Bacon": "fotos/batata-cheddar-bacon.webp", "Batata com Nuggets": "fotos/batata-nuggets.webp", "Bacon": "fotos/bacon.webp", "Carne 90g": "fotos/carne-90g.webp", "X Dog": "fotos/x-dog.webp", "X Tudo da Casa": "fotos/x-tudo-da-casa.webp", "X Egg Bacon": "fotos/x-egg-bacon.webp", "X Bacon": "fotos/x-bacon.webp", "X Egg Calabresa": "fotos/x-egg-calabresa.webp", "Combo Família": "fotos/combo-familia.webp", "Super Combo": "fotos/super-combo.webp", "Rústico": "fotos/rustico.webp", "Franbacon": "fotos/franbacon.webp", "KFC da Casa": "fotos/kfc-da-casa.webp", "X Frango": "fotos/x-frango.webp", "Big Calabresa": "fotos/big-calabresa.webp", "X Bacon Duplo": "fotos/x-bacon-duplo.webp", "X Burguer": "fotos/x-burguer.webp", "X Egg Burguer": "fotos/x-egg-burguer.webp", "X Calabresa": "fotos/x-calabresa.webp", "Hambúrguer": "fotos/hamburguer.webp", "X Cheddar": "fotos/x-cheddar.webp", "Casal Premium": "fotos/casal-premium.webp", "Black Angus": "fotos/black-angus.webp", "Combo Casal": "fotos/combo-casal.webp" }; // exemplo: IMGS["X Bacon"]="data:image/jpeg;base64,..."
     var BUR = ["Tradicionais", "Especiais", "Frango & Cia"];
     var cart = [], loc = null, pay = "Pix", troco = "nao", lastOrder = null, cat = 0, cur = null, mq = 1, mad = {}, Q = "", tipo = "entrega", bairroSel = "", pre = false, shareLink = "", locBusy = false;
     var $ = function (i) { return document.getElementById(i) };
@@ -372,7 +380,7 @@
     var norm = function (t) { return t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() };
     var C = {
       stepH: "h-11 w-11 rounded-full bg-black/40 text-xl font-extrabold leading-none text-white ring-1 ring-white/30 transition active:scale-[.92] [&:last-child]:bg-white [&:last-child]:text-red-700 [&:last-child]:ring-0",
-      addH: "min-h-[44px] rounded-lg bg-white px-4 py-2 text-sm font-extrabold text-red-700 transition hover:brightness-95 active:scale-[.97]",
+      addH: "inline-flex min-h-[44px] items-center gap-1.5 rounded-lg bg-white px-4 py-2 text-sm font-extrabold text-red-700 transition hover:brightness-95 active:scale-[.97]",
       add: "inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border border-red-600/40 bg-red-600/10 px-3.5 py-2 text-xs font-extrabold text-red-400 transition hover:bg-red-600 hover:text-white active:scale-[.97]",
       step: "h-11 w-11 rounded-full bg-neutral-800 text-xl font-extrabold leading-none ring-1 ring-white/10 active:scale-[.92] [&:last-child]:bg-red-600 [&:last-child]:ring-0 transition hover:brightness-125",
       inp: "mt-1 w-full rounded-lg border-0 bg-neutral-800 px-3.5 py-3 text-base text-white placeholder-neutral-500 ring-1 ring-white/10 transition-shadow focus:outline-none focus:ring-2 focus:ring-red-400",
@@ -424,28 +432,28 @@
     }
     var all = [], ADD = [], tabs = [];
     MENU.forEach(function (g, gi) {
-      tabs.push(gi); g.items.forEach(function (it) {
+      if (g.c !== "Adicionais") tabs.push(gi); g.items.forEach(function (it) {
         var o = { id: all.length, n: it[0], d: it[1], p: it[2], g: gi, b: BUR.indexOf(g.c) > -1, s: g.c === "Especiais" }; all.push(o); if (g.c === "Adicionais") ADD.push(o)
       })
     });
 
-    var TB = 'shrink-0 rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors duration-150 active:scale-[.97] ', TON = 'border-red-600 bg-red-600 text-white', TOFF = 'border-white/10 bg-neutral-900 text-neutral-300 hover:text-white', spyT = 0, spyF = 0, firstDraw = true;
+    var TB = 'shrink-0 min-h-[44px] rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors duration-150 active:scale-[.97] ', TON = 'border-red-600 bg-red-600 text-white', TOFF = 'border-white/10 bg-neutral-900 text-neutral-300 hover:text-white', spyT = 0, spyF = 0, firstDraw = true;
     function card(it, i) {
       var tg = CFG.maisPedidos.indexOf(it.n) > -1 ? "Mais pedido" : it.s ? "Especial" : "";
-      return '<div class="' + (firstDraw ? 'rise ' : '') + (off(it) ? 'opacity-60 ' : '') + 'group flex gap-4 rounded-2xl border border-white/10 bg-neutral-900 p-3.5 transition-colors hover:border-red-600/50"' + (firstDraw ? ' style="animation-delay:' + Math.min((i || 0) * 45, 360) + 'ms"' : '') + '><div class="relative grid h-28 w-28 shrink-0 place-items-center overflow-hidden rounded-xl bg-neutral-950 text-4xl sm:h-32 sm:w-32">' + thumb(it) + (tg ? '<span class="absolute left-2 top-2 rounded-full bg-red-600 px-2 py-0.5 text-[10px] font-extrabold">' + tg + '</span>' : '') + '</div>'
-        + '<div class="flex min-w-0 flex-1 flex-col justify-between"><div><h4 class="text-base font-extrabold leading-snug">' + it.n + '</h4>' + (it.d ? '<p class="mt-1 line-clamp-3 text-xs leading-snug text-neutral-400">' + it.d + '</p>' : '') + '</div><div class="mt-3 flex items-center justify-between gap-2">' + pr(it.p) + '<div id="a' + it.id + '"></div></div></div></div>';
+      return '<div class="' + (firstDraw ? 'rise ' : '') + (off(it) ? 'opacity-60 ' : '') + 'group flex gap-4 rounded-2xl border border-white/10 bg-neutral-900 p-3.5 transition-colors hover:border-red-600/50"' + (firstDraw ? ' style="animation-delay:' + Math.min((i || 0) * 45, 360) + 'ms"' : '') + '><div class="relative grid h-28 w-28 shrink-0 place-items-center overflow-hidden rounded-xl bg-neutral-950 text-4xl sm:h-32 sm:w-32">' + thumb(it) + '</div>'
+        + '<div class="flex min-w-0 flex-1 flex-col justify-between"><div>' + (tg ? '<span class="mb-1 flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-wider text-red-400">' + ic(tg === "Especial" ? "star" : "flame", "h-3 w-3") + tg + '</span>' : '') + '<h4 class="text-base font-extrabold leading-snug">' + it.n + '</h4>' + (it.d ? '<p class="mt-1 line-clamp-3 text-xs leading-snug text-neutral-400">' + it.d + '</p>' : '') + '</div><div class="mt-3 flex items-center justify-between gap-2">' + pr(it.p) + '<div id="a' + it.id + '"></div></div></div></div>';
     }
     function drawMenu() {
       var n = ""; tabs.forEach(function (gi) { var on = gi === cat && !Q; n += '<button type="button" aria-pressed="' + on + '" class="' + TB + (on ? TON : TOFF) + '" onclick="setCat(' + gi + ')">' + MENU[gi].e + " " + MENU[gi].c + '</button>' });
       var sl = $("nav").scrollLeft; $("nav").innerHTML = n; $("nav").scrollLeft = sl;
       var h = "", H2 = '<h2 class="cat-title text-xl font-black tracking-tight">';
       if (Q) {
-        var list = all.filter(function (it) { return norm(it.n + " " + it.d).indexOf(Q) > -1 });
+        var list = all.filter(function (it) { return MENU[it.g].c !== "Adicionais" && norm(it.n + " " + it.d).indexOf(Q) > -1 });
         h = '<section class="pt-5">' + H2 + 'Resultados da busca</h2>' + (list.length ? '' : '<p class="py-10 text-center text-neutral-400">Nenhum item encontrado. Tente buscar por outro nome, como “bacon” ou “combo”.</p>') + '<div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">' + list.map(card).join("") + '</div></section>';
       } else MENU.forEach(function (g, gi) {
-        h += '<section id="sec' + gi + '" class="scroll-mt-32 pt-8"><div class="flex items-center justify-between border-b border-white/10 pb-2">' + H2 + g.c + '</h2><span class="text-xs text-neutral-500">' + g.items.length + ' itens</span></div>'
+        if (g.c === "Adicionais") return;
+        h += '<section id="sec' + gi + '" class="scroll-mt-40 pt-8"><div class="flex items-center justify-between border-b border-white/10 pb-2">' + H2 + g.c + '</h2><span class="text-xs text-neutral-500">' + g.items.length + ' itens</span></div>'
           + (BUR.indexOf(g.c) > -1 ? '<p class="px-1 pt-1 text-sm text-neutral-400">Ao adicionar, você pode incluir extras como bacon, ovo e queijo.</p>' : '')
-          + (g.c === "Adicionais" ? '<p class="px-1 pt-1 text-sm text-neutral-400">Para colocar em um hambúrguer, use o botão Adicionar do próprio lanche.</p>' : '')
           + '<div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">' + all.filter(function (it) { return it.g === gi }).map(card).join("") + '</div></section>';
       });
       $("menu").innerHTML = h;
@@ -481,16 +489,35 @@
       });
     }
     function thumb(it) { return IMGS[it.n] ? '<img loading="lazy" decoding="async" onerror="this.parentNode.textContent=\'' + MENU[it.g].e + '\'" src="' + IMGS[it.n] + '" alt="' + esc(it.n) + '" class="h-full w-full object-cover transition duration-300 group-hover:scale-105" style="object-position:' + (IMGP[it.n] || "50% 50%") + (IMGC[it.n] ? ';object-fit:contain' : '') + '">' : '<span aria-hidden="true">' + MENU[it.g].e + '</span>' }
-    function stopDest() { }
+    var dRaf = 0;
+    function stopDest() { if (dRaf && typeof cancelAnimationFrame !== "undefined") cancelAnimationFrame(dRaf); dRaf = 0 }
+    function startDest(n) {
+      stopDest(); var sc = $("destsc"); if (!sc) return;
+      var paused = false, pos = sc.scrollLeft, last = 0, rs = 0;
+      var pause = function () { paused = true; clearTimeout(rs) }, resume = function (d) { clearTimeout(rs); rs = setTimeout(function () { paused = false }, d) };
+      sc.addEventListener("mouseenter", pause); sc.addEventListener("mouseleave", function () { resume(300) });
+      sc.addEventListener("touchstart", pause, { passive: true }); sc.addEventListener("touchend", function () { resume(2500) }, { passive: true }); sc.addEventListener("touchcancel", function () { resume(2500) }, { passive: true });
+      sc.addEventListener("focusin", pause); sc.addEventListener("focusout", function () { resume(1500) });
+      sc.addEventListener("wheel", function () { pause(); resume(2000) }, { passive: true });
+      function step(t) {
+        if (!document.body.contains(sc)) return;
+        var dt = last ? Math.min((t - last) / 1000, .1) : 0; last = t;
+        if (paused) pos = sc.scrollLeft;
+        else { var W = sc.children[n].offsetLeft - sc.children[0].offsetLeft; pos += 38 * dt; if (W > 0 && pos >= W) pos -= W; sc.scrollLeft = pos }
+        dRaf = requestAnimationFrame(step);
+      }
+      dRaf = requestAnimationFrame(step);
+    }
     function drawDest() {
       var el = $("dest"), l = CFG.maisPedidos.map(function (n) { return all.filter(function (x) { return x.n === n })[0] }).filter(Boolean);
       stopDest();
       if (!l.length || Q) { show(el, false); return }
       show(el, true);
-      var anim = false;
+      var anim = typeof requestAnimationFrame !== "undefined" && !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
       var set = function (p) { return l.map(function (it) { var im = IMGS[it.n]; return '<div class="flex w-72 shrink-0 flex-col gap-3 group rounded-2xl bg-neutral-900 p-4 ring-1 ring-white/10 transition-colors hover:ring-white/25">' + (im ? '<div class="-mx-4 -mt-4 h-48 overflow-hidden rounded-t-2xl bg-black">' + thumb(it) + '</div>' : '') + '<div class="flex gap-3">' + (im ? '' : '<div class="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-xl bg-black/30 text-4xl">' + thumb(it) + '</div>') + '<div class="min-w-0"><b class="block text-lg leading-tight">' + it.n + '</b><p class="mt-1 text-[13px] leading-snug text-neutral-400">' + it.d + '</p></div></div><div class="mt-auto flex items-center justify-between">' + pr(it.p, 1) + '<div id="' + p + it.id + '"></div></div></div>' }).join("") };
-      el.innerHTML = '<div class="mx-auto max-w-6xl px-3.5 pb-4 pt-6"><h2 class="cat-title font-display text-2xl tracking-tight">🔥 Mais pedidos</h2><div id="destsc" role="group" aria-label="Mais pedidos" class="no-sb snap-x-track -mx-3.5 mt-4 flex gap-3 overflow-x-auto scroll-pl-3.5 px-3.5 pb-2">' + set("h") + (anim ? set("g") + set("k") : "") + '</div></div>';
+      el.innerHTML = '<div class="mx-auto max-w-6xl px-3.5 pb-4 pt-6"><h2 class="cat-title font-display text-2xl tracking-tight">🔥 Mais pedidos</h2><div id="destsc" role="group" aria-label="Mais pedidos" class="no-sb -mx-3.5 mt-4 flex gap-3 overflow-x-auto px-3.5 pb-2">' + set("h") + (anim ? set("g") + set("k") : "") + '</div></div>';
       l.forEach(function (it) { drawCtl(it.id) });
+      if (anim) startDest(l.length);
       
     }
     function goMenu(e) { e.preventDefault(); var t = $("dest").classList.contains("hidden") ? $("cardapio") : $("dest"); t.scrollIntoView({ behavior: SB() }) }
