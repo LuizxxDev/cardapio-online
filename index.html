@@ -17,7 +17,7 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap"
     rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17" onerror="document.documentElement.setAttribute('data-no-tw','1');document.addEventListener('DOMContentLoaded',function(){var d=document.createElement('div');d.setAttribute('role','alert');d.style.cssText='padding:16px;background:#c12612;color:#fff;font:700 16px sans-serif;text-align:center';d.innerHTML='O estilo da página não carregou. Recarregue ou peça pelo WhatsApp: <a style=&quot;color:#fff&quot; href=&quot;https://wa.me/5591991013070&quot;>(91) 99101-3070</a>';document.body.insertBefore(d,document.body.firstChild)})"></script>
   <script>tailwind.config = { future: { hoverOnlyWhenSupported: true }, theme: { extend: { transitionTimingFunction: { DEFAULT: 'cubic-bezier(.23,1,.32,1)' }, transitionDuration: { DEFAULT: '180ms' }, colors: { red: { 400: '#e5604d', 500: '#d93b27', 600: '#c12612', 700: '#a11f0e', 950: '#2b0c07' } }, fontFamily: { display: ['Inter', 'system-ui', 'sans-serif'], body: ['Inter', 'system-ui', 'sans-serif'] } } } }</script>
   <style>
     :root {
@@ -251,10 +251,10 @@
           <a href="#info" class="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-neutral-900 px-6 font-medium transition hover:bg-neutral-800 active:scale-[.97] sm:w-auto"><span data-ic="clock" class="text-red-400"></span>Horários e taxas</a></div></div>
     </div></section>
   <div class="border-b border-white/10 bg-neutral-900 py-4"><div class="mx-auto grid max-w-6xl gap-4 px-4 text-sm sm:grid-cols-3">
-    <div class="flex items-center gap-3"><span data-ic="bike" class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-red-600/10 text-red-400"></span><span><b class="block text-xs font-medium text-neutral-400">Entrega</b>Grátis até 600 m, depois R$ 3,00 por km</span></div>
+    <div class="flex items-center gap-3"><span data-ic="bike" class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-red-600/10 text-red-400"></span><span><b class="block text-xs font-medium text-neutral-400">Entrega</b><span id="stEntrega"></span></span></div>
     <div class="flex items-center gap-3"><span data-ic="card" class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-red-600/10 text-red-400"></span><span><b class="block text-xs font-medium text-neutral-400">Pagamento</b>Pix, cartões e dinheiro</span></div>
     <div class="flex items-center gap-3"><span data-ic="store" class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-red-600/10 text-red-400"></span><span><b class="block text-xs font-medium text-neutral-400">Retirada</b>No balcão, sem taxa</span></div></div></div>
-  <p id="info" class="hidden"></p>
+  <p id="infoTxt" class="hidden"></p>
   <section id="dest" aria-label="Mais pedidos" class="hidden bg-gradient-to-b from-red-950/40 to-transparent"></section>
   <div id="cardapio">
     <div class="relative mx-auto max-w-6xl px-3.5 pt-4"><i data-lucide="search" class="pointer-events-none absolute left-7 top-[calc(1rem+1.05rem)] h-5 w-5 text-neutral-500"></i><input id="q" type="search" enterkeyhint="search"
@@ -269,7 +269,7 @@
   </div>
   <footer id="info" class="mt-16 border-t border-white/10 bg-neutral-900 pb-28 pt-12 md:pb-12"><div class="mx-auto grid max-w-6xl gap-8 px-4 text-sm text-neutral-400 md:grid-cols-3">
     <div><b class="mb-3 flex items-center gap-3 text-lg text-white"><img src="fotos/logo.webp" width="40" height="40" alt="" class="h-10 w-10 shrink-0 rounded-full">Fabi Burguer</b>Hamburgueria artesanal. Sabor que vicia.<p class="mt-4 text-xs text-neutral-500">&copy; 2026 Fabi Burguer</p></div>
-    <div><b class="mb-3 block text-base text-white">Horário de funcionamento</b><p class="flex justify-between border-b border-white/10 pb-2"><span>Dom, seg e qui a sáb</span><span class="font-medium text-white">19:00 às 00:00</span></p><p class="flex justify-between pt-2"><span>Quarta-feira</span><span class="font-medium text-white">Fechado</span></p></div>
+    <div><b class="mb-3 block text-base text-white">Horário de funcionamento</b><div id="horarios" class="space-y-2"></div></div>
     <div><b class="mb-3 block text-base text-white">Contato e entrega</b><p class="mb-4">Belém, PA · Delivery e retirada. Pedidos pelo WhatsApp.</p><button type="button" onclick="openShare()" class="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-neutral-950 font-medium text-white transition hover:bg-neutral-800 active:scale-[.97]"><span data-ic="qr" class="text-red-400"></span>Compartilhar cardápio</button></div></div><div class="mx-auto mt-10 max-w-6xl border-t border-white/10 px-4 pt-6 text-center text-xs text-neutral-500">Cardápio desenvolvido por <b class="font-extrabold text-neutral-300">Luiz Felipe</b>. Quer um para a sua empresa? <a href="https://wa.me/5591996384242?text=Ol%C3%A1%2C%20Luiz%20Felipe!%20Vi%20o%20card%C3%A1pio%20da%20Fabi%20Burguer%20e%20quero%20um%20para%20a%20minha%20empresa." target="_blank" rel="noopener" class="mt-2 inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/10 bg-neutral-950 px-4 font-bold text-white transition hover:bg-neutral-800 active:scale-[.97] sm:mt-0 sm:ml-2"><span data-ic="wa" class="text-green-400"></span>Chame no WhatsApp: (91) 99638-4242</a></div>
 </footer>
   <div id="bar"
@@ -372,7 +372,7 @@
     var IMGP = { "Casal Premium": "50% 68%", "Combo Casal": "50% 75%", "Black Angus": "50% 45%" }; // posição do recorte da foto nos cards largos
     var IMGS = { "Coca Cola 1L": "fotos/coca-cola-1l.webp", "Batata com Cheddar": "fotos/batata-cheddar.webp", "Batata Chips": "fotos/batata-chips.webp", "Batata Palito": "fotos/batata-palito.webp", "Batata com Calabresa": "fotos/batata-calabresa.webp", "Batata com Cheddar e Bacon": "fotos/batata-cheddar-bacon.webp", "Batata com Nuggets": "fotos/batata-nuggets.webp", "Bacon": "fotos/bacon.webp", "Carne 90g": "fotos/carne-90g.webp", "X Dog": "fotos/x-dog.webp", "X Tudo da Casa": "fotos/x-tudo-da-casa.webp", "X Egg Bacon": "fotos/x-egg-bacon.webp", "X Bacon": "fotos/x-bacon.webp", "X Egg Calabresa": "fotos/x-egg-calabresa.webp", "Combo Família": "fotos/combo-familia.webp", "Super Combo": "fotos/super-combo.webp", "Rústico": "fotos/rustico.webp", "Franbacon": "fotos/franbacon.webp", "KFC da Casa": "fotos/kfc-da-casa.webp", "X Frango": "fotos/x-frango.webp", "Big Calabresa": "fotos/big-calabresa.webp", "X Bacon Duplo": "fotos/x-bacon-duplo.webp", "X Burguer": "fotos/x-burguer.webp", "X Egg Burguer": "fotos/x-egg-burguer.webp", "X Calabresa": "fotos/x-calabresa.webp", "Hambúrguer": "fotos/hamburguer.webp", "X Cheddar": "fotos/x-cheddar.webp", "Casal Premium": "fotos/casal-premium.webp", "Black Angus": "fotos/black-angus.webp", "Combo Casal": "fotos/combo-casal.webp" }; // exemplo: IMGS["X Bacon"]="data:image/jpeg;base64,..."
     var BUR = ["Tradicionais", "Especiais", "Frango & Cia"];
-    var cart = [], loc = null, pay = "Pix", troco = "nao", lastOrder = null, cat = 0, cur = null, mq = 1, mad = {}, Q = "", tipo = "entrega", bairroSel = "", pre = false, shareLink = "", locBusy = false;
+    var cart = [], editIdx = null, loc = null, pay = "Pix", troco = "nao", lastOrder = null, cat = 0, cur = null, mq = 1, mad = {}, Q = "", tipo = "entrega", bairroSel = "", pre = false, shareLink = "", locBusy = false;
     var $ = function (i) { return document.getElementById(i) };
     var SB = function () { return window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" };
     var R = function (v) { return "R$ " + v.toFixed(2).replace(".", ",") };
@@ -535,23 +535,31 @@
     function rememberFocus() { lastFocus = document.activeElement }
     function restoreFocus() { var f = lastFocus; lastFocus = null; if (f && f.focus && document.body.contains && document.body.contains(f)) f.focus() }
     /* ---- personalização ---- */
-    function openOpt(id) { if (off(all[id])) return; rememberFocus(); cur = id; mq = 1; mad = {}; drawOpt(); show($("mod"), true, "flex"); lock(); focus1("modbox") }
-    function closeOpt() { show($("mod"), false, "flex"); lock(); restoreFocus() }
+    function openOpt(id) { if (off(all[id])) return; rememberFocus(); editIdx = null; cur = id; mq = 1; mad = {}; drawOpt(); show($("mod"), true, "flex"); lock(); focus1("modbox") }
+    function closeOpt() { editIdx = null; show($("mod"), false, "flex"); lock(); restoreFocus() }
     function optTotal() { var p = all[cur].p; for (var k in mad) p += ADD[k].p * mad[k]; return p * mq }
     function drawOpt() {
       var it = all[cur], o = $("mobs") ? $("mobs").value : "";
       var h = hd(it.n, "closeOpt()") + '<div class="' + C.pb + '"><p class="pt-3 text-neutral-400">' + it.d + '</p><h4 class="' + C.h4 + '">Quer adicionar algo?</h4>';
       ADD.forEach(function (a, k) { h += '<div class="' + C.row + '"><div class="min-w-0"><b>' + a.n + '</b><small class="' + C.sm + '">+ ' + R(a.p) + '</small></div>' + stp("ad(" + k + ",-1)", mad[k] || 0, "ad(" + k + ",1)") + '</div>' });
       h += '<label class="' + C.lab + '">Observação deste lanche (ex.: sem cebola)<input type="text" id="mobs" class="' + C.inp + '"></label><h4 class="' + C.h4 + '">Quantidade</h4>' + stp("mqc(-1)", mq, "mqc(1)")
-        + '</div><div class="border-t border-white/10 bg-neutral-950 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))]"><button class="w-full rounded-xl bg-red-600 py-4 text-base font-extrabold text-white transition hover:brightness-110 active:scale-[.97]" onclick="addOpt()">Adicionar ao carrinho · ' + R(optTotal()) + '</button></div>';
+        + '</div><div class="border-t border-white/10 bg-neutral-950 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))]"><button class="w-full rounded-xl bg-red-600 py-4 text-base font-extrabold text-white transition hover:brightness-110 active:scale-[.97]" onclick="addOpt()">' + (editIdx !== null ? "Salvar alterações" : "Adicionar ao carrinho") + ' · ' + R(optTotal()) + '</button></div>';
       $("modbox").innerHTML = h; if (o) $("mobs").value = o;
     }
     function ad(k, d) { mad[k] = Math.max(0, (mad[k] || 0) + d); if (!mad[k]) delete mad[k]; drawOpt() }
     function mqc(d) { mq = Math.max(1, mq + d); drawOpt() }
     function addOpt() {
-      var l = { id: cur, q: mq, ad: JSON.parse(JSON.stringify(mad)), obs: ($("mobs").value || "").trim() }, k = key(l);
-      var f = cart.filter(function (x) { return key(x) === k })[0]; if (f) f.q += l.q; else cart.push(l);
-      closeOpt(); toast(all[cur].n + " adicionado ✓"); refresh(cur);
+      var ei = editIdx, l = { id: cur, q: mq, ad: JSON.parse(JSON.stringify(mad)), obs: ($("mobs").value || "").trim() }, k = key(l);
+      if (ei !== null && cart[ei]) {
+        cart.splice(ei, 1, l);
+        var dup = cart.filter(function (x, i) { return i !== ei && key(x) === k })[0];
+        if (dup) { dup.q += l.q; cart.splice(cart.indexOf(l), 1) }
+      } else { var f = cart.filter(function (x) { return key(x) === k })[0]; if (f) f.q += l.q; else cart.push(l) }
+      closeOpt(); toast(ei !== null ? "Pedido atualizado ✓" : all[cur].n + " adicionado ✓"); refresh(cur);
+    }
+    function edit(i) {
+      var l = cart[i]; if (!l) return; rememberFocus(); editIdx = i; cur = l.id; mq = l.q; mad = JSON.parse(JSON.stringify(l.ad));
+      drawOpt(); $("mobs").value = l.obs || ""; show($("mod"), true, "flex"); lock(); focus1("modbox")
     }
     /* ---- extras: taxa, horário, memória, Pix, QR ---- */
     function ST(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem("fb_" + k)); localStorage.setItem("fb_" + k, JSON.stringify(v)) } catch (e) { return null } }
@@ -583,7 +591,11 @@
       return CFG.taxa;
     }
     function nowBelem() { var p = {}; new Intl.DateTimeFormat("en-US", { timeZone: "America/Belem", weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(new Date()).forEach(function (x) { p[x.type] = x.value }); return { d: { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[p.weekday], m: (+p.hour % 24) * 60 + +p.minute } }
+    /* MODO TESTE: abra o site com ?aberto=1 no final do endereço para simular a loja aberta.
+       Ex.: index-novo-visual.html?aberto=1  ·  Para sair, abra o endereço normal (sem ?aberto=1). */
+    var TESTE = /[?&]aberto=1(&|$)/.test(location.search);
     function st() {
+      if (TESTE) return { open: true, msg: "Aberto (modo teste)" };
       if (CFG.pausado) return { open: false, msg: "Pedidos pausados no momento" };
       var H = CFG.horarios; if (!H || !Object.keys(H).length) return { open: null };
       var n = nowBelem(), t = function (x) { var a = x.split(":"); return +a[0] * 60 + +a[1] }, td = H[n.d], pv = H[(n.d + 6) % 7];
@@ -597,13 +609,27 @@
       for (var i = 1; i <= 7; i++) { var dd = (n.d + i) % 7; if (H[dd]) return { open: false, msg: "Fechado · abrimos " + (i === 1 ? "amanhã" : nm[dd]) + " às " + H[dd][0] } }
       return { open: false, msg: "Fechado no momento" };
     }
+    function diasTxt(ds) {
+      var ab = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"], runs = [], i = 0;
+      while (i < ds.length) { var j = i; while (j + 1 < ds.length && ds[j + 1] === ds[j] + 1) j++; var n = j - i + 1; runs.push(n === 1 ? ab[ds[i]] : n === 2 ? ab[ds[i]] + " e " + ab[ds[j]] : ab[ds[i]] + " a " + ab[ds[j]]); i = j + 1 }
+      return runs.join(", ")
+    }
+    function renderInfo() {
+      var H = CFG.horarios || {}, g = {}, fe = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"], h = "", fech = [];
+      for (var d = 0; d < 7; d++) { if (H[d]) { var k = H[d][0] + " às " + H[d][1]; (g[k] = g[k] || []).push(d) } else fech.push(fe[d]) }
+      Object.keys(g).forEach(function (k) { h += '<p class="flex justify-between gap-3 border-b border-white/10 pb-2"><span>' + diasTxt(g[k]) + '</span><span class="shrink-0 font-medium text-white">' + k + '</span></p>' });
+      if (fech.length) h += '<p class="flex justify-between gap-3"><span>' + fech.join(" e ") + '</span><span class="shrink-0 font-medium text-white">Fechado</span></p>';
+      if ($("horarios")) $("horarios").innerHTML = h;
+      var e = CFG.lojaLat != null ? "Grátis até " + Math.round(CFG.gratisAteKm * 1000) + " m, depois R$ " + CFG.porKm.toFixed(2).replace(".", ",") + " por km" : CFG.bairros.length ? "Taxa por bairro" : R(CFG.taxa);
+      if ($("stEntrega")) $("stEntrega").textContent = e
+    }
     function drawInfo() {
       var t = "";
       if (CFG.lojaLat != null) t = "Entrega grátis até " + Math.round(CFG.gratisAteKm * 1000) + " m · depois R$ " + CFG.porKm.toFixed(2).replace(".", ",") + " por km, calculado com a sua localização";
       else if (CFG.bairros.length) t = "Taxa de entrega por bairro";
       else t = "Taxa de entrega: " + R(CFG.taxa);
       if (CFG.retirada) t += " · Retirada no balcão sem taxa";
-      $("info").textContent = t;
+      $("infoTxt").textContent = t; renderInfo();
     }
     function drawStatus() {
       var el = $("status"), x = st(); if (x.open === null) { show(el, false); return }
@@ -637,6 +663,13 @@
     /* ---- carrinho ---- */
     function openCart() { rememberFocus(); show($("ov"), true); show($("panel"), true, "flex"); drawCart(); lock(); focus1("panel") }
     function closeCart() { show($("ov"), false); show($("panel"), false, "flex"); lock(); restoreFocus() }
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Tab") return;
+      var d = $("mod").classList.contains("open") ? $("modbox") : $("panel").classList.contains("open") ? $("panel") : null; if (!d) return;
+      var f = [].filter.call(d.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select,textarea,[tabindex]:not([tabindex="-1"])'), function (x) { return x.offsetParent !== null });
+      if (!f.length) return; var a = f[0], z = f[f.length - 1], c = document.activeElement;
+      if (!d.contains(c)) { e.preventDefault(); a.focus() } else if (e.shiftKey && c === a) { e.preventDefault(); z.focus() } else if (!e.shiftKey && c === z) { e.preventDefault(); a.focus() }
+    });
     document.addEventListener("keydown", function (e) { if (e.key !== "Escape") return; if ($("mod").classList.contains("open")) closeOpt(); else if ($("panel").classList.contains("open")) closeCart() });
     function rm(i) { var id = cart[i].id; cart.splice(i, 1); refresh(id) }
     function lock() { document.body.classList.toggle("overflow-hidden", $("panel").classList.contains("open") || $("mod").classList.contains("open")) }
@@ -647,16 +680,16 @@
     function sec(n, t, b) { return '<section class="mt-3 rounded-2xl bg-neutral-900 p-4 ring-1 ring-white/10"><h4 class="flex items-center gap-2.5 text-base font-extrabold"><span class="grid h-7 w-7 place-items-center rounded-full bg-red-600 text-sm">' + n + '</span>' + t + '</h4>' + b + '</section>' }
     function fill() {
       if (!cart.length) { show($("pf"), false); $("pb").innerHTML = '<div class="py-12 text-center text-neutral-400"><p class="font-display text-xl text-white">Carrinho vazio</p><p class="mt-2">Escolha um lanche no cardápio para montar seu pedido.</p><button class="' + C.add + ' mt-5" onclick="closeCart()">Ver cardápio</button></div>'; return }
-      var f = function (id, lbl, t, x) { return '<label class="' + C.lab + '">' + lbl + '<input type="' + (t || "text") + '" id="' + id + '" class="' + C.inp + '" ' + (x || "") + '></label>' };
+      var f = function (id, lbl, t, x) { return '<label class="' + C.lab + '">' + lbl + '<input type="' + (t || "text") + '" id="' + id + '" class="' + C.inp + '" ' + (x || "") + '><span id="e_' + id + '" role="alert" class="hidden mt-1 block text-sm font-bold text-rose-400"></span></label>' };
       var it = "";
       cart.forEach(function (l, i) {
         var ex = exList(l);
-        it += '<div class="' + C.row + '"><div class="min-w-0 [overflow-wrap:anywhere]"><b>' + all[l.id].n + '</b>' + (ex.length ? '<small class="' + C.sm + '">+ ' + ex.join(", ") + '</small>' : '') + (l.obs ? '<small class="' + C.sm + '">Obs: ' + esc(l.obs) + '</small>' : '') + '<small class="' + C.sm + '">' + R(unit(l)) + ' cada</small><button type="button" class="mt-1 inline-block py-2 text-sm font-bold text-rose-400 underline" onclick="rm(' + i + ')">Remover</button></div>' + stp("lc(" + i + ",-1)", l.q, "lc(" + i + ",1)") + '</div>'
+        it += '<div class="' + C.row + '"><div class="min-w-0 [overflow-wrap:anywhere]"><b>' + all[l.id].n + '</b>' + (ex.length ? '<small class="' + C.sm + '">+ ' + ex.join(", ") + '</small>' : '') + (l.obs ? '<small class="' + C.sm + '">Obs: ' + esc(l.obs) + '</small>' : '') + '<small class="' + C.sm + '">' + R(unit(l)) + ' cada</small>' + (all[l.id].b ? '<button type="button" class="mr-4 mt-1 inline-block py-2 text-sm font-bold text-red-400 underline" onclick="edit(' + i + ')">Editar adicionais</button>' : '') + '<button type="button" class="mt-1 inline-block py-2 text-sm font-bold text-rose-400 underline" onclick="rm(' + i + ')">Remover</button></div>' + stp("lc(" + i + ",-1)", l.q, "lc(" + i + ",1)") + '</div>'
       });
       var h = sec(1, "Seu pedido", '<div class="mt-1">' + it + '</div>' + sugg() + '<label class="' + C.lab + '">Observações gerais<textarea id="obs" rows="2" class="' + C.inp + '" placeholder="Ex.: ponto da carne, troca de bebida"></textarea></label>');
       h += sec(2, "Seus dados", f("nome", "Nome", "text", 'autocomplete="name" autocapitalize="words"') + f("tel", "WhatsApp / Telefone", "tel", 'autocomplete="tel" inputmode="numeric" maxlength="15" placeholder="(91) 99999-9999" oninput="mask(this,1)"') + '<p class="mt-2 text-xs text-neutral-500">Seus dados ficam salvos só neste aparelho, para o próximo pedido. <button type="button" class="underline" onclick="clearCli()">Apagar</button></p>');
-      var bf = CFG.bairros.length ? '<label class="' + C.lab + '">Bairro<select id="bai" class="' + C.inp + '" onchange="setBairro(this.value)"><option value="">Escolha o bairro</option>' + CFG.bairros.map(function (b) { return '<option value="' + esc(b[0]) + '"' + (bairroSel === b[0] ? ' selected' : '') + '>' + esc(b[0]) + ' · ' + R(b[1]) + '</option>' }).join("") + '</select></label>' : f("bai", "Bairro");
-      var tp = CFG.retirada ? '<div class="mt-3 grid grid-cols-2 gap-2"><label class="' + C.opt + '"><input type="radio" name="tp" value="entrega"' + (tipo === "entrega" ? ' checked' : '') + ' onchange="setTipo(this.value)">' + ic("bike", "h-5 w-5 text-neutral-300") + 'Entrega</label><label class="' + C.opt + '"><input type="radio" name="tp" value="retirada"' + (tipo === "retirada" ? ' checked' : '') + ' onchange="setTipo(this.value)">' + ic("store", "h-5 w-5 text-neutral-300") + 'Retirar no balcão</label></div>' : '';
+      var bf = CFG.bairros.length ? '<label class="' + C.lab + '">Bairro<select id="bai" class="' + C.inp + '" onchange="setBairro(this.value)"><option value="">Escolha o bairro</option>' + CFG.bairros.map(function (b) { return '<option value="' + esc(b[0]) + '"' + (bairroSel === b[0] ? ' selected' : '') + '>' + esc(b[0]) + ' · ' + R(b[1]) + '</option>' }).join("") + '</select><span id="e_bai" role="alert" class="hidden mt-1 block text-sm font-bold text-rose-400"></span></label>' : f("bai", "Bairro");
+      var tp = CFG.retirada ? '<div role="radiogroup" aria-label="Como receber" class="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">' + tpc("entrega", "bike", "Entrega", etxt()) + tpc("retirada", "store", "Retirar no balcão", "Sem taxa de entrega") + '</div>' : '';
       var ad2 = tipo === "retirada" ? '<p class="mt-3 text-sm text-neutral-300">Você retira o pedido na loja, sem taxa de entrega.</p>' : f("rua", "Rua / Avenida", "text", 'autocomplete="address-line1" autocapitalize="words"') + '<div class="grid grid-cols-2 gap-2.5">' + f("num", "Número", "text", 'inputmode="numeric" maxlength="6" placeholder="Ex.: 123" oninput="mask(this,2)"') + bf + '</div>' + f("ref", "Complemento / Ponto de referência")
         + '<div id="locWrap">' + locBtn() + '<p id="locMsg" role="alert" class="hidden"></p></div><small class="' + C.sm + ' mt-2">' + (CFG.lojaLat != null ? "Usamos sua localização para calcular a taxa pela distância (grátis até " + Math.round(CFG.gratisAteKm * 1000) + " m, depois R$ " + String(CFG.porKm).replace(".", ",") + " por km) e para o entregador chegar até você." : "Ajuda o entregador a achar você mais rápido. Se preferir, só o endereço já basta.") + '</small>';
       h += sec(3, CFG.retirada ? "Entrega ou retirada" : "Endereço de entrega", tp + ad2);
@@ -668,11 +701,11 @@
         + '<label class="' + C.opt + '"><input type="radio" name="tr" value="nao"' + (troco === "nao" ? ' checked' : '') + ' onchange="setTroco(this.value)">Não</label></div>'
         + '<div id="trocoVal" class="' + (troco === "sim" ? '' : 'hidden') + '">' + f("trocoPara", "Troco para quanto?", "text", 'inputmode="numeric" placeholder="R$ 0,00" oninput="mask(this,3)"') + '</div></div>');
       var t = function (a, b, c) { return '<div class="flex justify-between py-1 ' + (c || "text-neutral-300") + '"><span>' + a + '</span><span>' + b + '</span></div>' };
-      h += sec(5, "Resumo", '<div class="mt-2">' + t("Subtotal", R(sub())) + t(tipo === "retirada" ? "Retirada no balcão" : "Taxa de entrega" + (dist() !== null ? " (" + kmTxt() + ")" : ""), fee() === null ? (CFG.lojaLat != null ? "compartilhe a localização" : "escolha o bairro") : (fee() === 0 ? "Grátis" : R(fee()))) + t("Total", R(sub() + (fee() || 0)), "mt-1.5 border-t border-white/15 pt-3 text-2xl font-extrabold text-white") + '</div>');
+      h += sec(5, "Resumo", '<div id="resDet" class="mt-2"></div><div class="mt-2 border-t border-white/10 pt-2">' + t("Subtotal", R(sub())) + t(tipo === "retirada" ? "Retirada no balcão" : "Taxa de entrega" + (dist() !== null ? " (" + kmTxt() + ")" : ""), fee() === null ? (CFG.lojaLat != null ? "compartilhe a localização" : "escolha o bairro") : (fee() === 0 ? "Grátis" : R(fee()))) + t("Total", R(sub() + (fee() || 0)), "mt-1.5 border-t border-white/15 pt-3 text-2xl font-extrabold text-white") + '</div>');
       if (CFG.bloquearFechado && st().open === false) h += '<p class="mt-3 text-center font-bold text-rose-400">' + st().msg + '. Você pode montar o pedido, mas o envio só é liberado quando a loja abrir.</p>';
       h += '<p class="mt-4 text-center text-sm text-neutral-400">O WhatsApp vai abrir com o pedido pronto. Toque em enviar na conversa para a loja receber.</p>';
       var pf = '<div class="min-h-[1em] pb-2 text-center text-sm font-extrabold text-rose-400" id="err" role="alert"></div><div class="flex items-center gap-3"><div class="shrink-0"><div class="text-xs text-neutral-400">Total</div><div class="text-xl font-extrabold">' + R(sub() + (fee() || 0)) + '</div></div><button class="flex flex-1 items-center justify-center gap-2 rounded-xl bg-green-600 py-3.5 text-base font-extrabold text-white transition hover:bg-green-500 active:scale-[.97]" onclick="sendOrder()">' + ic("wa", "h-6 w-6") + 'Enviar pelo WhatsApp</button></div>';
-      var keep = snap(); if (!pre) { pre = true; var sc = ST("cli") || {};["nome", "tel", "rua", "num", "bai", "ref"].forEach(function (k) { if (!keep[k] && sc[k]) keep[k] = sc[k] }) } $("pb").innerHTML = h; restore(keep); $("pf").innerHTML = pf; show($("pf"), true);
+      var keep = snap(); if (!pre) { pre = true; var sc = ST("cli") || {};["nome", "tel", "rua", "num", "bai", "ref"].forEach(function (k) { if (!keep[k] && sc[k]) keep[k] = sc[k] }) } $("pb").innerHTML = h; restore(keep); $("pf").innerHTML = pf; show($("pf"), true); updRes();
     }
     function snap() { var o = {};["obs", "nome", "tel", "rua", "num", "bai", "ref", "trocoPara"].forEach(function (i) { var e = $(i); if (e) o[i] = e.value }); return o }
     function restore(o) { for (var i in o) { var e = $(i); if (e) e.value = o[i] } }
@@ -702,18 +735,36 @@
         locUI(er && er.code === 1 ? "Acesso à localização bloqueado. Libere nas permissões do navegador para este site e toque de novo, ou siga só com o endereço." : "Não foi possível obter a localização. Toque para tentar de novo ou siga só com o endereço.");
       }, { enableHighAccuracy: true, timeout: 15000 });
     }
+    function fe(id, m) { var p = $("e_" + id), i = $(id); if (p) { p.textContent = m; p.classList.remove("hidden") } if (i) { i.setAttribute("aria-invalid", "true"); i.style.boxShadow = "0 0 0 2px #f43f5e" } }
+    function clearFe(id) {
+      (id ? [id] : [].map.call(document.querySelectorAll('[id^="e_"]'), function (x) { return x.id.slice(2) })).forEach(function (k) { var p = $("e_" + k), i = $(k); if (p) { p.textContent = ""; p.classList.add("hidden") } if (i) { i.removeAttribute("aria-invalid"); i.style.boxShadow = "" } })
+    }
+    function updRes() {
+      var d = $("resDet"); if (!d) return; var v = function (i) { return $(i) ? ($(i).value || "").trim() : "" }, h = '<div class="space-y-1 text-sm text-neutral-300">';
+      cart.forEach(function (l) { var ex = exList(l); h += '<div class="flex justify-between gap-3"><span class="min-w-0 [overflow-wrap:anywhere]">' + l.q + '× ' + all[l.id].n + (ex.length ? ' <small class="text-neutral-500">(+ ' + ex.join(", ") + ')</small>' : '') + '</span><span class="num shrink-0">' + R(unit(l) * l.q) + '</span></div>' });
+      var lin = function (a, b) { return '<p class="mt-2 border-t border-white/10 pt-2"><b class="text-white">' + a + ':</b> ' + b + '</p>' };
+      h += tipo === "retirada" ? lin("Retirada", "no balcão da loja, sem taxa") : lin("Entrega", esc([v("rua"), v("num"), v("bai")].filter(Boolean).join(", ")) || "<span class=\"text-rose-400\">endereço não informado</span>");
+      h += lin("Contato", esc(v("nome") || "—") + (v("tel") ? " · " + esc(v("tel")) : "")) + lin("Pagamento", pay + (pay === "Dinheiro" && troco === "sim" && v("trocoPara") ? " · troco para " + esc(v("trocoPara")) : ""));
+      d.innerHTML = h + '</div>'
+    }
+    document.addEventListener("input", function (ev) { if (ev.target.id) clearFe(ev.target.id); updRes() });
+    document.addEventListener("change", function (ev) { if (ev.target.id) clearFe(ev.target.id); updRes() });
+    function tpc(v, icn, t, d) { return '<label class="flex cursor-pointer items-start gap-3 rounded-xl bg-neutral-800 p-3 ring-1 ring-white/10 transition-colors focus-within:ring-2 focus-within:ring-red-400 has-[:checked]:bg-red-600/10 has-[:checked]:ring-2 has-[:checked]:ring-red-600"><input type="radio" name="tp" value="' + v + '"' + (tipo === v ? ' checked' : '') + ' onchange="setTipo(this.value)" class="mt-1 h-5 w-5 shrink-0 accent-red-600">' + ic(icn, "mt-0.5 h-6 w-6 text-red-400") + '<span><b class="block">' + t + '</b><small class="block text-neutral-400">' + d + '</small></span></label>' }
+    function etxt() { return "Receba em casa. " + (CFG.lojaLat != null ? "Taxa pela distância" : CFG.bairros.length ? "Taxa por bairro" : "Taxa de " + R(CFG.taxa)) }
     function sendOrder() {
       var v = function (i) { return ($(i).value || "").trim() }, e = $("err"), tot = sub() + (fee() || 0);
       var ent = tipo === "entrega";
       if (CFG.bloquearFechado && st().open === false) { e.textContent = st().msg + ". O envio é liberado quando a loja abrir."; return }
-      if (!v("nome") || !v("tel") || (ent && (!v("rua") || !v("num") || !v("bai")))) { e.textContent = ent ? "Preencha nome, telefone, rua, número e bairro." : "Preencha nome e telefone."; return }
-      if (ent && fee() === null) { e.textContent = CFG.lojaLat != null ? "Compartilhe sua localização para calcular a taxa de entrega." : "Escolha o bairro de entrega."; return }
-      if (v("tel").replace(/\D/g, "").length < 10) { e.textContent = "Digite o telefone com DDD, ex.: (91) 99999-9999."; return }
-      var tp = 0;
-      if (pay === "Dinheiro" && troco === "sim") {
-        tp = parseInt(v("trocoPara").replace(/\D/g, "") || "0", 10) / 100;
-        if (!tp || tp < tot) { e.textContent = "O valor do troco deve ser igual ou maior que " + R(tot) + "."; return }
+      clearFe(); var bad = [], F = function (i, m) { fe(i, m); bad.push(i) }, tp = 0, td = v("tel").replace(/\D/g, "");
+      if (!v("nome")) F("nome", "Informe seu nome.");
+      if (!td) F("tel", "Informe seu telefone."); else if (td.length < 10) F("tel", "Digite o telefone com DDD, ex.: (91) 99999-9999.");
+      if (ent) {
+        if (!v("rua")) F("rua", "Informe a rua ou avenida."); if (!v("num")) F("num", "Informe o número."); if (!v("bai")) F("bai", "Escolha o bairro.");
+        if (fee() === null) { if (CFG.lojaLat != null) { locUI("Compartilhe sua localização para calcular a taxa de entrega."); bad.push("locBtn") } else if (bad.indexOf("bai") < 0) F("bai", "Escolha o bairro de entrega.") }
       }
+      if (pay === "Dinheiro" && troco === "sim") { tp = parseInt(v("trocoPara").replace(/\D/g, "") || "0", 10) / 100; if (!tp || tp < tot) F("trocoPara", "O valor do troco deve ser igual ou maior que " + R(tot) + ".") }
+      e.textContent = "";
+      if (bad.length) { e.textContent = "Confira os campos destacados."; var el0 = $(bad[0]); if (el0) { el0.scrollIntoView({ block: "center", behavior: SB() }); el0.focus() } return }
       var id = Math.floor(1000 + Math.random() * 9000);
       var maps = loc ? "https://www.google.com/maps?q=" + loc.lat + "," + loc.lng : "";
       var gps = loc ? "\n\n🗺️ *Localização no mapa:*\n" + maps + "\n(GPS: " + loc.lat.toFixed(6) + ", " + loc.lng.toFixed(6) + ")" + (CFG.lojaLat != null ? "\n\n🧭 *Rota pelas ruas (confira a distância):*\nhttps://www.google.com/maps/dir/?api=1&origin=" + CFG.lojaLat + "," + CFG.lojaLng + "&destination=" + loc.lat + "," + loc.lng : "") : "\n\n🗺️ Localização GPS: não compartilhada";
@@ -723,7 +774,7 @@
       });
       var end = ent ? v("rua") + ", " + v("num") + " – " + v("bai") + (v("ref") ? " (" + v("ref") + ")" : "") : "";
       var pg = pay; if (pay === "Dinheiro") pg += troco === "sim" ? " – troco para " + R(tp) + " (levar " + R(tp - tot) + ")" : " – não precisa de troco";
-      var m1 = "🍔 *NOVO PEDIDO #" + id + " – Fabi Burguer*\n\n👤 " + v("nome") + "\n📞 " + v("tel") + "\n\n*Itens:*\n" + itens
+      var m1 = (TESTE ? "🧪 *PEDIDO DE TESTE – NÃO PREPARAR*\n\n" : "") + "🍔 *NOVO PEDIDO #" + id + " – Fabi Burguer*\n\n👤 " + v("nome") + "\n📞 " + v("tel") + "\n\n*Itens:*\n" + itens
         + (v("obs") ? "\n📝 Obs: " + v("obs") + "\n" : "") + "\nSubtotal: " + R(sub()) + "\n" + (ent ? "Entrega" + (dist() !== null ? " (" + kmTxt() + ")" : bairroSel ? " (" + bairroSel + ")" : "") : "Retirada no balcão") + ": " + (fee() === 0 ? "Grátis" : R(fee() || 0)) + "\n*Total: " + R(tot) + "*\n\n💳 Pagamento: " + pg
         + "\n\n" + (ent ? "📍 Endereço: " + end + gps : "🏪 *RETIRADA NO BALCÃO*");
       var m2 = "🛵 *ENTREGA – Pedido #" + id + "*\n\n👤 " + v("nome") + "\n📞 " + v("tel") + "\n📍 " + end + gps
@@ -749,7 +800,13 @@
     document.querySelectorAll('[data-ic]').forEach(function (e) { e.innerHTML = ic(e.getAttribute('data-ic'), e.className.indexOf('h-4') > -1 ? 'h-4 w-4' : 'h-5 w-5') });
     function lu() { if (window.lucide && document.querySelector('i[data-lucide]')) lucide.createIcons() }
     new MutationObserver(function () { clearTimeout(lu.t); lu.t = setTimeout(lu, 0) }).observe(document.body, { childList: true, subtree: true });
-    drawMenu(); drawDest(); bar(); drawStatus(); drawInfo(); if (window.addEventListener) window.addEventListener("scroll", onSpy, { passive: true }); setInterval(drawStatus, 60000); lu();
+    function falhou(e) {
+      if (window.console) console.error(e);
+      var m = $("menu"); if (m) m.innerHTML = '<div role="alert" class="py-16 text-center"><p class="text-lg font-extrabold">Não foi possível carregar o cardápio.</p><p class="mt-2 text-neutral-400">Recarregue a página ou faça o pedido pelo WhatsApp.</p><a class="mt-4 inline-flex min-h-[48px] items-center rounded-2xl bg-green-600 px-6 font-extrabold text-white" href="https://wa.me/' + CFG.loja + '">Pedir pelo WhatsApp</a></div>'
+    }
+    if (TESTE) { var tb = document.createElement("div"); tb.setAttribute("role", "status"); tb.className = "fixed inset-x-0 bottom-0 z-[60] bg-amber-400 px-3 py-1.5 text-center text-xs font-extrabold text-black"; tb.innerHTML = 'MODO TESTE: loja simulada como aberta. A mensagem vai marcada como teste. <a class="underline" href="' + location.pathname + '">Sair do modo teste</a>'; document.body.appendChild(tb) }
+    try { drawMenu(); drawDest(); bar(); drawStatus(); drawInfo() } catch (e) { falhou(e) }
+    if (window.addEventListener) window.addEventListener("scroll", onSpy, { passive: true }); setInterval(drawStatus, 60000); lu();
   </script>
 </body>
 
