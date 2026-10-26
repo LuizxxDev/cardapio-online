@@ -107,6 +107,9 @@
       horarios: { 0: ["19:00", "00:00"], 1: ["19:00", "00:00"], 2: ["19:00", "00:00"], 4: ["19:00", "00:00"], 5: ["19:00", "00:00"], 6: ["19:00", "00:00"] }, // 0=domingo … 6=sábado (quarta-feira, 3, fechada)
       bloquearFechado: true,       // true = não deixa enviar pedido fora do horário
       pix: "91991013070",         // chave Pix (celular da loja)
+      pixTipo: "celular",          // tipo da chave: "celular", "cpf", "cnpj", "email" ou "aleatoria"
+      pixNome: "Fabi Burguer",     // nome do recebedor no Pix copia e cola (até 25 letras)
+      pixCidade: "Belem",          // cidade do recebedor no Pix copia e cola (até 15 letras)
       maisPedidos: ["Combo Casal", "Casal Premium", "Black Angus"], // nomes de itens para destacar
       indisponiveis: [],           // itens esgotados: aparecem como "Esgotado" e não podem ser pedidos. Ex.: ["X Dog","Suco de Frutas"]
       pausado: false,              // true = pausa os pedidos agora (ex.: cozinha lotada), mesmo dentro do horário
@@ -170,7 +173,7 @@
     var IMGP = { "Casal Premium": "50% 68%", "Combo Casal": "50% 75%", "Black Angus": "50% 45%" }; // posição do recorte da foto nos cards largos
     var IMGS = { "Coca Cola 1L": "fotos/coca-cola-1l.webp", "Batata com Cheddar": "fotos/batata-cheddar.webp", "Batata Chips": "fotos/batata-chips.webp", "Batata Palito": "fotos/batata-palito.webp", "Batata com Calabresa": "fotos/batata-calabresa.webp", "Batata com Cheddar e Bacon": "fotos/batata-cheddar-bacon.webp", "Batata com Nuggets": "fotos/batata-nuggets.webp", "Bacon": "fotos/bacon.webp", "Carne 90g": "fotos/carne-90g.webp", "X Dog": "fotos/x-dog.webp", "X Tudo da Casa": "fotos/x-tudo-da-casa.webp", "X Egg Bacon": "fotos/x-egg-bacon.webp", "X Bacon": "fotos/x-bacon.webp", "X Egg Calabresa": "fotos/x-egg-calabresa.webp", "Combo Família": "fotos/combo-familia.webp", "Super Combo": "fotos/super-combo.webp", "Rústico": "fotos/rustico.webp", "Franbacon": "fotos/franbacon.webp", "KFC da Casa": "fotos/kfc-da-casa.webp", "X Frango": "fotos/x-frango.webp", "Big Calabresa": "fotos/big-calabresa.webp", "X Bacon Duplo": "fotos/x-bacon-duplo.webp", "X Burguer": "fotos/x-burguer.webp", "X Egg Burguer": "fotos/x-egg-burguer.webp", "X Calabresa": "fotos/x-calabresa.webp", "Hambúrguer": "fotos/hamburguer.webp", "X Cheddar": "fotos/x-cheddar.webp", "Casal Premium": "fotos/casal-premium.webp", "Black Angus": "fotos/black-angus.webp", "Combo Casal": "fotos/combo-casal.webp" }; // exemplo: IMGS["X Bacon"]="data:image/jpeg;base64,..."
     var BUR = ["Tradicionais", "Especiais", "Frango & Cia"];
-    var cstep = 1, foldD = null, foldE = null, cart = [], editIdx = null, loc = null, rota = null, pay = "Pix", troco = "nao", lastOrder = null, cat = 0, cur = null, mq = 1, mad = {}, Q = "", tipo = "entrega", bairroSel = "", pre = false, shareLink = "", locBusy = false;
+    var cstep = 1, foldD = null, foldE = null, cart = [], editIdx = null, loc = null, rota = null, pay = "Pix", troco = "nao", trocoSel = "nao", autoEnd = false, draft = {}, lastOrder = null, cat = 0, cur = null, mq = 1, mad = {}, Q = "", tipo = "entrega", bairroSel = "", pre = false, shareLink = "", locBusy = false;
     var $ = function (i) { return document.getElementById(i) };
     var SB = function () { return window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" };
     var R = function (v) { return "R$ " + v.toFixed(2).replace(".", ",") };
@@ -491,13 +494,33 @@
       return h ? '<div class="mt-3"><p class="text-sm font-bold text-stone-300">Que tal acompanhar?</p><div class="mt-2 flex flex-wrap gap-2">' + h + '</div></div>' : "";
     }
     function fmtPix(k) { var d = String(k).replace(/\D/g, ""); return d.length === 11 ? "(" + d.slice(0, 2) + ") " + d.slice(2, 7) + "-" + d.slice(7) : d.length === 10 ? "(" + d.slice(0, 2) + ") " + d.slice(2, 6) + "-" + d.slice(6) : esc(k) }
-    function pixBox() { return CFG.pix && lastOrder && lastOrder.pay === "Pix" ? '<div class="mt-4 rounded-lg bg-stone-900 p-3 text-left ring-1 ring-white/10"><p class="text-sm text-stone-400">Chave Pix (celular) · copie e pague no app do seu banco</p><p class="break-all text-lg font-extrabold num">' + fmtPix(CFG.pix) + '</p><p class="mt-1 flex items-start gap-1.5 text-sm font-bold text-amber-300">' + ic("receipt", "mt-0.5 h-4 w-4") + '<span>Depois de pagar, envie o comprovante no WhatsApp, na mesma conversa do pedido.</span></p><button type="button" class="' + C.add + ' mt-2 inline-flex items-center gap-2" onclick="copyTxt(CFG.pix,this)">' + ic("copy", "h-4 w-4") + 'Copiar chave</button></div>' : "" }
+    /* Pix copia e cola (padrão BR Code do Banco Central) com o valor do pedido */
+    function pixCode(valor, txid) {
+      var tl = function (id, v) { v = String(v); return id + ("0" + v.length).slice(-2) + v };
+      var lim = function (t, n) { return String(t).normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Za-z0-9 ]/g, "").toUpperCase().slice(0, n) };
+      var k = String(CFG.pix).trim(), tp = CFG.pixTipo || "celular";
+      if (tp === "celular") k = "+55" + k.replace(/\D/g, "").replace(/^55(?=\d{10,11}$)/, ""); else if (tp === "cpf" || tp === "cnpj") k = k.replace(/\D/g, ""); else if (tp === "email") k = k.toLowerCase();
+      var p = tl("00", "01") + tl("26", tl("00", "br.gov.bcb.pix") + tl("01", k)) + tl("52", "0000") + tl("53", "986") + tl("54", valor.toFixed(2)) + tl("58", "BR")
+        + tl("59", lim(CFG.pixNome || "Loja", 25)) + tl("60", lim(CFG.pixCidade || "Brasil", 15)) + tl("62", tl("05", lim(txid || "", 25).replace(/ /g, "") || "***")) + "6304";
+      var c = 0xFFFF; for (var i = 0; i < p.length; i++) { c ^= p.charCodeAt(i) << 8; for (var j = 0; j < 8; j++) c = c & 0x8000 ? (c << 1) ^ 0x1021 : c << 1; c &= 0xFFFF }
+      return p + ("000" + c.toString(16).toUpperCase()).slice(-4);
+    }
+    function pixBox() {
+      if (!(CFG.pix && lastOrder && lastOrder.pay === "Pix")) return "";
+      return '<div class="mt-5 rounded-2xl bg-stone-900 p-4 text-left ring-1 ring-white/10"><p class="flex items-center gap-2 font-extrabold">' + ic("pix", "h-5 w-5 text-[#32BCAD]") + 'Pague com Pix · <span class="num">' + R(lastOrder.tot) + '</span></p>'
+        + '<p class="mt-1 text-sm text-stone-400">Copie o código e cole em <b class="text-stone-200">Pix copia e cola</b> no app do seu banco. O valor já vai preenchido.</p>'
+        + '<button type="button" class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-[#32BCAD] py-4 text-base font-extrabold text-stone-950 transition hover:brightness-110 active:scale-[.97]" onclick="copyTxt(lastOrder.pix,this)">' + ic("copy") + 'Copiar código Pix</button>'
+        + '<div id="pixqr" class="mx-auto mt-4 hidden w-max rounded-lg bg-white p-2.5"></div>'
+        + '<p class="mt-3 text-xs text-stone-400">Prefere a chave? ' + esc(CFG.pixTipo === "celular" ? fmtPix(CFG.pix) : CFG.pix) + ' <button type="button" class="ml-1 min-h-[32px] font-bold text-red-400 underline" onclick="copyTxt(CFG.pix,this)">Copiar chave</button></p>'
+        + '<p class="mt-3 flex items-start gap-1.5 text-sm font-bold text-amber-300">' + ic("receipt", "mt-0.5 h-4 w-4") + '<span>Depois de pagar, envie o comprovante no WhatsApp, na mesma conversa do pedido.</span></p></div>';
+    }
+    function pixQR() { var q = $("pixqr"); if (!q || !lastOrder || !lastOrder.pix || !window.QRCode) return; new QRCode(q, { text: lastOrder.pix, width: 180, height: 180, correctLevel: QRCode.CorrectLevel.M }); q.classList.remove("hidden") }
     function setTipo(v) { tipo = v; pre = false; kf(fill) }
     function setBairro(v) { bairroSel = v; kf(fill) }
     function clearCli() { try { localStorage.removeItem("fb_cli") } catch (e) { } ["nome", "tel", "rua", "num", "ref"].forEach(function (i) { var x = $(i); if (x) x.value = "" }); bairroSel = ""; foldD = foldE = false; fill() }
     /* ---- carrinho ---- */
-    function openCart() { rememberFocus(); cstep = 1; foldD = foldE = null; show($("ov"), true); show($("panel"), true, "flex"); drawCart(); lock(); focus1("panel") }
-    function closeCart() { show($("ov"), false); show($("panel"), false, "flex"); lock(); restoreFocus() }
+    function openCart() { rememberFocus(); cstep = 1; foldD = foldE = null; pre = false; show($("ov"), true); show($("panel"), true, "flex"); drawCart(); lock(); focus1("panel") }
+    function closeCart() { if ($("pb") && cart.length) draft = snap(); show($("ov"), false); show($("panel"), false, "flex"); lock(); restoreFocus() }
     document.addEventListener("keydown", function (e) {
       if (e.key !== "Tab") return;
       var d = $("mod").classList.contains("open") ? $("modbox") : $("panel").classList.contains("open") ? $("panel") : null; if (!d) return;
@@ -515,7 +538,7 @@
     function sec(n, t, b) { return '<section class="mt-3 rounded-2xl bg-stone-900 p-4 ring-1 ring-white/10"><h4 class="flex items-center gap-2.5 text-base font-extrabold">' + (n ? '<span class="grid h-7 w-7 place-items-center rounded-full bg-red-600 text-sm">' + n + '</span>' : '') + t + '</h4>' + b + '</section>' }
     function fill() {
       if (!cart.length) { show($("pf"), false); $("pb").innerHTML = '<div class="py-12 text-center text-stone-400"><p class="font-display text-xl font-extrabold text-white">Carrinho vazio</p><p class="mt-2">Escolha um lanche no cardápio para montar seu pedido.</p><button class="' + C.add + ' mt-5" onclick="closeCart()">Ver cardápio</button></div>'; return }
-      var keep = snap(); if (!pre) { pre = true; var sc = ST("cli") || {};["nome", "tel", "rua", "num", "bai", "ref"].forEach(function (k) { if (!keep[k] && sc[k]) keep[k] = sc[k] }) }
+      var keep = snap(); for (var dk in draft) if (!keep[dk] && draft[dk]) keep[dk] = draft[dk]; draft = {}; if (!pre) { pre = true; var sc = ST("cli") || {};["nome", "tel", "rua", "num", "bai", "ref"].forEach(function (k) { if (!keep[k] && sc[k]) keep[k] = sc[k] }) }
       if (foldD === null) foldD = !!(keep.nome && keep.tel);
       if (foldE === null && tipo === "entrega") foldE = !!(keep.rua && keep.num && keep.bai);
       var fold = function (g, on, a, b, inner) { return '<div id="fs_' + g + '" class="' + (on ? '' : 'hidden ') + 'mt-3 flex items-center justify-between gap-3 rounded-xl bg-stone-800 p-3 ring-1 ring-white/10"><span class="min-w-0 [overflow-wrap:anywhere]"><b class="block">' + esc(a) + '</b><small class="block text-stone-400">' + esc(b) + '</small></span><button type="button" class="min-h-[44px] shrink-0 px-2 text-sm font-bold text-red-400 underline" onclick="unfold(&quot;' + g + '&quot;,1)">Alterar</button></div><div id="fw_' + g + '"' + (on ? ' class="hidden"' : '') + '>' + inner + '</div>' };
@@ -530,22 +553,22 @@
       h += sec(1, "Seus dados", fold("d", foldD, keep.nome || "", keep.tel || "", f("nome", "Nome", "text", 'autocomplete="name" autocapitalize="words"') + f("tel", "WhatsApp / Telefone", "tel", 'autocomplete="tel" inputmode="numeric" maxlength="15" placeholder="(91) 99999-9999" oninput="mask(this,1)"')) + '<p class="mt-2 text-xs text-stone-400">Seus dados ficam salvos só neste aparelho, para o próximo pedido. <button type="button" class="underline" onclick="clearCli()">Apagar</button></p>');
       var bf = CFG.bairros.length ? '<label class="' + C.lab + '">Bairro<select id="bai" class="' + C.inp + '" onchange="setBairro(this.value)"><option value="">Escolha o bairro</option>' + CFG.bairros.map(function (b) { return '<option value="' + esc(b[0]) + '"' + (bairroSel === b[0] ? ' selected' : '') + '>' + esc(b[0]) + ' · ' + R(b[1]) + '</option>' }).join("") + '</select><span id="e_bai" role="alert" class="hidden mt-1 block text-sm font-bold text-rose-400"></span></label>' : f("bai", "Bairro");
       var tp = CFG.retirada ? '<div role="radiogroup" aria-label="Como receber" class="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">' + tpc("entrega", "bike", "Entrega", etxt()) + tpc("retirada", "store", "Retirar no balcão", "Sem taxa de entrega") + '</div>' : '';
-      var ad2 = tipo === "retirada" ? '<p class="mt-3 text-sm text-stone-300">Você retira o pedido na loja, sem taxa de entrega.</p>' : fold("e", foldE, [keep.rua, keep.num].filter(Boolean).join(", ") + (keep.bai ? " – " + keep.bai : ""), keep.ref || "Sem complemento", f("rua", "Rua / Avenida", "text", 'autocomplete="address-line1" autocapitalize="words"') + '<div class="grid grid-cols-2 gap-2.5">' + f("num", "Número", "text", 'inputmode="numeric" maxlength="6" placeholder="Ex.: 123" oninput="mask(this,2)"') + bf + '</div>' + f("ref", "Complemento / Ponto de referência"))
-        + '<div id="locWrap">' + locBtn() + '<p id="locMsg" role="alert" class="hidden"></p></div><small class="' + C.sm + ' mt-2">' + (CFG.lojaLat != null ? "Usamos sua localização para calcular a taxa pelo caminho das ruas (grátis até " + Math.round(CFG.gratisAteKm * 1000) + " m, depois R$ " + String(CFG.porKm).replace(".", ",") + " por km" + (raioTxt() ? "; entregamos até " + raioTxt() : "") + ") e para o entregador chegar até você." : "Ajuda o entregador a achar você mais rápido. Se preferir, só o endereço já basta.") + '</small>';
+      var locB = '<div id="locWrap">' + locBtn() + '<p id="locMsg" role="alert" class="hidden"></p></div><small class="' + C.sm + ' mt-2">' + (CFG.lojaLat != null ? "Calcula a taxa pelo caminho das ruas (grátis até " + Math.round(CFG.gratisAteKm * 1000) + " m, depois R$ " + String(CFG.porKm).replace(".", ",") + " por km" + (raioTxt() ? "; entregamos até " + raioTxt() : "") + ") e já preenche o endereço." : "Ajuda o entregador a achar você e já preenche o endereço. Se preferir, digite abaixo.") + '</small>';
+      var ad2 = tipo === "retirada" ? '<p class="mt-3 text-sm text-stone-300">Você retira o pedido na loja, sem taxa de entrega.</p>' : locB + fold("e", foldE, [keep.rua, keep.num].filter(Boolean).join(", ") + (keep.bai ? " – " + keep.bai : ""), keep.ref || "Sem complemento", f("rua", "Rua / Avenida", "text", 'autocomplete="address-line1" autocapitalize="words"') + '<div class="grid grid-cols-2 gap-2.5"><div>' + f("num", "Número", "text", 'maxlength="20" autocapitalize="characters" placeholder="Ex.: 123 ou 12A"') + '<label class="-mt-1 flex min-h-[44px] cursor-pointer items-center gap-2 text-sm text-stone-300"><input type="checkbox" id="semnum" onchange="semNum(this.checked)" class="h-5 w-5 accent-red-600">Sem número</label></div>' + bf + '</div>' + f("ref", "Complemento / Ponto de referência"))
+        + (autoEnd ? '<p class="mt-2 flex items-start gap-1.5 text-sm font-bold text-emerald-300">' + ic("ok", "mt-0.5 h-4 w-4") + '<span>Preenchemos o endereço pela sua localização. Confira e informe o número.</span></p>' : '');
       h += sec(2, CFG.retirada ? "Entrega ou retirada" : "Endereço de entrega", tp + ad2);
       var po = "";["Pix", "Cartão de crédito", "Cartão de débito", "Dinheiro"].forEach(function (p) {
         po += '<label class="' + C.opt + '"><input type="radio" name="pay" value="' + p + '"' + (pay === p ? ' checked' : '') + ' onchange="setPay(this.value)">' + ic(PAYI[p][0], "h-5 w-5 " + PAYI[p][1]) + p + '</label>'
       });
-      h += sec(3, "Forma de pagamento", '<div class="mt-3 grid grid-cols-2 gap-2">' + po + '</div>' + (CFG.pix ? '<div id="pixBox" class="' + (pay === "Pix" ? '' : 'hidden') + ' mt-3 rounded-lg bg-stone-800 p-3 ring-1 ring-white/10"><p class="text-sm text-stone-400">Chave Pix (celular) · copie e pague no app do seu banco</p><p class="break-all text-lg font-extrabold num">' + fmtPix(CFG.pix) + '</p><p class="mt-1 flex items-start gap-1.5 text-sm font-bold text-amber-300">' + ic("receipt", "mt-0.5 h-4 w-4") + '<span>Depois de pagar, envie o comprovante no WhatsApp, na mesma conversa do pedido.</span></p><button type="button" class="' + C.add + ' mt-2 inline-flex items-center gap-2" onclick="copyTxt(CFG.pix,this)">' + ic("copy", "h-4 w-4") + 'Copiar chave</button></div>' : '') + '<div id="trocoBox" class="' + (pay === "Dinheiro" ? '' : 'hidden') + '"><div class="' + C.lab + '">Precisa de troco?</div><div class="mt-1 grid grid-cols-2 gap-2">'
-        + '<label class="' + C.opt + '"><input type="radio" name="tr" value="sim"' + (troco === "sim" ? ' checked' : '') + ' onchange="setTroco(this.value)">Sim</label>'
-        + '<label class="' + C.opt + '"><input type="radio" name="tr" value="nao"' + (troco === "nao" ? ' checked' : '') + ' onchange="setTroco(this.value)">Não</label></div>'
-        + '<div id="trocoVal" class="' + (troco === "sim" ? '' : 'hidden') + '">' + f("trocoPara", "Troco para quanto?", "text", 'inputmode="numeric" placeholder="R$ 0,00" oninput="mask(this,3)"') + '</div></div>');
+      h += sec(3, "Forma de pagamento", '<div class="mt-3 grid grid-cols-2 gap-2">' + po + '</div>' + (CFG.pix ? '<div id="pixBox" class="' + (pay === "Pix" ? '' : 'hidden') + ' mt-3 rounded-lg bg-stone-800 p-3 ring-1 ring-white/10"><p class="flex items-start gap-2 text-sm text-stone-300">' + ic("pix", "mt-0.5 h-4 w-4 text-[#32BCAD]") + '<span>Ao enviar o pedido, mostramos o <b class="text-white">Pix copia e cola</b> e o QR code já com o valor certo.</span></p></div>' : '') + '<div id="trocoBox" class="' + (pay === "Dinheiro" ? '' : 'hidden') + '"><div class="' + C.lab + '">Vai pagar com quanto?</div><div role="radiogroup" aria-label="Troco" class="mt-1 grid grid-cols-2 gap-2">'
+        + trocoOps().map(function (o) { return '<label class="' + C.opt + '"><input type="radio" name="tr" value="' + o[0] + '"' + (trocoSel === o[0] ? ' checked' : '') + ' onchange="setTroco(this.value)">' + o[1] + '</label>' }).join("") + '</div>'
+        + '<div id="trocoVal" class="' + (trocoSel === "outro" ? '' : 'hidden') + '">' + f("trocoPara", "Troco para quanto?", "text", 'inputmode="numeric" placeholder="R$ 0,00" oninput="mask(this,3)"') + '</div></div>');
       var t = function (a, b, c) { return '<div class="flex justify-between py-1 ' + (c || "text-stone-300") + '"><span>' + a + '</span><span>' + b + '</span></div>' };
       h += sec(4, "Resumo", '<div id="resDet" class="mt-2"></div><div class="mt-2 border-t border-white/10 pt-2">' + t("Subtotal", R(sub())) + t(tipo === "retirada" ? "Retirada no balcão" : "Taxa de entrega" + (dist() !== null ? " (" + kmTxt() + ")" : ""), fora() ? "fora da área" : fee() === null ? (CFG.lojaLat != null ? "compartilhe a localização" : "escolha o bairro") : (fee() === 0 ? "Grátis" : R(fee()))) + t("Total", R(sub() + (fee() || 0)), "mt-1.5 border-t border-white/15 pt-3 text-2xl font-extrabold text-white") + '</div>');
       if (CFG.bloquearFechado && st().open === false) h += '<p class="mt-3 text-center font-bold text-rose-400">' + st().msg + '. Você pode montar o pedido, mas o envio só é liberado quando a loja abrir.</p>';
       h += '<p class="mt-4 text-center text-sm text-stone-400">O WhatsApp vai abrir com o pedido pronto. Toque em enviar na conversa para a loja receber.</p></div>';
       var pf = cstep === 1 ? '<div class="flex items-center gap-3"><div class="shrink-0"><div class="text-xs text-stone-400">Subtotal</div><div class="num text-xl font-extrabold">' + R(sub()) + '</div></div><button type="button" class="flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-xl bg-red-600 py-3.5 text-base font-extrabold text-white transition hover:brightness-110 active:scale-[.97]" onclick="goStep(2)">Continuar' + ic("down", "h-5 w-5 -rotate-90") + '</button></div><div id="err" role="alert" class="sr-only"></div>' : '<div class="min-h-[1em] pb-2 text-center text-sm font-extrabold text-rose-400" id="err" role="alert"></div><div class="flex items-center gap-3"><div class="shrink-0"><div class="text-xs text-stone-400">Total</div><div class="text-xl font-extrabold">' + R(sub() + (fee() || 0)) + '</div></div><button class="flex flex-1 items-center justify-center gap-2 rounded-xl bg-green-600 py-3.5 text-base font-extrabold text-white transition hover:bg-green-500 active:scale-[.97]" onclick="sendOrder()">' + ic("wa", "h-6 w-6") + 'Enviar pelo WhatsApp</button></div>';
-      $("pb").innerHTML = h; restore(keep); $("pf").innerHTML = pf; show($("pf"), true); updRes();
+      $("pb").innerHTML = h; if ($("semnum")) { $("semnum").checked = keep.num === "S/N"; $("num").readOnly = keep.num === "S/N" } restore(keep); $("pf").innerHTML = pf; show($("pf"), true); updRes();
     }
     function steps() {
       var s = function (n, t) { var on = cstep >= n; return '<li class="min-w-0"' + (cstep === n ? ' aria-current="step"' : '') + '><span class="block h-1 rounded-full ' + (on ? 'bg-red-600' : 'bg-white/15') + '"></span><span class="mt-1.5 block truncate ' + (on ? 'text-white' : 'text-stone-400') + '">' + n + '. ' + t + '</span></li>' };
@@ -556,7 +579,19 @@
     function snap() { var o = {};["obs", "nome", "tel", "rua", "num", "bai", "ref", "trocoPara"].forEach(function (i) { var e = $(i); if (e) o[i] = e.value }); return o }
     function restore(o) { for (var i in o) { var e = $(i); if (e) e.value = o[i] } }
     function setPay(v) { pay = v; show($("trocoBox"), v === "Dinheiro"); if ($("pixBox")) show($("pixBox"), v === "Pix") }
-    function setTroco(v) { troco = v; show($("trocoVal"), v === "sim") }
+    /* troco em um toque: as próximas notas acima do total, "não preciso" e "outro valor" */
+    function trocoOps() {
+      var tot = sub() + (fee() || 0), n = [10, 20, 50, 100, 200].filter(function (x) { return x > tot }).slice(0, 2);
+      if (/^\d+$/.test(trocoSel) && n.indexOf(+trocoSel) < 0) trocoSel = "outro";
+      return [["nao", "Não preciso"]].concat(n.map(function (x) { return [String(x), R(x).replace(",00", "")] })).concat([["outro", "Outro valor"]]);
+    }
+    function setTroco(v) {
+      trocoSel = v; troco = v === "nao" ? "nao" : "sim"; show($("trocoVal"), v === "outro");
+      var i = $("trocoPara"); if (!i) return;
+      if (/^\d+$/.test(v)) i.value = R(+v); else if (v === "nao") i.value = ""; else { i.value = ""; i.focus() }
+      updRes();
+    }
+    function semNum(on) { var n = $("num"); if (!n) return; n.value = on ? "S/N" : ""; n.readOnly = on; if (!on) n.focus(); clearFe("num"); updRes() }
     function mask(el, t) {
       var d = el.value.replace(/\D/g, "");
       if (t === 1) {
@@ -567,17 +602,32 @@
         else if (d.length) s = "(" + d;
         el.value = s
       }
-      else if (t === 2) el.value = d.slice(0, 6);
       else { d = d.slice(0, 7); el.value = d ? R(parseInt(d, 10) / 100) : "" }
     }
     function locFocus() { var b = $("locBtn"), a = document.activeElement; if (b && (!a || a === document.body)) b.focus({ preventScroll: true }) }
+    /* endereço a partir da localização (OpenStreetMap). Só preenche campos vazios; o cliente confere */
+    function preencherEnd(cb) {
+      if (!loc || !window.fetch || tipo !== "entrega") { cb(); return }
+      var ctl = window.AbortController ? new AbortController() : null, t = setTimeout(function () { if (ctl) ctl.abort() }, 6000);
+      fetch("https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&accept-language=pt-BR&lat=" + loc.lat + "&lon=" + loc.lng, ctl ? { signal: ctl.signal } : {})
+        .then(function (r) { return r.json() })
+        .then(function (j) {
+          var a = (j && j.address) || {}, put = function (id, val) { var e = $(id); if (e && val && !e.value.trim()) { e.value = val; autoEnd = true } };
+          put("rua", a.road || a.pedestrian || a.residential); put("num", a.house_number);
+          if (!CFG.bairros.length) put("bai", a.suburb || a.neighbourhood || a.quarter || a.city_district);
+          if (autoEnd) foldE = false;
+        })
+        .catch(function () { })
+        .then(function () { clearTimeout(t); cb() });
+    }
     function getLoc() {
       if (locBusy) return;
       if (!navigator.geolocation) { locUI("Localização indisponível neste aparelho. Pode seguir só com o endereço."); return }
       locBusy = true; locUI();
       navigator.geolocation.getCurrentPosition(function (p) {
         loc = { lat: p.coords.latitude, lng: p.coords.longitude, acc: p.coords.accuracy }; $("err") && ($("err").textContent = "");
-        locBusy = 2; locUI(); buscarRota(function () { locBusy = false; fill(); locFocus(); if (fora()) locUI(foraMsg()) });
+        locBusy = 2; locUI(); var falta = 2, fim = function () { if (--falta) return; locBusy = false; fill(); locFocus(); if (fora()) locUI(foraMsg()) };
+        buscarRota(fim); preencherEnd(fim);
       }, function (er) {
         locBusy = false; loc = null; rota = null; fill(); locFocus();
         locUI(er && er.code === 1 ? "Acesso à localização bloqueado. Libere nas permissões do navegador para este site e toque de novo, ou siga só com o endereço." : "Não foi possível obter a localização. Toque para tentar de novo ou siga só com o endereço.");
@@ -607,11 +657,11 @@
       if (!v("nome")) F("nome", "Informe seu nome.");
       if (!td) F("tel", "Informe seu telefone."); else if (td.length < 10) F("tel", "Digite o telefone com DDD, ex.: (91) 99999-9999.");
       if (ent) {
-        if (!v("rua")) F("rua", "Informe a rua ou avenida."); if (!v("num")) F("num", "Informe o número."); if (!v("bai")) F("bai", "Escolha o bairro.");
+        if (!v("rua")) F("rua", "Informe a rua ou avenida."); if (!v("num")) F("num", "Informe o número ou marque Sem número."); if (!v("bai")) F("bai", "Escolha o bairro.");
         if (fee() === null) { if (CFG.lojaLat != null) { locUI("Compartilhe sua localização para calcular a taxa de entrega."); bad.push("locBtn") } else if (bad.indexOf("bai") < 0) F("bai", "Escolha o bairro de entrega.") }
         else if (fora()) { locUI(foraMsg()); bad.push("locBtn") }
       }
-      if (pay === "Dinheiro" && troco === "sim") { tp = parseInt(v("trocoPara").replace(/\D/g, "") || "0", 10) / 100; if (!tp || tp < tot) F("trocoPara", "O valor do troco deve ser igual ou maior que " + R(tot) + ".") }
+      if (pay === "Dinheiro" && troco === "sim") { tp = parseInt(v("trocoPara").replace(/\D/g, "") || "0", 10) / 100; if (!tp || tp < tot) { if (trocoSel !== "outro") { trocoSel = "outro"; [].forEach.call(document.querySelectorAll('input[name=tr]'), function (x) { x.checked = x.value === "outro" }); show($("trocoVal"), true) } F("trocoPara", "O valor do troco deve ser igual ou maior que " + R(tot) + ".") } }
       e.textContent = "";
       if (bad.length) { if (bad.indexOf("nome") > -1 || bad.indexOf("tel") > -1) unfold("d"); if (bad.indexOf("rua") > -1 || bad.indexOf("num") > -1 || bad.indexOf("bai") > -1) unfold("e"); e.textContent = "Confira os campos destacados."; var el0 = $(bad[0]); if (el0) { el0.scrollIntoView({ block: "center", behavior: SB() }); el0.focus() } return }
       var id = Math.floor(1000 + Math.random() * 9000);
@@ -628,7 +678,7 @@
         + "\n\n" + (ent ? "📍 Endereço: " + end + gps : "🏪 *RETIRADA NO BALCÃO*");
       var m2 = "🛵 *ENTREGA – Pedido #" + id + "*\n\n👤 " + v("nome") + "\n📞 " + v("tel") + "\n📍 " + end + gps
         + "\n\n💳 " + pg + "\n💰 Valor a receber: " + (pay === "Dinheiro" || pay.indexOf("Cartão") === 0 ? R(tot) : "Pago via Pix – confirmar com a loja");
-      var u1 = "https://wa.me/" + CFG.loja + "?text=" + encodeURIComponent(m1); lastOrder = { id: id, m2: m2, ent: ent, pay: pay, u1: u1 };
+      var u1 = "https://wa.me/" + CFG.loja + "?text=" + encodeURIComponent(m1); lastOrder = { id: id, m2: m2, ent: ent, pay: pay, u1: u1, tot: tot, pix: CFG.pix && pay === "Pix" ? pixCode(tot, "FB" + id) : "" };
       var sv = ST("cli") || {}; sv.nome = v("nome"); sv.tel = v("tel"); sv.tipo = tipo; if (ent) { sv.rua = v("rua"); sv.num = v("num"); sv.bai = v("bai"); sv.ref = v("ref"); sv.bairro = bairroSel } ST("cli", sv);
       window.open(u1, "_blank");
       doneScreen();
@@ -639,9 +689,10 @@
         + pixBox() + '<a class="' + C.send + '" href="' + lastOrder.u1 + '" target="_blank" rel="noopener">' + ic("wa", "h-6 w-6") + 'Abrir o WhatsApp com o pedido</a>'
         + (CFG.entregador && lastOrder.ent ? '<button class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-stone-800 py-3 font-extrabold" onclick="sendCourier()">' + ic("bike") + 'Enviar localização ao entregador</button>' : '')
         + '<button class="mt-3 w-full rounded-xl bg-stone-800 py-3 font-extrabold" onclick="newOrder()">Fazer novo pedido</button></div>';
+      pixQR();
     }
     function sendCourier() { window.open("https://wa.me/" + CFG.entregador + "?text=" + encodeURIComponent(lastOrder.m2), "_blank") }
-    function newOrder() { cart = []; loc = null; rota = null; drawMenu(); drawDest(); bar(); closeCart() }
+    function newOrder() { draft = {}; cart = []; loc = null; rota = null; drawMenu(); drawDest(); bar(); closeCart() }
     (function () {
       var c = ST("cart"); if (Array.isArray(c)) cart = c.filter(function (l) { if (!l || !all[l.id] || off(all[l.id]) || !(l.q > 0)) return false; l.ad = l.ad || {}; for (var k in l.ad) if (!ADD[k]) return false; return true });
       var cl = ST("cli"); if (cl) { if (cl.tipo === "retirada" && CFG.retirada) tipo = "retirada"; if (cl.bairro && CFG.bairros.some(function (b) { return b[0] === cl.bairro })) bairroSel = cl.bairro }
