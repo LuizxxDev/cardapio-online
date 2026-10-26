@@ -1,23 +1,217 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
 
-:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{background:radial-gradient(ellipse 70% 100% at 50% 0,rgba(193,38,18,.28),transparent) no-repeat top/100% 640px,#0a0a0a}
-button,a,label,input,select,textarea{touch-action:manipulation}
-html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
-:focus-visible{outline:3px solid #fff;outline-offset:2px}
-.no-sb{scrollbar-width:none}.no-sb::-webkit-scrollbar{display:none}
-@keyframes mq{to{transform:translateX(-50%)}}
-.marquee{animation:mq 28s linear infinite}
-@keyframes bump{40%{transform:scale(1.04)}}
-.bump{animation:bump .35s}
-.veil{opacity:0;transition:opacity .25s ease}.veil.open{opacity:1}
-.sheet{opacity:0;transform:translateY(28px) scale(.97);transition:opacity .25s ease,transform .35s cubic-bezier(.2,.9,.25,1)}
-.sheet.open{opacity:1;transform:none}
-@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-.rise{animation:rise .45s ease-out both}
-@keyframes up{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
-.up{animation:up .25s ease-out}
-@media(prefers-reduced-motion:reduce){.up,.marquee,.bump,.rise{animation:none}.veil,.sheet{transition:none}}
+/* Estilos próprios (antes dos utilitários, para que as classes do Tailwind tenham prioridade) */
+:root {
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  color-scheme: dark;
+  --ease: cubic-bezier(.23, 1, .32, 1);
+  --hh: 5rem
+}
+
+/* cabeçalho compacto depois de rolar a página (classe .hc no body) */
+body.hc {
+  --hh: 3.5rem
+}
+
+html {
+  scroll-padding-top: env(safe-area-inset-top, 0px)
+}
+
+body {
+  background: radial-gradient(ellipse 70% 100% at 50% 0, rgba(193, 38, 18, .28), transparent) no-repeat top/100% 640px, #0a0a0a
+}
+
+button,
+a,
+label,
+input,
+select,
+textarea {
+  touch-action: manipulation
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility
+}
+
+.num {
+  font-variant-numeric: tabular-nums
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%
+}
+
+button,
+a,
+[role="button"] {
+  touch-action: manipulation
+}
+
+button,
+[role="button"] {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none
+}
+
+:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px
+}
+
+.no-sb {
+  scrollbar-width: none
+}
+
+.no-sb::-webkit-scrollbar {
+  display: none
+}
+
+@keyframes bump {
+  40% {
+    transform: scale(1.025)
+  }
+}
+
+.bump {
+  animation: bump .3s var(--ease)
+}
+
+.veil {
+  opacity: 0;
+  transition: opacity .18s ease-out
+}
+
+.veil.open {
+  opacity: 1;
+  transition-duration: .25s
+}
+
+.sheet {
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity .18s ease-out, transform .22s ease-out
+}
+
+.sheet.open {
+  opacity: 1;
+  transform: none;
+  transition: opacity .2s ease-out, transform .3s var(--ease)
+}
+
+@media(min-width:768px) {
+  #panel.sheet {
+    transform: translateX(100%)
+  }
+
+  #panel.sheet.open {
+    transform: none
+  }
+}
+
+@media(min-width:640px) {
+  #modbox.sheet {
+    transform: translateY(8px) scale(.96)
+  }
+
+  #modbox.sheet.open {
+    transform: none
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px)
+  }
+
+  to {
+    opacity: 1;
+    transform: none
+  }
+}
+
+.rise {
+  animation: rise .4s var(--ease) both
+}
+
+@keyframes up {
+  from {
+    transform: translateY(20px);
+    opacity: 0
+  }
+
+  to {
+    transform: none;
+    opacity: 1
+  }
+}
+
+.up {
+  animation: up .25s var(--ease)
+}
+
+#toast {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .15s ease-out, transform .2s var(--ease)
+}
+
+#toast.show {
+  opacity: 1;
+  transform: none
+}
+
+/* carrossel nativo com encaixe */
+.snap-x-track {
+  scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain
+}
+
+.snap-x-track>* {
+  scroll-snap-align: start
+}
+
+.cat-title {
+  text-wrap: balance
+}
+
+@media(prefers-reduced-motion:reduce) {
+  html {
+    scroll-behavior: auto !important
+  }
+
+  .up,
+  .bump,
+  .rise {
+    animation: none
+  }
+
+  .veil,
+  .sheet {
+    transition: opacity .15s ease-out
+  }
+
+  .sheet,
+  #modbox.sheet,
+  #toast {
+    transform: none
+  }
+
+  #toast {
+    transition: opacity .15s ease-out
+  }
+
+  [class*="active:scale"]:active {
+    transform: none !important
+  }
+}
+
+@tailwind utilities;
