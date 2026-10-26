@@ -95,8 +95,10 @@
       entregador: "", // (opcional) WhatsApp do entregador – deixe vazio para enviar tudo só para a loja
       taxa: 5.00,                  // taxa fixa provisória (só vale enquanto lojaLat/lojaLng estiverem vazios)
       arredondar: 0.5,             // arredonda a taxa PARA CIMA de 50 em 50 centavos (use 0.01 para valor exato)
-      kmExtra: 0.3,                // km somados à distância (só de quem paga taxa) para compensar o caminho das ruas (0.3 = 300 m)
-      fatorRota: 1,                // multiplica a distância em linha reta para aproximar o caminho pelas ruas (ex.: 1.3). 1 = sem ajuste
+      rotaReal: true,              // true = calcula a distância de carro pelas ruas (serviço gratuito OSRM); se falhar, usa a estimativa abaixo
+      fatorRota: 1.3,              // estimativa de reserva: linha reta × este fator ≈ caminho pelas ruas
+      kmExtra: 0,                  // km somados só à estimativa de reserva (0.3 = 300 m)
+      raioMaxKm: 5,                // distância máxima de entrega em km (pela rota). Use 0 para não limitar
       porKm: 3,                    // R$ cobrado por km de distância (proporcional)
       gratisAteKm: 0.6,            // abaixo de 600 m EM LINHA RETA a entrega é grátis
       lojaLat: -1.3890947, lojaLng: -48.4254632, // coordenadas da loja (ex.: -1.4558, -48.5044) – necessárias para calcular a distância
@@ -168,7 +170,7 @@
     var IMGP = { "Casal Premium": "50% 68%", "Combo Casal": "50% 75%", "Black Angus": "50% 45%" }; // posição do recorte da foto nos cards largos
     var IMGS = { "Coca Cola 1L": "fotos/coca-cola-1l.webp", "Batata com Cheddar": "fotos/batata-cheddar.webp", "Batata Chips": "fotos/batata-chips.webp", "Batata Palito": "fotos/batata-palito.webp", "Batata com Calabresa": "fotos/batata-calabresa.webp", "Batata com Cheddar e Bacon": "fotos/batata-cheddar-bacon.webp", "Batata com Nuggets": "fotos/batata-nuggets.webp", "Bacon": "fotos/bacon.webp", "Carne 90g": "fotos/carne-90g.webp", "X Dog": "fotos/x-dog.webp", "X Tudo da Casa": "fotos/x-tudo-da-casa.webp", "X Egg Bacon": "fotos/x-egg-bacon.webp", "X Bacon": "fotos/x-bacon.webp", "X Egg Calabresa": "fotos/x-egg-calabresa.webp", "Combo Família": "fotos/combo-familia.webp", "Super Combo": "fotos/super-combo.webp", "Rústico": "fotos/rustico.webp", "Franbacon": "fotos/franbacon.webp", "KFC da Casa": "fotos/kfc-da-casa.webp", "X Frango": "fotos/x-frango.webp", "Big Calabresa": "fotos/big-calabresa.webp", "X Bacon Duplo": "fotos/x-bacon-duplo.webp", "X Burguer": "fotos/x-burguer.webp", "X Egg Burguer": "fotos/x-egg-burguer.webp", "X Calabresa": "fotos/x-calabresa.webp", "Hambúrguer": "fotos/hamburguer.webp", "X Cheddar": "fotos/x-cheddar.webp", "Casal Premium": "fotos/casal-premium.webp", "Black Angus": "fotos/black-angus.webp", "Combo Casal": "fotos/combo-casal.webp" }; // exemplo: IMGS["X Bacon"]="data:image/jpeg;base64,..."
     var BUR = ["Tradicionais", "Especiais", "Frango & Cia"];
-    var cstep = 1, foldD = null, foldE = null, cart = [], editIdx = null, loc = null, pay = "Pix", troco = "nao", lastOrder = null, cat = 0, cur = null, mq = 1, mad = {}, Q = "", tipo = "entrega", bairroSel = "", pre = false, shareLink = "", locBusy = false;
+    var cstep = 1, foldD = null, foldE = null, cart = [], editIdx = null, loc = null, rota = null, pay = "Pix", troco = "nao", lastOrder = null, cat = 0, cur = null, mq = 1, mad = {}, Q = "", tipo = "entrega", bairroSel = "", pre = false, shareLink = "", locBusy = false;
     var $ = function (i) { return document.getElementById(i) };
     var SB = function () { return window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" };
     var R = function (v) { return "R$ " + v.toFixed(2).replace(".", ",") };
@@ -398,7 +400,21 @@
         a = Math.sin(a1 / 2) * Math.sin(a1 / 2) + Math.cos(CFG.lojaLat * r) * Math.cos(loc.lat * r) * Math.sin(a2 / 2) * Math.sin(a2 / 2);
       return 2 * 6371 * Math.asin(Math.sqrt(a));
     }
-    function dist() { var r = reta(); return r === null ? null : r * (CFG.fatorRota || 1) + (CFG.kmExtra || 0) }
+    /* distância usada na taxa: a rota real pelas ruas quando disponível; senão, a estimativa pela linha reta */
+    function dist() { if (rota !== null) return rota; var r = reta(); return r === null ? null : r * (CFG.fatorRota || 1) + (CFG.kmExtra || 0) }
+    function fora() { var d = dist(); return tipo === "entrega" && CFG.lojaLat != null && CFG.raioMaxKm > 0 && d !== null && d > CFG.raioMaxKm }
+    function raioTxt() { return CFG.raioMaxKm > 0 ? String(CFG.raioMaxKm).replace(".", ",") + " km" : "" }
+    function foraMsg() { return "Seu endereço fica a " + kmTxt() + " da loja, fora da nossa área de entrega (até " + raioTxt() + "). Escolha Retirar no balcão." }
+    /* consulta a distância de carro pelas ruas (OSRM). Sem resposta em 7 s, segue com a estimativa */
+    function buscarRota(cb) {
+      rota = null; if (!CFG.rotaReal || CFG.lojaLat == null || !loc || !window.fetch) { cb(); return }
+      var ctl = window.AbortController ? new AbortController() : null, t = setTimeout(function () { if (ctl) ctl.abort() }, 7000);
+      fetch("https://router.project-osrm.org/route/v1/driving/" + CFG.lojaLng + "," + CFG.lojaLat + ";" + loc.lng + "," + loc.lat + "?overview=false", ctl ? { signal: ctl.signal } : {})
+        .then(function (r) { return r.json() })
+        .then(function (j) { if (j && j.code === "Ok" && j.routes && j.routes[0]) rota = j.routes[0].distance / 1000 })
+        .catch(function () { })
+        .then(function () { clearTimeout(t); cb() });
+    }
     function kmTxt() { var d = fee() === 0 ? reta() : dist(); return d === null ? "" : (d < 1 ? Math.round(d * 1000) + " m" : d.toFixed(1).replace(".", ",") + " km") }
     function locBtn() {
       var req = CFG.lojaLat != null, base = "mt-4 flex w-full min-h-[64px] items-center gap-3 rounded-xl p-3 text-left transition active:scale-[.97] ";
@@ -406,8 +422,9 @@
       var pin = ic('pin');
       var ok = ic('ok');
       var tx = function (a, b) { return '<span class="min-w-0"><span class="block font-extrabold leading-tight">' + a + '</span><span class="mt-0.5 block text-[13px] leading-snug opacity-80">' + b + '</span></span>' };
-      if (locBusy) return '<button type="button" id="locBtn" disabled aria-busy="true" class="' + base + 'cursor-wait bg-neutral-800 text-white ring-1 ring-white/10">' + ico('<span class="h-5 w-5 animate-spin rounded-full border-2 border-white/25 border-t-white motion-reduce:animate-none"></span>', 'bg-white/10') + tx("Obtendo localização…", "Se o navegador pedir, toque em Permitir") + '</button>';
-      if (loc) { var k = req ? kmTxt() : ""; return '<button type="button" id="locBtn" onclick="getLoc()" class="' + base + 'bg-green-500/10 text-white ring-2 ring-green-500">' + ico(ok, 'bg-green-500 text-black') + tx("Localização compartilhada", (k ? "A " + k + " da loja · " : "") + "toque para atualizar") + '</button>' }
+      if (locBusy) return '<button type="button" id="locBtn" disabled aria-busy="true" class="' + base + 'cursor-wait bg-neutral-800 text-white ring-1 ring-white/10">' + ico('<span class="h-5 w-5 animate-spin rounded-full border-2 border-white/25 border-t-white motion-reduce:animate-none"></span>', 'bg-white/10') + (locBusy === 2 ? tx("Calculando a rota…", "Medindo o caminho pelas ruas até você") : tx("Obtendo localização…", "Se o navegador pedir, toque em Permitir")) + '</button>';
+      if (loc && fora()) return '<button type="button" id="locBtn" onclick="getLoc()" class="' + base + 'bg-rose-500/10 text-white ring-2 ring-rose-500">' + ico(pin, 'bg-rose-500 text-white') + tx("Fora da área de entrega", "A " + kmTxt() + " da loja · entregamos até " + raioTxt() + " · toque para atualizar") + '</button>';
+      if (loc) { var k = req ? kmTxt() + (fee() !== 0 ? (rota !== null ? " pelas ruas" : " (estimado)") : "") : "", pr = loc.acc > 300 ? "precisão baixa (±" + Math.round(loc.acc) + " m), confira o endereço · " : ""; return '<button type="button" id="locBtn" onclick="getLoc()" class="' + base + 'bg-green-500/10 text-white ring-2 ring-green-500">' + ico(ok, 'bg-green-500 text-black') + tx("Localização compartilhada", (k ? "A " + k + " da loja · " : "") + pr + "toque para atualizar") + '</button>' }
       return '<button type="button" id="locBtn" onclick="getLoc()" class="' + base + (req ? 'bg-red-600 text-white hover:brightness-110' : 'bg-neutral-800 text-white ring-1 ring-white/10 hover:bg-neutral-700') + '">' + ico(pin, 'bg-white/15') + tx("Usar minha localização atual", req ? "Calcula a taxa de entrega na hora" : "Ajuda o entregador a achar você (opcional)") + '</button>';
     }
     function locUI(msg) { var w = $("locWrap"); if (w) w.innerHTML = locBtn() + '<p id="locMsg" role="alert" class="' + (msg ? 'mt-2 text-sm font-bold text-rose-400' : 'hidden') + '">' + (msg || "") + '</p>' }
@@ -448,12 +465,12 @@
       Object.keys(g).forEach(function (k) { h += '<p class="flex justify-between gap-3 border-b border-white/10 pb-2"><span>' + diasTxt(g[k]) + '</span><span class="shrink-0 font-medium text-white">' + k + '</span></p>' });
       if (fech.length) h += '<p class="flex justify-between gap-3"><span>' + fech.join(" e ") + '</span><span class="shrink-0 font-medium text-white">Fechado</span></p>';
       if ($("horarios")) $("horarios").innerHTML = h;
-      var e = CFG.lojaLat != null ? "Grátis até " + Math.round(CFG.gratisAteKm * 1000) + " m, depois R$ " + CFG.porKm.toFixed(2).replace(".", ",") + " por km" : CFG.bairros.length ? "Taxa por bairro" : R(CFG.taxa);
+      var e = CFG.lojaLat != null ? "Grátis até " + Math.round(CFG.gratisAteKm * 1000) + " m, depois R$ " + CFG.porKm.toFixed(2).replace(".", ",") + " por km" + (raioTxt() ? " · até " + raioTxt() : "") : CFG.bairros.length ? "Taxa por bairro" : R(CFG.taxa);
       if ($("stEntrega")) $("stEntrega").textContent = e
     }
     function drawInfo() {
       var t = "";
-      if (CFG.lojaLat != null) t = "Entrega grátis até " + Math.round(CFG.gratisAteKm * 1000) + " m · depois R$ " + CFG.porKm.toFixed(2).replace(".", ",") + " por km, calculado com a sua localização";
+      if (CFG.lojaLat != null) t = "Entrega grátis até " + Math.round(CFG.gratisAteKm * 1000) + " m · depois R$ " + CFG.porKm.toFixed(2).replace(".", ",") + " por km, calculado com a sua localização" + (raioTxt() ? " · entregamos até " + raioTxt() : "");
       else if (CFG.bairros.length) t = "Taxa de entrega por bairro";
       else t = "Taxa de entrega: " + R(CFG.taxa);
       if (CFG.retirada) t += " · Retirada no balcão sem taxa";
@@ -526,7 +543,7 @@
       var bf = CFG.bairros.length ? '<label class="' + C.lab + '">Bairro<select id="bai" class="' + C.inp + '" onchange="setBairro(this.value)"><option value="">Escolha o bairro</option>' + CFG.bairros.map(function (b) { return '<option value="' + esc(b[0]) + '"' + (bairroSel === b[0] ? ' selected' : '') + '>' + esc(b[0]) + ' · ' + R(b[1]) + '</option>' }).join("") + '</select><span id="e_bai" role="alert" class="hidden mt-1 block text-sm font-bold text-rose-400"></span></label>' : f("bai", "Bairro");
       var tp = CFG.retirada ? '<div role="radiogroup" aria-label="Como receber" class="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">' + tpc("entrega", "bike", "Entrega", etxt()) + tpc("retirada", "store", "Retirar no balcão", "Sem taxa de entrega") + '</div>' : '';
       var ad2 = tipo === "retirada" ? '<p class="mt-3 text-sm text-neutral-300">Você retira o pedido na loja, sem taxa de entrega.</p>' : fold("e", foldE, [keep.rua, keep.num].filter(Boolean).join(", ") + (keep.bai ? " – " + keep.bai : ""), keep.ref || "Sem complemento", f("rua", "Rua / Avenida", "text", 'autocomplete="address-line1" autocapitalize="words"') + '<div class="grid grid-cols-2 gap-2.5">' + f("num", "Número", "text", 'inputmode="numeric" maxlength="6" placeholder="Ex.: 123" oninput="mask(this,2)"') + bf + '</div>' + f("ref", "Complemento / Ponto de referência"))
-        + '<div id="locWrap">' + locBtn() + '<p id="locMsg" role="alert" class="hidden"></p></div><small class="' + C.sm + ' mt-2">' + (CFG.lojaLat != null ? "Usamos sua localização para calcular a taxa pela distância (grátis até " + Math.round(CFG.gratisAteKm * 1000) + " m, depois R$ " + String(CFG.porKm).replace(".", ",") + " por km) e para o entregador chegar até você." : "Ajuda o entregador a achar você mais rápido. Se preferir, só o endereço já basta.") + '</small>';
+        + '<div id="locWrap">' + locBtn() + '<p id="locMsg" role="alert" class="hidden"></p></div><small class="' + C.sm + ' mt-2">' + (CFG.lojaLat != null ? "Usamos sua localização para calcular a taxa pelo caminho das ruas (grátis até " + Math.round(CFG.gratisAteKm * 1000) + " m, depois R$ " + String(CFG.porKm).replace(".", ",") + " por km" + (raioTxt() ? "; entregamos até " + raioTxt() : "") + ") e para o entregador chegar até você." : "Ajuda o entregador a achar você mais rápido. Se preferir, só o endereço já basta.") + '</small>';
       h += sec(2, CFG.retirada ? "Entrega ou retirada" : "Endereço de entrega", tp + ad2);
       var po = "";["Pix", "Cartão de crédito", "Cartão de débito", "Dinheiro"].forEach(function (p) {
         po += '<label class="' + C.opt + '"><input type="radio" name="pay" value="' + p + '"' + (pay === p ? ' checked' : '') + ' onchange="setPay(this.value)">' + ic(PAYI[p][0], "h-5 w-5 " + PAYI[p][1]) + p + '</label>'
@@ -536,7 +553,7 @@
         + '<label class="' + C.opt + '"><input type="radio" name="tr" value="nao"' + (troco === "nao" ? ' checked' : '') + ' onchange="setTroco(this.value)">Não</label></div>'
         + '<div id="trocoVal" class="' + (troco === "sim" ? '' : 'hidden') + '">' + f("trocoPara", "Troco para quanto?", "text", 'inputmode="numeric" placeholder="R$ 0,00" oninput="mask(this,3)"') + '</div></div>');
       var t = function (a, b, c) { return '<div class="flex justify-between py-1 ' + (c || "text-neutral-300") + '"><span>' + a + '</span><span>' + b + '</span></div>' };
-      h += sec(4, "Resumo", '<div id="resDet" class="mt-2"></div><div class="mt-2 border-t border-white/10 pt-2">' + t("Subtotal", R(sub())) + t(tipo === "retirada" ? "Retirada no balcão" : "Taxa de entrega" + (dist() !== null ? " (" + kmTxt() + ")" : ""), fee() === null ? (CFG.lojaLat != null ? "compartilhe a localização" : "escolha o bairro") : (fee() === 0 ? "Grátis" : R(fee()))) + t("Total", R(sub() + (fee() || 0)), "mt-1.5 border-t border-white/15 pt-3 text-2xl font-extrabold text-white") + '</div>');
+      h += sec(4, "Resumo", '<div id="resDet" class="mt-2"></div><div class="mt-2 border-t border-white/10 pt-2">' + t("Subtotal", R(sub())) + t(tipo === "retirada" ? "Retirada no balcão" : "Taxa de entrega" + (dist() !== null ? " (" + kmTxt() + ")" : ""), fora() ? "fora da área" : fee() === null ? (CFG.lojaLat != null ? "compartilhe a localização" : "escolha o bairro") : (fee() === 0 ? "Grátis" : R(fee()))) + t("Total", R(sub() + (fee() || 0)), "mt-1.5 border-t border-white/15 pt-3 text-2xl font-extrabold text-white") + '</div>');
       if (CFG.bloquearFechado && st().open === false) h += '<p class="mt-3 text-center font-bold text-rose-400">' + st().msg + '. Você pode montar o pedido, mas o envio só é liberado quando a loja abrir.</p>';
       h += '<p class="mt-4 text-center text-sm text-neutral-400">O WhatsApp vai abrir com o pedido pronto. Toque em enviar na conversa para a loja receber.</p></div>';
       var pf = cstep === 1 ? '<div class="flex items-center gap-3"><div class="shrink-0"><div class="text-xs text-neutral-400">Subtotal</div><div class="num text-xl font-extrabold">' + R(sub()) + '</div></div><button type="button" class="flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-xl bg-red-600 py-3.5 text-base font-extrabold text-white transition hover:brightness-110 active:scale-[.97]" onclick="goStep(2)">Continuar' + ic("down", "h-5 w-5 -rotate-90") + '</button></div><div id="err" role="alert" class="sr-only"></div>' : '<div class="min-h-[1em] pb-2 text-center text-sm font-extrabold text-rose-400" id="err" role="alert"></div><div class="flex items-center gap-3"><div class="shrink-0"><div class="text-xs text-neutral-400">Total</div><div class="text-xl font-extrabold">' + R(sub() + (fee() || 0)) + '</div></div><button class="flex flex-1 items-center justify-center gap-2 rounded-xl bg-green-600 py-3.5 text-base font-extrabold text-white transition hover:bg-green-500 active:scale-[.97]" onclick="sendOrder()">' + ic("wa", "h-6 w-6") + 'Enviar pelo WhatsApp</button></div>';
@@ -571,9 +588,10 @@
       if (!navigator.geolocation) { locUI("Localização indisponível neste aparelho. Pode seguir só com o endereço."); return }
       locBusy = true; locUI();
       navigator.geolocation.getCurrentPosition(function (p) {
-        locBusy = false; loc = { lat: p.coords.latitude, lng: p.coords.longitude }; $("err") && ($("err").textContent = ""); fill(); locFocus();
+        loc = { lat: p.coords.latitude, lng: p.coords.longitude, acc: p.coords.accuracy }; $("err") && ($("err").textContent = "");
+        locBusy = 2; locUI(); buscarRota(function () { locBusy = false; fill(); locFocus(); if (fora()) locUI(foraMsg()) });
       }, function (er) {
-        locBusy = false; loc = null; fill(); locFocus();
+        locBusy = false; loc = null; rota = null; fill(); locFocus();
         locUI(er && er.code === 1 ? "Acesso à localização bloqueado. Libere nas permissões do navegador para este site e toque de novo, ou siga só com o endereço." : "Não foi possível obter a localização. Toque para tentar de novo ou siga só com o endereço.");
       }, { enableHighAccuracy: true, timeout: 15000 });
     }
@@ -603,6 +621,7 @@
       if (ent) {
         if (!v("rua")) F("rua", "Informe a rua ou avenida."); if (!v("num")) F("num", "Informe o número."); if (!v("bai")) F("bai", "Escolha o bairro.");
         if (fee() === null) { if (CFG.lojaLat != null) { locUI("Compartilhe sua localização para calcular a taxa de entrega."); bad.push("locBtn") } else if (bad.indexOf("bai") < 0) F("bai", "Escolha o bairro de entrega.") }
+        else if (fora()) { locUI(foraMsg()); bad.push("locBtn") }
       }
       if (pay === "Dinheiro" && troco === "sim") { tp = parseInt(v("trocoPara").replace(/\D/g, "") || "0", 10) / 100; if (!tp || tp < tot) F("trocoPara", "O valor do troco deve ser igual ou maior que " + R(tot) + ".") }
       e.textContent = "";
@@ -617,7 +636,7 @@
       var end = ent ? v("rua") + ", " + v("num") + " – " + v("bai") + (v("ref") ? " (" + v("ref") + ")" : "") : "";
       var pg = pay; if (pay === "Dinheiro") pg += troco === "sim" ? " – troco para " + R(tp) + " (levar " + R(tp - tot) + ")" : " – não precisa de troco";
       var m1 = (TESTE ? "🧪 *PEDIDO DE TESTE – NÃO PREPARAR*\n\n" : "") + "🍔 *NOVO PEDIDO #" + id + " – Fabi Burguer*\n\n👤 " + v("nome") + "\n📞 " + v("tel") + "\n\n*Itens:*\n" + itens
-        + (v("obs") ? "\n📝 Obs: " + v("obs") + "\n" : "") + "\nSubtotal: " + R(sub()) + "\n" + (ent ? "Entrega" + (dist() !== null ? " (" + kmTxt() + ")" : bairroSel ? " (" + bairroSel + ")" : "") : "Retirada no balcão") + ": " + (fee() === 0 ? "Grátis" : R(fee() || 0)) + "\n*Total: " + R(tot) + "*\n\n💳 Pagamento: " + pg
+        + (v("obs") ? "\n📝 Obs: " + v("obs") + "\n" : "") + "\nSubtotal: " + R(sub()) + "\n" + (ent ? "Entrega" + (dist() !== null ? " (" + kmTxt() + (fee() !== 0 ? (rota !== null ? " pelas ruas" : " estimado") : "") + ")" : bairroSel ? " (" + bairroSel + ")" : "") : "Retirada no balcão") + ": " + (fee() === 0 ? "Grátis" : R(fee() || 0)) + "\n*Total: " + R(tot) + "*\n\n💳 Pagamento: " + pg
         + "\n\n" + (ent ? "📍 Endereço: " + end + gps : "🏪 *RETIRADA NO BALCÃO*");
       var m2 = "🛵 *ENTREGA – Pedido #" + id + "*\n\n👤 " + v("nome") + "\n📞 " + v("tel") + "\n📍 " + end + gps
         + "\n\n💳 " + pg + "\n💰 Valor a receber: " + (pay === "Dinheiro" || pay.indexOf("Cartão") === 0 ? R(tot) : "Pago via Pix – confirmar com a loja");
@@ -634,7 +653,7 @@
         + '<button class="mt-3 w-full rounded-xl bg-neutral-800 py-3 font-extrabold" onclick="newOrder()">Fazer novo pedido</button></div>';
     }
     function sendCourier() { window.open("https://wa.me/" + CFG.entregador + "?text=" + encodeURIComponent(lastOrder.m2), "_blank") }
-    function newOrder() { cart = []; loc = null; drawMenu(); drawDest(); bar(); closeCart() }
+    function newOrder() { cart = []; loc = null; rota = null; drawMenu(); drawDest(); bar(); closeCart() }
     (function () {
       var c = ST("cart"); if (Array.isArray(c)) cart = c.filter(function (l) { if (!l || !all[l.id] || off(all[l.id]) || !(l.q > 0)) return false; l.ad = l.ad || {}; for (var k in l.ad) if (!ADD[k]) return false; return true });
       var cl = ST("cli"); if (cl) { if (cl.tipo === "retirada" && CFG.retirada) tipo = "retirada"; if (cl.bairro && CFG.bairros.some(function (b) { return b[0] === cl.bairro })) bairroSel = cl.bairro }
