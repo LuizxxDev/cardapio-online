@@ -1,5 +1,5 @@
 /** Configuração para compilar o CSS do Fabi Burguer (Tailwind 3.4.17).
- *  Depois de mudar classes no index.html, rode: npm run build */
+ *  Depois de mudar classes no index.html, rode: npm run css */
 module.exports = {
   content: ["./index.html"],
   future: { hoverOnlyWhenSupported: true },
