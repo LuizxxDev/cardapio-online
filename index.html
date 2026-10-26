@@ -10,66 +10,66 @@
   <meta property="og:title" content="Fabi Burguer – Cardápio Online">
   <meta property="og:description" content="Sabor que vicia. Monte seu pedido e receba em casa.">
   <meta property="og:type" content="website">
-  <meta name="theme-color" content="#0a0a0a">
+  <meta name="theme-color" content="#0c0a09">
   <link rel="icon" type="image/png" href="fotos/logo-192.png">
   <link rel="apple-touch-icon" href="fotos/logo-192.png">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700..800&family=Inter:wght@400;500;700;800;900&display=swap"
     rel="stylesheet">
   <!-- CSS gerado pelo Tailwind: depois de mudar classes neste arquivo, rode "npm run css" -->
   <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="bg-neutral-950 pb-28 font-body leading-snug text-white">
+<body class="bg-stone-950 pb-28 font-body leading-snug text-white">
   <noscript>
     <p style="padding:24px;text-align:center;color:#fff">Ative o JavaScript para ver o cardápio, ou peça pelo WhatsApp:
       <a href="https://wa.me/5591991013070" style="color:#e5604d">(91) 99101-3070</a></p>
   </noscript>
   <a href="#cardapio" class="sr-only z-[70] rounded-xl bg-white px-4 py-3 font-extrabold text-black focus:not-sr-only focus:fixed focus:left-3 focus:top-3">Pular para o cardápio</a>
-  <header class="sticky top-0 z-40 border-b border-white/10 bg-neutral-950/95 pt-[env(safe-area-inset-top,0px)] backdrop-blur-md">
+  <header class="sticky top-0 z-40 border-b border-white/10 bg-stone-950/95 pt-[env(safe-area-inset-top,0px)] backdrop-blur-md">
     <div class="mx-auto flex h-[var(--hh)] max-w-6xl items-center justify-between gap-3 px-4 transition-[height]">
       <a href="#" class="flex min-w-0 items-center gap-3"><img src="fotos/logo.webp" width="44" height="44" alt="Fabi Burguer" class="h-11 w-11 shrink-0 rounded-full transition-[width,height] [.hc_&]:h-9 [.hc_&]:w-9">
-        <span class="min-w-0"><span class="block truncate text-lg font-black tracking-tight">FABI BURGUER</span><span id="status" role="status" class="hidden"></span></span></a>
-      <nav class="hidden items-center gap-6 text-sm font-medium text-neutral-300 md:flex"><a class="hover:text-white" href="#cardapio">Cardápio</a><a class="hover:text-white" href="#info">Funcionamento</a><button type="button" class="inline-flex items-center gap-2 hover:text-white" onclick="openShare()"><span data-ic="qr"></span>Compartilhar</button></nav>
+        <span class="min-w-0"><span class="block truncate font-display text-xl font-extrabold tracking-tight">Fabi Burguer</span><span id="status" role="status" class="hidden"></span></span></a>
+      <nav class="hidden items-center gap-6 text-sm font-medium text-stone-300 md:flex"><a class="hover:text-white" href="#cardapio">Cardápio</a><a class="hover:text-white" href="#info">Funcionamento</a><button type="button" class="inline-flex items-center gap-2 hover:text-white" onclick="openShare()"><span data-ic="qr"></span>Compartilhar</button></nav>
       <button type="button" onclick="openCart()" aria-label="Abrir carrinho" class="relative hidden min-h-[44px] items-center gap-2.5 rounded-2xl bg-red-600 md:inline-flex px-4 text-sm font-extrabold text-white transition hover:brightness-110 active:scale-[.97]"><span data-ic="bag"></span><span id="hbadge" class="absolute -right-1.5 -top-1.5 grid hidden h-5 w-5 place-items-center rounded-full bg-white text-xs font-black text-red-600">0</span><span id="htot" class="num">R$ 0,00</span></button>
     </div></header>
   <div id="closed" class="hidden border-b border-rose-500/25 bg-rose-500/10"><div class="mx-auto flex max-w-6xl items-start gap-3 px-4 py-3 text-sm text-rose-100"><span data-ic="clock" class="mt-0.5 text-rose-400"></span><p id="closedT"></p></div></div>
-  <section class="relative overflow-hidden border-b border-white/10 bg-neutral-950 py-6 sm:py-16 lg:py-20">
+  <section class="relative overflow-hidden border-b border-white/10 bg-stone-950 py-6 sm:py-16 lg:py-20">
     <img src="fotos/hero-bg.webp" width="1600" height="600" alt="" aria-hidden="true" fetchpriority="high" class="pointer-events-none absolute inset-y-0 right-0 h-full w-full select-none object-cover object-right opacity-50 lg:w-[78%]">
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-neutral-950/45 lg:bg-transparent"></div>
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-stone-950/45 lg:bg-transparent"></div>
     <div class="relative mx-auto grid max-w-6xl items-center gap-8 px-4 lg:grid-cols-2">
       <div class="space-y-3 text-center sm:space-y-5 lg:text-left"><span class="hidden items-center sm:inline-flex gap-2 rounded-full border border-red-600/30 bg-red-600/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-red-400"><span data-ic="flame" class="h-4 w-4"></span>Hamburgueria artesanal</span>
-        <h1 class="text-3xl font-black leading-tight tracking-tight sm:text-5xl lg:text-6xl">Sabor que vicia</h1>
-        <p class="mx-auto max-w-xl text-sm text-neutral-400 sm:text-lg lg:mx-0">Escolha seu lanche, personalize do seu jeito e envie o pedido pelo WhatsApp.</p>
+        <h1 class="font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">Sabor que <span class="text-red-400">vicia</span></h1>
+        <p class="mx-auto max-w-xl text-sm text-stone-400 sm:text-lg lg:mx-0">Escolha seu lanche, personalize do seu jeito e envie o pedido pelo WhatsApp.</p>
         <div class="flex items-center justify-center gap-2 pt-1 sm:gap-3 lg:justify-start"><a href="#cardapio" onclick="goMenu(event)" class="inline-flex min-h-[48px] flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-2xl bg-red-600 px-3 text-sm font-extrabold text-white transition hover:brightness-110 active:scale-[.97] sm:flex-none sm:px-8 sm:text-base">Ver cardápio<span class="hidden sm:inline">&nbsp;completo</span><span data-ic="down"></span></a>
-          <a href="#info" class="inline-flex min-h-[48px] flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-2xl border border-white/10 bg-neutral-900 px-3 text-sm font-medium transition hover:bg-neutral-800 active:scale-[.97] sm:flex-none sm:px-6 sm:text-base"><span data-ic="clock" class="text-red-400"></span>Horários<span class="hidden sm:inline">&nbsp;e taxas</span></a></div></div>
+          <a href="#info" class="inline-flex min-h-[48px] flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-2xl border border-white/10 bg-stone-900 px-3 text-sm font-medium transition hover:bg-stone-800 active:scale-[.97] sm:flex-none sm:px-6 sm:text-base"><span data-ic="clock" class="text-red-400"></span>Horários<span class="hidden sm:inline">&nbsp;e taxas</span></a></div></div>
     </div></section>
-  <div class="border-b border-white/10 bg-neutral-900 py-3 sm:py-4"><div class="no-sb mx-auto flex max-w-6xl gap-5 overflow-x-auto px-4 text-sm sm:grid sm:grid-cols-3 sm:gap-4">
-    <div class="flex max-w-[15rem] shrink-0 items-center gap-3 sm:max-w-none"><span data-ic="bike" class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-red-600/10 text-red-400 sm:h-10 sm:w-10"></span><span><b class="block text-xs font-medium text-neutral-400">Entrega</b><span id="stEntrega"></span></span></div>
-    <div class="flex max-w-[15rem] shrink-0 items-center gap-3 sm:max-w-none"><span data-ic="card" class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-red-600/10 text-red-400 sm:h-10 sm:w-10"></span><span><b class="block text-xs font-medium text-neutral-400">Pagamento</b>Pix, cartões e dinheiro</span></div>
-    <div class="flex max-w-[15rem] shrink-0 items-center gap-3 sm:max-w-none"><span data-ic="store" class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-red-600/10 text-red-400 sm:h-10 sm:w-10"></span><span><b class="block text-xs font-medium text-neutral-400">Retirada</b>No balcão, sem taxa</span></div></div></div>
+  <div class="border-b border-white/10 bg-stone-900 py-3 sm:py-4"><div class="no-sb mx-auto flex max-w-6xl gap-5 overflow-x-auto px-4 text-sm sm:grid sm:grid-cols-3 sm:gap-4">
+    <div class="flex max-w-[15rem] shrink-0 items-center gap-3 sm:max-w-none"><span data-ic="bike" class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-red-600/10 text-red-400 sm:h-10 sm:w-10"></span><span><b class="block text-xs font-medium text-stone-400">Entrega</b><span id="stEntrega"></span></span></div>
+    <div class="flex max-w-[15rem] shrink-0 items-center gap-3 sm:max-w-none"><span data-ic="card" class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-red-600/10 text-red-400 sm:h-10 sm:w-10"></span><span><b class="block text-xs font-medium text-stone-400">Pagamento</b>Pix, cartões e dinheiro</span></div>
+    <div class="flex max-w-[15rem] shrink-0 items-center gap-3 sm:max-w-none"><span data-ic="store" class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-red-600/10 text-red-400 sm:h-10 sm:w-10"></span><span><b class="block text-xs font-medium text-stone-400">Retirada</b>No balcão, sem taxa</span></div></div></div>
   <p id="infoTxt" class="hidden"></p>
   <section id="dest" aria-label="Mais pedidos" class="hidden bg-gradient-to-b from-red-950/40 to-transparent"></section>
   <div id="cardapio">
-    <div class="relative mx-auto max-w-6xl px-3.5 pt-4"><span data-ic="search" class="pointer-events-none absolute left-7 top-[calc(1rem+1.05rem)] text-neutral-400"></span><input id="q" type="search" enterkeyhint="search"
+    <div class="relative mx-auto max-w-6xl px-3.5 pt-4"><span data-ic="search" class="pointer-events-none absolute left-7 top-[calc(1rem+1.05rem)] text-stone-400"></span><input id="q" type="search" enterkeyhint="search"
         oninput="search(this.value)" placeholder="Buscar lanche, porção ou combo" aria-label="Buscar no cardápio"
-        class="w-full rounded-xl border-0 bg-neutral-900 py-3.5 pl-11 pr-4 text-base text-white placeholder-neutral-500 ring-1 ring-white/10 transition-shadow focus:outline-none focus:ring-2 focus:ring-red-400">
+        class="w-full rounded-xl border-0 bg-stone-900 py-3.5 pl-11 pr-4 text-base text-white placeholder-stone-500 ring-1 ring-white/10 transition-shadow focus:outline-none focus:ring-2 focus:ring-red-400">
     </div>
-    <div class="sticky top-[calc(var(--hh)+env(safe-area-inset-top,0px))] z-30 transition-[top] mt-1 border-b border-white/10 bg-neutral-950/95 backdrop-blur">
+    <div class="sticky top-[calc(var(--hh)+env(safe-area-inset-top,0px))] z-30 transition-[top] mt-1 border-b border-white/10 bg-stone-950/95 backdrop-blur">
       <nav id="nav" aria-label="Categorias" class="no-sb mx-auto flex max-w-6xl gap-2 overflow-x-auto px-3.5 py-2">
       </nav>
     </div>
     <main id="menu" class="mx-auto max-w-6xl px-3.5 pb-6"></main>
   </div>
-  <footer id="info" class="mt-16 border-t border-white/10 bg-neutral-900 pb-28 pt-12 md:pb-12"><div class="mx-auto grid max-w-6xl gap-8 px-4 text-sm text-neutral-400 md:grid-cols-3">
-    <div><b class="mb-3 flex items-center gap-3 text-lg text-white"><img src="fotos/logo.webp" width="40" height="40" alt="" class="h-10 w-10 shrink-0 rounded-full">Fabi Burguer</b>Hamburgueria artesanal. Sabor que vicia.<p class="mt-4 text-xs text-neutral-400">&copy; 2026 Fabi Burguer</p></div>
+  <footer id="info" class="mt-16 border-t border-white/10 bg-stone-900 pb-28 pt-12 md:pb-12"><div class="mx-auto grid max-w-6xl gap-8 px-4 text-sm text-stone-400 md:grid-cols-3">
+    <div><b class="mb-3 flex items-center gap-3 font-display text-xl font-extrabold text-white"><img src="fotos/logo.webp" width="40" height="40" alt="" class="h-10 w-10 shrink-0 rounded-full">Fabi Burguer</b>Hamburgueria artesanal. Sabor que vicia.<p class="mt-4 text-xs text-stone-400">&copy; 2026 Fabi Burguer</p></div>
     <div><b class="mb-3 block text-base text-white">Horário de funcionamento</b><div id="horarios" class="space-y-2"></div></div>
-    <div><b class="mb-3 block text-base text-white">Contato e entrega</b><p class="mb-4">Belém, PA · Delivery e retirada. Pedidos pelo WhatsApp.</p><button type="button" onclick="openShare()" class="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-neutral-950 font-medium text-white transition hover:bg-neutral-800 active:scale-[.97]"><span data-ic="qr" class="text-red-400"></span>Compartilhar cardápio</button></div></div><div class="mx-auto mt-10 max-w-6xl border-t border-white/10 px-4 pt-6 text-center text-xs text-neutral-400">Cardápio desenvolvido por <b class="font-extrabold text-neutral-300">Luiz Felipe</b>. Quer um para a sua empresa? <a href="https://wa.me/5591996384242?text=Ol%C3%A1%2C%20Luiz%20Felipe!%20Vi%20o%20card%C3%A1pio%20da%20Fabi%20Burguer%20e%20quero%20um%20para%20a%20minha%20empresa." target="_blank" rel="noopener" class="mt-2 inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/10 bg-neutral-950 px-4 font-bold text-white transition hover:bg-neutral-800 active:scale-[.97] sm:mt-0 sm:ml-2"><span data-ic="wa" class="text-green-400"></span>Chame no WhatsApp: (91) 99638-4242</a></div>
+    <div><b class="mb-3 block text-base text-white">Contato e entrega</b><p class="mb-4">Belém, PA · Delivery e retirada. Pedidos pelo WhatsApp.</p><button type="button" onclick="openShare()" class="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-stone-950 font-medium text-white transition hover:bg-stone-800 active:scale-[.97]"><span data-ic="qr" class="text-red-400"></span>Compartilhar cardápio</button></div></div><div class="mx-auto mt-10 max-w-6xl border-t border-white/10 px-4 pt-6 text-center text-xs text-stone-400">Cardápio desenvolvido por <b class="font-extrabold text-stone-300">Luiz Felipe</b>. Quer um para a sua empresa? <a href="https://wa.me/5591996384242?text=Ol%C3%A1%2C%20Luiz%20Felipe!%20Vi%20o%20card%C3%A1pio%20da%20Fabi%20Burguer%20e%20quero%20um%20para%20a%20minha%20empresa." target="_blank" rel="noopener" class="mt-2 inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/10 bg-stone-950 px-4 font-bold text-white transition hover:bg-stone-800 active:scale-[.97] sm:mt-0 sm:ml-2"><span data-ic="wa" class="text-green-400"></span>Chame no WhatsApp: (91) 99638-4242</a></div>
 </footer>
   <div id="bar"
-    class="fixed inset-x-0 bottom-0 z-20 hidden border-t md:!hidden border-white/10 bg-neutral-950/95 px-3.5 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] backdrop-blur">
+    class="fixed inset-x-0 bottom-0 z-20 hidden border-t md:!hidden border-white/10 bg-stone-950/95 px-3.5 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] backdrop-blur">
     <button id="barB"
       class="mx-auto flex w-full max-w-3xl items-center justify-between rounded-xl bg-red-600 px-5 py-4 text-base font-extrabold text-white ring-1 ring-white/15 transition hover:brightness-110 active:scale-[.97]"
       onclick="openCart()"><span class="flex items-center gap-2.5"><span data-ic="bag"></span><span id="barN"></span></span><span id="barT" class="num"></span></button>
@@ -79,13 +79,13 @@
   </div>
   <div id="ov" class="veil fixed inset-0 z-30 hidden bg-black/75" onclick="closeCart()"></div>
   <section id="panel" role="dialog" aria-modal="true" aria-label="Carrinho"
-    class="sheet fixed inset-x-0 bottom-0 top-[5%] z-40 mx-auto hidden max-w-3xl flex-col rounded-t-2xl md:inset-y-0 md:left-auto md:right-0 md:mx-0 md:w-full md:max-w-lg md:rounded-none md:rounded-l-3xl bg-neutral-950 ring-1 ring-white/10">
+    class="sheet fixed inset-x-0 bottom-0 top-[5%] z-40 mx-auto hidden max-w-3xl flex-col rounded-t-2xl md:inset-y-0 md:left-auto md:right-0 md:mx-0 md:w-full md:max-w-lg md:rounded-none md:rounded-l-3xl bg-stone-950 ring-1 ring-white/10">
   </section>
   <div id="mod" role="dialog" aria-modal="true" aria-label="Personalizar lanche"
     class="veil fixed inset-0 z-50 hidden items-end justify-center bg-black/75 sm:items-center"
     onclick="if(event.target===this)closeOpt()">
     <div id="modbox"
-      class="sheet flex max-h-[92%] w-full max-w-lg flex-col overflow-hidden rounded-t-2xl bg-neutral-950 ring-1 ring-white/10 sm:rounded-2xl">
+      class="sheet flex max-h-[92%] w-full max-w-lg flex-col overflow-hidden rounded-t-2xl bg-stone-950 ring-1 ring-white/10 sm:rounded-2xl">
     </div>
   </div>
   <script>
@@ -180,19 +180,19 @@
       stepH: "h-11 w-11 rounded-full bg-black/40 text-xl font-extrabold leading-none text-white ring-1 ring-white/30 transition active:scale-[.92] [&:last-child]:bg-white [&:last-child]:text-red-700 [&:last-child]:ring-0",
       addH: "inline-flex min-h-[44px] items-center gap-1.5 rounded-lg bg-white px-4 py-2 text-sm font-extrabold text-red-700 transition hover:brightness-95 active:scale-[.97]",
       add: "inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border border-red-600/40 bg-red-600/10 px-3.5 py-2 text-xs font-extrabold text-red-400 transition hover:bg-red-600 hover:text-white active:scale-[.97]",
-      step: "h-11 w-11 rounded-full bg-neutral-800 text-xl font-extrabold leading-none ring-1 ring-white/10 active:scale-[.92] [&:last-child]:bg-red-600 [&:last-child]:ring-0 transition hover:brightness-125",
-      inp: "mt-1 w-full rounded-lg border-0 bg-neutral-800 px-3.5 py-3 text-base text-white placeholder-neutral-500 ring-1 ring-white/10 transition-shadow focus:outline-none focus:ring-2 focus:ring-red-400",
-      lab: "mt-3 block text-sm font-bold text-neutral-300",
+      step: "h-11 w-11 rounded-full bg-stone-800 text-xl font-extrabold leading-none ring-1 ring-white/10 active:scale-[.92] [&:last-child]:bg-red-600 [&:last-child]:ring-0 transition hover:brightness-125",
+      inp: "mt-1 w-full rounded-lg border-0 bg-stone-800 px-3.5 py-3 text-base text-white placeholder-stone-500 ring-1 ring-white/10 transition-shadow focus:outline-none focus:ring-2 focus:ring-red-400",
+      lab: "mt-3 block text-sm font-bold text-stone-300",
       h4: "mt-5 mb-2 font-extrabold",
       row: "flex items-center justify-between gap-2 border-b border-dashed border-white/15 py-2.5 last:border-0",
-      sm: "block text-sm text-neutral-400",
-      opt: "flex cursor-pointer items-center gap-2 min-h-[48px] rounded-lg bg-neutral-800 p-3 text-sm font-extrabold transition-colors accent-red-600 [&>input]:h-5 [&>input]:w-5 ring-1 ring-white/10 has-[:checked]:bg-red-600/20 has-[:checked]:ring-2 has-[:checked]:ring-red-400",
+      sm: "block text-sm text-stone-400",
+      opt: "flex cursor-pointer items-center gap-2 min-h-[48px] rounded-lg bg-stone-800 p-3 text-sm font-extrabold transition-colors accent-red-600 [&>input]:h-5 [&>input]:w-5 ring-1 ring-white/10 has-[:checked]:bg-red-600/20 has-[:checked]:ring-2 has-[:checked]:ring-red-400",
       send: "mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-green-600 py-4 text-lg font-extrabold text-white transition hover:bg-green-500 active:scale-[.97]",
       loc0: "w-full transition-colors rounded-lg border-2 border-dashed border-red-400 bg-red-400/10 py-3 font-extrabold text-red-400",
       loc1: "w-full transition-colors rounded-lg border-2 border-solid border-green-500 bg-green-500/10 py-3 font-extrabold text-green-400",
       ph: "flex items-center justify-between border-b border-white/10 px-4 py-3.5",
       pb: "flex-1 overflow-y-auto overscroll-contain px-4 pt-1 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))]",
-      x: "h-11 w-11 rounded-full bg-neutral-800 text-lg ring-1 ring-white/10 transition hover:bg-neutral-700 active:scale-[.92]"
+      x: "h-11 w-11 rounded-full bg-stone-800 text-lg ring-1 ring-white/10 transition hover:bg-stone-700 active:scale-[.92]"
     };
     /* Ícones (desenhos do Lucide embutidos: sem biblioteca externa) */
     var IC = {
@@ -220,7 +220,7 @@
       receipt: '<path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/>'
     };
     function ic(n, c) { return '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="' + (c || "h-5 w-5") + ' shrink-0">' + (IC[n] || "") + '</svg>' }
-    var PAYI = { "Pix": ["pix", "text-[#32BCAD]"], "Cartão de crédito": ["card", "text-neutral-300"], "Cartão de débito": ["card", "text-neutral-300"], "Dinheiro": ["cash", "text-green-400"] };
+    var PAYI = { "Pix": ["pix", "text-[#32BCAD]"], "Cartão de crédito": ["card", "text-stone-300"], "Cartão de débito": ["card", "text-stone-300"], "Dinheiro": ["cash", "text-green-400"] };
     function stp(m, q, p, h, n) { var c = h ? C.stepH : C.step, s = n ? " " + esc(n) : ""; return '<div class="flex shrink-0 items-center gap-2 font-extrabold"><button type="button" class="' + c + '" onclick="' + m + '" aria-label="Diminuir' + s + '">−</button><span class="num min-w-4 text-center" aria-label="Quantidade: ' + q + '">' + q + '</span><button type="button" class="' + c + '" onclick="' + p + '" aria-label="Aumentar' + s + '">+</button></div>' }
     /* mantém o foco do teclado no mesmo controle quando um trecho da tela é redesenhado */
     function kf(fn) {
@@ -234,7 +234,7 @@
     }
     function pr(v, w) { return '<span class="whitespace-nowrap"><span class="mr-0.5 text-xs font-bold ' + (w ? 'text-white/80' : 'text-red-400') + '">R$</span><span class="num text-xl font-extrabold leading-none sm:text-2xl">' + v.toFixed(2).replace(".", ",") + '</span></span>' }
     function toast(m) { var t = $("toast"); t.textContent = m; t.classList.add("show"); clearTimeout(toast.h); toast.h = setTimeout(function () { t.classList.remove("show") }, 1600) }
-    function hd(t, fn) { return '<div class="' + C.ph + '"><h3 class="min-w-0 font-display text-xl [overflow-wrap:anywhere]">' + t + '</h3><button class="' + C.x + '" onclick="' + fn + '" aria-label="Fechar">' + ic("x", "mx-auto h-5 w-5") + '</button></div>' }
+    function hd(t, fn) { return '<div class="' + C.ph + '"><h3 class="min-w-0 font-display text-xl font-extrabold [overflow-wrap:anywhere]">' + t + '</h3><button class="' + C.x + '" onclick="' + fn + '" aria-label="Fechar">' + ic("x", "mx-auto h-5 w-5") + '</button></div>' }
     function show(el, on, disp) {
       if (!(el.classList.contains("veil") || el.classList.contains("sheet"))) { el.classList.toggle("hidden", !on); if (disp) el.classList.toggle(disp, on); return }
       clearTimeout(el._t); var mb = el.id === "mod" ? $("modbox") : null;
@@ -248,11 +248,11 @@
       })
     });
 
-    var TB = 'shrink-0 min-h-[40px] rounded-full border px-3.5 py-2 text-sm font-medium transition-colors duration-150 active:scale-[.97] ', TON = 'border-red-600 bg-red-600 text-white', TOFF = 'border-white/10 bg-neutral-900 text-neutral-300 hover:text-white', spyT = 0, spyF = 0, firstDraw = true;
+    var TB = 'shrink-0 min-h-[40px] rounded-full border px-3.5 py-2 text-sm font-medium transition-colors duration-150 active:scale-[.97] ', TON = 'border-red-600 bg-red-600 text-white', TOFF = 'border-white/10 bg-stone-900 text-stone-300 hover:text-white', spyT = 0, spyF = 0, firstDraw = true;
     function card(it, i) {
       var tg = CFG.maisPedidos.indexOf(it.n) > -1 ? "Mais pedido" : it.s ? "Especial" : "";
-      return '<div class="' + (firstDraw ? 'rise ' : '') + (off(it) ? 'opacity-60 ' : '') + 'group flex gap-3 rounded-2xl border border-white/10 bg-neutral-900 p-3 sm:gap-4 sm:p-3.5 transition-colors hover:border-red-600/50"' + (firstDraw ? ' style="animation-delay:' + Math.min((i || 0) * 45, 360) + 'ms"' : '') + '><div class="relative grid h-24 w-24 shrink-0 place-items-center overflow-hidden rounded-xl bg-neutral-950 text-4xl sm:h-32 sm:w-32">' + thumb(it) + '</div>'
-        + '<div class="flex min-w-0 flex-1 flex-col justify-between"><div>' + (tg ? '<span class="mb-1 flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-wider text-red-400">' + ic(tg === "Especial" ? "star" : "flame", "h-3 w-3") + tg + '</span>' : '') + '<h3 class="text-base font-extrabold leading-snug">' + it.n + '</h3>' + (it.d ? '<p class="mt-1 line-clamp-2 text-[13px] leading-snug text-neutral-300">' + cd(it) + '</p>' : '') + '</div><div class="mt-3 flex flex-wrap items-center justify-between gap-x-2 gap-y-2">' + pr(it.p) + '<div id="a' + it.id + '" class="ml-auto shrink-0"></div></div></div></div>';
+      return '<div class="' + (firstDraw ? 'rise ' : '') + (off(it) ? 'opacity-60 ' : '') + 'group flex gap-3 rounded-2xl border border-white/10 bg-stone-900 p-3 sm:gap-4 sm:p-3.5 transition-colors hover:border-red-600/50"' + (firstDraw ? ' style="animation-delay:' + Math.min((i || 0) * 45, 360) + 'ms"' : '') + '><div class="relative grid h-24 w-24 shrink-0 place-items-center overflow-hidden rounded-xl bg-stone-950 text-4xl sm:h-32 sm:w-32">' + thumb(it) + '</div>'
+        + '<div class="flex min-w-0 flex-1 flex-col justify-between"><div>' + (tg ? '<span class="mb-1 flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-wider text-red-400">' + ic(tg === "Especial" ? "star" : "flame", "h-3 w-3") + tg + '</span>' : '') + '<h3 class="font-display text-[17px] font-bold leading-snug">' + it.n + '</h3>' + (it.d ? '<p class="mt-1 line-clamp-2 text-[13px] leading-snug text-stone-300">' + cd(it) + '</p>' : '') + '</div><div class="mt-3 flex flex-wrap items-center justify-between gap-x-2 gap-y-2">' + pr(it.p) + '<div id="a' + it.id + '" class="ml-auto shrink-0"></div></div></div></div>';
     }
     /* resumo do card: tira o que se repete em todos os lanches (pão, molho da casa e salada); a lista completa aparece no modal */
     var BASE = ["pão", "molho da casa", "alface", "tomate", "repolho"];
@@ -266,14 +266,14 @@
     function drawMenu() {
       var n = ""; tabs.forEach(function (gi) { var on = gi === cat && !Q; n += '<button type="button" aria-pressed="' + on + '" class="' + TB + (on ? TON : TOFF) + '" onclick="setCat(' + gi + ')">' + MENU[gi].e + " " + MENU[gi].c + '</button>' });
       var sl = $("nav").scrollLeft; $("nav").innerHTML = n; $("nav").scrollLeft = sl;
-      var h = "", H2 = '<h2 class="cat-title text-xl font-black tracking-tight">';
+      var h = "", H2 = '<h2 class="cat-title font-display text-2xl font-extrabold tracking-tight">';
       if (Q) {
         var list = all.filter(function (it) { return MENU[it.g].c !== "Adicionais" && norm(it.n + " " + it.d).indexOf(Q) > -1 });
-        h = '<section class="pt-5">' + H2 + 'Resultados da busca</h2>' + (list.length ? '' : '<p class="py-10 text-center text-neutral-400">Nenhum item encontrado. Tente buscar por outro nome, como “bacon” ou “combo”.</p>') + '<div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">' + list.map(card).join("") + '</div></section>';
+        h = '<section class="pt-5">' + H2 + 'Resultados da busca</h2>' + (list.length ? '' : '<p class="py-10 text-center text-stone-400">Nenhum item encontrado. Tente buscar por outro nome, como “bacon” ou “combo”.</p>') + '<div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">' + list.map(card).join("") + '</div></section>';
       } else MENU.forEach(function (g, gi) {
         if (g.c === "Adicionais") return;
-        h += '<section id="sec' + gi + '" class="scroll-mt-40 pt-8"><div class="flex items-center justify-between border-b border-white/10 pb-2">' + H2 + g.c + '</h2><span class="text-xs text-neutral-400">' + g.items.length + ' itens</span></div>'
-          + (BUR.indexOf(g.c) > -1 ? '<p class="px-1 pt-1 text-sm text-neutral-400">Todos no pão com alface, tomate e repolho. Toque em Adicionar para ver os ingredientes completos e incluir extras.</p>' : '')
+        h += '<section id="sec' + gi + '" class="scroll-mt-40 pt-8"><div class="flex items-center justify-between border-b border-white/10 pb-2">' + H2 + '<span aria-hidden="true" class="mr-2">' + g.e + '</span>' + g.c + '</h2><span class="text-xs text-stone-400">' + g.items.length + ' itens</span></div>'
+          + (BUR.indexOf(g.c) > -1 ? '<p class="px-1 pt-1 text-sm text-stone-400">Todos no pão com alface, tomate e repolho. Toque em Adicionar para ver os ingredientes completos e incluir extras.</p>' : '')
           + '<div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">' + all.filter(function (it) { return it.g === gi }).map(card).join("") + '</div></section>';
       });
       $("menu").innerHTML = h;
@@ -303,13 +303,13 @@
     function drawCtl(id) {
       var it = all[id], q = qtyOf(id);
       ["a", "h", "g", "k"].forEach(function (p) {
-        var el = $(p + id); if (!el) return; var H = p !== "a"; if (off(it)) { el.innerHTML = '<span class="rounded-lg bg-neutral-800 px-3 py-2 text-xs font-bold text-neutral-400">Esgotado</span>'; return }
+        var el = $(p + id); if (!el) return; var H = p !== "a"; if (off(it)) { el.innerHTML = '<span class="rounded-lg bg-stone-800 px-3 py-2 text-xs font-bold text-stone-400">Esgotado</span>'; return }
         if (it.b) { el.innerHTML = '<button class="' + (H ? C.addH : C.add) + '" onclick="openOpt(' + id + ')">' + ic("plus", "h-4 w-4") + 'Adicionar' + (q ? ' (' + q + ')' : '') + '</button>'; el.className = (H ? "flex items-center" : "ml-auto flex shrink-0 items-center"); return }
         el.innerHTML = q ? stp("simple(" + id + ",-1)", q, "simple(" + id + ",1)", H, it.n) : '<button class="' + (H ? C.addH : C.add) + '" onclick="simple(' + id + ',1)">' + ic("plus", "h-4 w-4") + 'Adicionar</button>'
       });
     }
     /* marcador no padrão da marca para itens sem foto (ou se a foto não carregar) */
-    function ph(it) { return '<span aria-hidden="true" class="grid h-full w-full place-items-center bg-gradient-to-br from-red-950 via-neutral-900 to-neutral-950 text-red-400/80">' + ic(MENU[it.g].c === "Bebidas" ? "cup" : "utensils", "h-10 w-10") + '</span>' }
+    function ph(it) { return '<span aria-hidden="true" class="grid h-full w-full place-items-center bg-gradient-to-br from-red-950 via-stone-900 to-stone-950 text-red-400/80">' + ic(MENU[it.g].c === "Bebidas" ? "cup" : "utensils", "h-10 w-10") + '</span>' }
     function imgFail(el, id) { var p = el.parentNode; if (p) p.innerHTML = ph(all[id]) }
     function thumb(it) { return IMGS[it.n] ? '<img loading="lazy" decoding="async" onerror="imgFail(this,' + it.id + ')" src="' + IMGS[it.n] + '" alt="" class="h-full w-full object-cover transition duration-300 group-hover:scale-105" style="object-position:' + (IMGP[it.n] || "50% 50%") + (IMGC[it.n] ? ';object-fit:contain' : '') + '">' : ph(it) }
     var dRaf = 0;
@@ -337,8 +337,8 @@
       if (!l.length || Q) { show(el, false); return }
       show(el, true);
       var anim = typeof requestAnimationFrame !== "undefined" && !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
-      var set = function (p, cl) { return l.map(function (it) { var im = IMGS[it.n]; return '<div' + (cl ? ' aria-hidden="true" inert' : '') + ' class="flex w-72 shrink-0 flex-col gap-3 group rounded-2xl bg-neutral-900 p-4 ring-1 ring-white/10 transition-colors hover:ring-white/25">' + (im ? '<div class="-mx-4 -mt-4 h-48 overflow-hidden rounded-t-2xl bg-black">' + thumb(it) + '</div>' : '') + '<div class="flex gap-3">' + (im ? '' : '<div class="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-xl bg-black/30 text-4xl">' + thumb(it) + '</div>') + '<div class="min-w-0"><b class="block text-lg leading-tight">' + it.n + '</b><p class="mt-1 text-[13px] leading-snug text-neutral-400">' + it.d + '</p></div></div><div class="mt-auto flex items-center justify-between">' + pr(it.p, 1) + '<div id="' + p + it.id + '"></div></div></div>' }).join("") };
-      el.innerHTML = '<div class="mx-auto max-w-6xl px-3.5 pb-4 pt-6"><h2 class="cat-title font-display text-2xl tracking-tight">🔥 Mais pedidos</h2><div id="destsc" role="group" aria-label="Mais pedidos" class="no-sb -mx-3.5 mt-4 flex gap-3 overflow-x-auto px-3.5 pb-2">' + set("h") + (anim ? set("g", 1) + set("k", 1) : "") + '</div></div>';
+      var set = function (p, cl) { return l.map(function (it) { var im = IMGS[it.n]; return '<div' + (cl ? ' aria-hidden="true" inert' : '') + ' class="flex w-72 shrink-0 flex-col gap-3 group rounded-2xl bg-stone-900 p-4 ring-1 ring-white/10 transition-colors hover:ring-white/25">' + (im ? '<div class="-mx-4 -mt-4 h-48 overflow-hidden rounded-t-2xl bg-black">' + thumb(it) + '</div>' : '') + '<div class="flex gap-3">' + (im ? '' : '<div class="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-xl bg-black/30 text-4xl">' + thumb(it) + '</div>') + '<div class="min-w-0"><b class="block text-lg leading-tight">' + it.n + '</b><p class="mt-1 text-[13px] leading-snug text-stone-400">' + it.d + '</p></div></div><div class="mt-auto flex items-center justify-between">' + pr(it.p, 1) + '<div id="' + p + it.id + '"></div></div></div>' }).join("") };
+      el.innerHTML = '<div class="mx-auto max-w-6xl px-3.5 pb-4 pt-6"><h2 class="cat-title font-display text-2xl font-extrabold tracking-tight">🔥 Mais pedidos</h2><div id="destsc" role="group" aria-label="Mais pedidos" class="no-sb -mx-3.5 mt-4 flex gap-3 overflow-x-auto px-3.5 pb-2">' + set("h") + (anim ? set("g", 1) + set("k", 1) : "") + '</div></div>';
       l.forEach(function (it) { drawCtl(it.id) });
       if (anim) startDest(l.length);
       
@@ -363,17 +363,17 @@
     function optTotal() { var p = all[cur].p; for (var k in mad) p += ADD[k].p * mad[k]; return p * mq }
     /* adicional como chip: um toque adiciona; o contador só aparece depois de escolhido */
     function chip(a, k) {
-      var q = mad[k] || 0, nm = '<span class="min-w-0"><b class="block text-sm leading-tight">' + a.n + '</b><small class="block text-xs ' + (q ? 'text-red-200' : 'text-neutral-400') + '">+ ' + R(a.p) + '</small></span>';
-      if (!q) return '<button type="button" onclick="ad(' + k + ',1)" aria-label="Adicionar ' + esc(a.n) + ', mais ' + R(a.p) + '" class="flex min-h-[56px] items-center justify-between gap-2 rounded-xl bg-neutral-900 px-3 py-2 text-left ring-1 ring-white/10 transition hover:ring-white/30 active:scale-[.97]">' + nm + ic("plus", "h-4 w-4 text-red-400") + '</button>';
+      var q = mad[k] || 0, nm = '<span class="min-w-0"><b class="block text-sm leading-tight">' + a.n + '</b><small class="block text-xs ' + (q ? 'text-red-200' : 'text-stone-400') + '">+ ' + R(a.p) + '</small></span>';
+      if (!q) return '<button type="button" onclick="ad(' + k + ',1)" aria-label="Adicionar ' + esc(a.n) + ', mais ' + R(a.p) + '" class="flex min-h-[56px] items-center justify-between gap-2 rounded-xl bg-stone-900 px-3 py-2 text-left ring-1 ring-white/10 transition hover:ring-white/30 active:scale-[.97]">' + nm + ic("plus", "h-4 w-4 text-red-400") + '</button>';
       var b = "grid h-9 w-9 place-items-center rounded-full text-lg font-extrabold leading-none transition active:scale-[.92] ";
       return '<div class="flex min-h-[56px] flex-col justify-between gap-2 rounded-xl bg-red-600/15 px-3 py-2 ring-2 ring-red-500">' + nm + '<div class="flex items-center justify-end gap-2 font-extrabold"><button type="button" onclick="ad(' + k + ',-1)" aria-label="Diminuir ' + esc(a.n) + '" class="' + b + 'bg-black/40 ring-1 ring-white/20 hover:bg-black/60">−</button><span class="num min-w-4 text-center" aria-label="Quantidade: ' + q + '">' + q + '</span><button type="button" onclick="ad(' + k + ',1)" aria-label="Aumentar ' + esc(a.n) + '" class="' + b + 'bg-red-600 text-white hover:brightness-110">+</button></div></div>';
     }
     function drawOpt() {
       var it = all[cur], o = $("mobs") ? $("mobs").value : "";
-      var h = hd(it.n, "closeOpt()") + '<div class="' + C.pb + '"><p class="pt-3 text-neutral-400">' + it.d + '</p><h4 class="' + C.h4 + '">Quer adicionar algo?</h4>';
+      var h = hd(it.n, "closeOpt()") + '<div class="' + C.pb + '"><p class="pt-3 text-stone-400">' + it.d + '</p><h4 class="' + C.h4 + '">Quer adicionar algo?</h4>';
       h += '<div class="grid grid-cols-2 gap-2">' + ADD.map(chip).join("") + '</div>';
       h += '<label class="' + C.lab + '">Observação deste lanche (ex.: sem cebola)<input type="text" id="mobs" class="' + C.inp + '"></label><h4 class="' + C.h4 + '">Quantidade</h4>' + stp("mqc(-1)", mq, "mqc(1)", 0, "quantidade")
-        + '</div><div class="border-t border-white/10 bg-neutral-950 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))]"><button class="w-full rounded-xl bg-red-600 py-4 text-base font-extrabold text-white transition hover:brightness-110 active:scale-[.97]" onclick="addOpt()">' + (editIdx !== null ? "Salvar alterações" : "Adicionar ao carrinho") + ' · ' + R(optTotal()) + '</button></div>';
+        + '</div><div class="border-t border-white/10 bg-stone-950 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))]"><button class="w-full rounded-xl bg-red-600 py-4 text-base font-extrabold text-white transition hover:brightness-110 active:scale-[.97]" onclick="addOpt()">' + (editIdx !== null ? "Salvar alterações" : "Adicionar ao carrinho") + ' · ' + R(optTotal()) + '</button></div>';
       $("modbox").innerHTML = h; if (o) $("mobs").value = o;
     }
     function ad(k, d) { mad[k] = Math.max(0, (mad[k] || 0) + d); if (!mad[k]) delete mad[k]; kf(drawOpt) }
@@ -422,10 +422,10 @@
       var pin = ic('pin');
       var ok = ic('ok');
       var tx = function (a, b) { return '<span class="min-w-0"><span class="block font-extrabold leading-tight">' + a + '</span><span class="mt-0.5 block text-[13px] leading-snug opacity-80">' + b + '</span></span>' };
-      if (locBusy) return '<button type="button" id="locBtn" disabled aria-busy="true" class="' + base + 'cursor-wait bg-neutral-800 text-white ring-1 ring-white/10">' + ico('<span class="h-5 w-5 animate-spin rounded-full border-2 border-white/25 border-t-white motion-reduce:animate-none"></span>', 'bg-white/10') + (locBusy === 2 ? tx("Calculando a rota…", "Medindo o caminho pelas ruas até você") : tx("Obtendo localização…", "Se o navegador pedir, toque em Permitir")) + '</button>';
+      if (locBusy) return '<button type="button" id="locBtn" disabled aria-busy="true" class="' + base + 'cursor-wait bg-stone-800 text-white ring-1 ring-white/10">' + ico('<span class="h-5 w-5 animate-spin rounded-full border-2 border-white/25 border-t-white motion-reduce:animate-none"></span>', 'bg-white/10') + (locBusy === 2 ? tx("Calculando a rota…", "Medindo o caminho pelas ruas até você") : tx("Obtendo localização…", "Se o navegador pedir, toque em Permitir")) + '</button>';
       if (loc && fora()) return '<button type="button" id="locBtn" onclick="getLoc()" class="' + base + 'bg-rose-500/10 text-white ring-2 ring-rose-500">' + ico(pin, 'bg-rose-500 text-white') + tx("Fora da área de entrega", "A " + kmTxt() + " da loja · entregamos até " + raioTxt() + " · toque para atualizar") + '</button>';
       if (loc) { var k = req ? kmTxt() + (fee() !== 0 ? (rota !== null ? " pelas ruas" : " (estimado)") : "") : "", pr = loc.acc > 300 ? "precisão baixa (±" + Math.round(loc.acc) + " m), confira o endereço · " : ""; return '<button type="button" id="locBtn" onclick="getLoc()" class="' + base + 'bg-green-500/10 text-white ring-2 ring-green-500">' + ico(ok, 'bg-green-500 text-black') + tx("Localização compartilhada", (k ? "A " + k + " da loja · " : "") + pr + "toque para atualizar") + '</button>' }
-      return '<button type="button" id="locBtn" onclick="getLoc()" class="' + base + (req ? 'bg-red-600 text-white hover:brightness-110' : 'bg-neutral-800 text-white ring-1 ring-white/10 hover:bg-neutral-700') + '">' + ico(pin, 'bg-white/15') + tx("Usar minha localização atual", req ? "Calcula a taxa de entrega na hora" : "Ajuda o entregador a achar você (opcional)") + '</button>';
+      return '<button type="button" id="locBtn" onclick="getLoc()" class="' + base + (req ? 'bg-red-600 text-white hover:brightness-110' : 'bg-stone-800 text-white ring-1 ring-white/10 hover:bg-stone-700') + '">' + ico(pin, 'bg-white/15') + tx("Usar minha localização atual", req ? "Calcula a taxa de entrega na hora" : "Ajuda o entregador a achar você (opcional)") + '</button>';
     }
     function locUI(msg) { var w = $("locWrap"); if (w) w.innerHTML = locBtn() + '<p id="locMsg" role="alert" class="' + (msg ? 'mt-2 text-sm font-bold text-rose-400' : 'hidden') + '">' + (msg || "") + '</p>' }
     function locLbl() { return CFG.lojaLat != null ? "Compartilhar minha localização" : "Compartilhar localização GPS (opcional)" }
@@ -489,9 +489,9 @@
     }
     function openShare() {
       rememberFocus(); $("mod").setAttribute("aria-label", "Compartilhar cardápio"); shareLink = CFG.link || location.href;
-      $("modbox").innerHTML = hd("Compartilhar cardápio", "closeOpt()") + '<div class="' + C.pb + ' text-center"><p class="pt-3 text-neutral-300">Mostre este QR code no balcão, nas embalagens e nas redes sociais.</p><div id="qr" class="mx-auto mt-4 inline-block rounded-lg bg-white p-3"></div><p class="mt-3 break-all text-xs text-neutral-400">' + esc(shareLink) + '</p>'
+      $("modbox").innerHTML = hd("Compartilhar cardápio", "closeOpt()") + '<div class="' + C.pb + ' text-center"><p class="pt-3 text-stone-300">Mostre este QR code no balcão, nas embalagens e nas redes sociais.</p><div id="qr" class="mx-auto mt-4 inline-block rounded-lg bg-white p-3"></div><p class="mt-3 break-all text-xs text-stone-400">' + esc(shareLink) + '</p>'
         + '<button type="button" class="' + C.send + '" onclick="copyTxt(shareLink,this)">' + ic("copy") + 'Copiar link</button>'
-        + (navigator.share ? '<button type="button" class="mt-3 w-full rounded-xl bg-neutral-800 py-3 font-extrabold" onclick="navigator.share({title:\'Fabi Burguer\',url:shareLink})">' + ic("share") + 'Compartilhar</button>' : '') + '</div>';
+        + (navigator.share ? '<button type="button" class="mt-3 w-full rounded-xl bg-stone-800 py-3 font-extrabold" onclick="navigator.share({title:\'Fabi Burguer\',url:shareLink})">' + ic("share") + 'Compartilhar</button>' : '') + '</div>';
       show($("mod"), true, "flex"); lock(); focus1("modbox");
       if (window.QRCode) new QRCode($("qr"), { text: shareLink, width: 200, height: 200, correctLevel: QRCode.CorrectLevel.M }); else $("qr").textContent = "QR indisponível. Verifique a conexão.";
     }
@@ -499,11 +499,11 @@
       var has = function (c) { return cart.some(function (l) { return MENU[all[l.id].g].c === c }) };
       if (!BUR.some(has)) return "";
       var w = []; if (!has("Bebidas")) w.push("Refrigerante Lata", "Coca Cola 1L"); if (!has("Porções")) w.push("Batata Chips");
-      var h = w.map(function (n) { var it = all.filter(function (x) { return x.n === n })[0]; return it && !off(it) ? '<button type="button" class="min-h-[40px] rounded-full bg-neutral-800 px-3.5 py-2 text-sm font-bold ring-1 ring-white/10 transition hover:bg-neutral-700 active:scale-[.97]" onclick="simple(' + it.id + ',1)">+ ' + it.n + ' · ' + R(it.p) + '</button>' : "" }).join("");
-      return h ? '<div class="mt-3"><p class="text-sm font-bold text-neutral-300">Que tal acompanhar?</p><div class="mt-2 flex flex-wrap gap-2">' + h + '</div></div>' : "";
+      var h = w.map(function (n) { var it = all.filter(function (x) { return x.n === n })[0]; return it && !off(it) ? '<button type="button" class="min-h-[40px] rounded-full bg-stone-800 px-3.5 py-2 text-sm font-bold ring-1 ring-white/10 transition hover:bg-stone-700 active:scale-[.97]" onclick="simple(' + it.id + ',1)">+ ' + it.n + ' · ' + R(it.p) + '</button>' : "" }).join("");
+      return h ? '<div class="mt-3"><p class="text-sm font-bold text-stone-300">Que tal acompanhar?</p><div class="mt-2 flex flex-wrap gap-2">' + h + '</div></div>' : "";
     }
     function fmtPix(k) { var d = String(k).replace(/\D/g, ""); return d.length === 11 ? "(" + d.slice(0, 2) + ") " + d.slice(2, 7) + "-" + d.slice(7) : d.length === 10 ? "(" + d.slice(0, 2) + ") " + d.slice(2, 6) + "-" + d.slice(6) : esc(k) }
-    function pixBox() { return CFG.pix && lastOrder && lastOrder.pay === "Pix" ? '<div class="mt-4 rounded-lg bg-neutral-900 p-3 text-left ring-1 ring-white/10"><p class="text-sm text-neutral-400">Chave Pix (celular) · copie e pague no app do seu banco</p><p class="break-all text-lg font-extrabold num">' + fmtPix(CFG.pix) + '</p><p class="mt-1 flex items-start gap-1.5 text-sm font-bold text-amber-300">' + ic("receipt", "mt-0.5 h-4 w-4") + '<span>Depois de pagar, envie o comprovante no WhatsApp, na mesma conversa do pedido.</span></p><button type="button" class="' + C.add + ' mt-2 inline-flex items-center gap-2" onclick="copyTxt(CFG.pix,this)">' + ic("copy", "h-4 w-4") + 'Copiar chave</button></div>' : "" }
+    function pixBox() { return CFG.pix && lastOrder && lastOrder.pay === "Pix" ? '<div class="mt-4 rounded-lg bg-stone-900 p-3 text-left ring-1 ring-white/10"><p class="text-sm text-stone-400">Chave Pix (celular) · copie e pague no app do seu banco</p><p class="break-all text-lg font-extrabold num">' + fmtPix(CFG.pix) + '</p><p class="mt-1 flex items-start gap-1.5 text-sm font-bold text-amber-300">' + ic("receipt", "mt-0.5 h-4 w-4") + '<span>Depois de pagar, envie o comprovante no WhatsApp, na mesma conversa do pedido.</span></p><button type="button" class="' + C.add + ' mt-2 inline-flex items-center gap-2" onclick="copyTxt(CFG.pix,this)">' + ic("copy", "h-4 w-4") + 'Copiar chave</button></div>' : "" }
     function setTipo(v) { tipo = v; pre = false; kf(fill) }
     function setBairro(v) { bairroSel = v; kf(fill) }
     function clearCli() { try { localStorage.removeItem("fb_cli") } catch (e) { } ["nome", "tel", "rua", "num", "ref"].forEach(function (i) { var x = $(i); if (x) x.value = "" }); bairroSel = ""; foldD = foldE = false; fill() }
@@ -523,14 +523,14 @@
     function focus1(id) { var b = $(id).querySelector("button"); if (b) b.focus() }
     function lc(i, d) { var l = cart[i], id = l.id; l.q += d; if (l.q <= 0) cart.splice(i, 1); refresh(id) }
     function exList(l) { var ex = []; for (var k in l.ad) ex.push(l.ad[k] + "x " + ADD[k].n); return ex }
-    function drawCart() { $("panel").innerHTML = hd("Seu pedido", "closeCart()") + '<div class="' + C.pb + '" id="pb"></div><div id="pf" class="hidden border-t border-white/10 bg-neutral-950 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))]"></div>'; fill() }
-    function sec(n, t, b) { return '<section class="mt-3 rounded-2xl bg-neutral-900 p-4 ring-1 ring-white/10"><h4 class="flex items-center gap-2.5 text-base font-extrabold">' + (n ? '<span class="grid h-7 w-7 place-items-center rounded-full bg-red-600 text-sm">' + n + '</span>' : '') + t + '</h4>' + b + '</section>' }
+    function drawCart() { $("panel").innerHTML = hd("Seu pedido", "closeCart()") + '<div class="' + C.pb + '" id="pb"></div><div id="pf" class="hidden border-t border-white/10 bg-stone-950 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))]"></div>'; fill() }
+    function sec(n, t, b) { return '<section class="mt-3 rounded-2xl bg-stone-900 p-4 ring-1 ring-white/10"><h4 class="flex items-center gap-2.5 text-base font-extrabold">' + (n ? '<span class="grid h-7 w-7 place-items-center rounded-full bg-red-600 text-sm">' + n + '</span>' : '') + t + '</h4>' + b + '</section>' }
     function fill() {
-      if (!cart.length) { show($("pf"), false); $("pb").innerHTML = '<div class="py-12 text-center text-neutral-400"><p class="font-display text-xl text-white">Carrinho vazio</p><p class="mt-2">Escolha um lanche no cardápio para montar seu pedido.</p><button class="' + C.add + ' mt-5" onclick="closeCart()">Ver cardápio</button></div>'; return }
+      if (!cart.length) { show($("pf"), false); $("pb").innerHTML = '<div class="py-12 text-center text-stone-400"><p class="font-display text-xl font-extrabold text-white">Carrinho vazio</p><p class="mt-2">Escolha um lanche no cardápio para montar seu pedido.</p><button class="' + C.add + ' mt-5" onclick="closeCart()">Ver cardápio</button></div>'; return }
       var keep = snap(); if (!pre) { pre = true; var sc = ST("cli") || {};["nome", "tel", "rua", "num", "bai", "ref"].forEach(function (k) { if (!keep[k] && sc[k]) keep[k] = sc[k] }) }
       if (foldD === null) foldD = !!(keep.nome && keep.tel);
       if (foldE === null && tipo === "entrega") foldE = !!(keep.rua && keep.num && keep.bai);
-      var fold = function (g, on, a, b, inner) { return '<div id="fs_' + g + '" class="' + (on ? '' : 'hidden ') + 'mt-3 flex items-center justify-between gap-3 rounded-xl bg-neutral-800 p-3 ring-1 ring-white/10"><span class="min-w-0 [overflow-wrap:anywhere]"><b class="block">' + esc(a) + '</b><small class="block text-neutral-400">' + esc(b) + '</small></span><button type="button" class="min-h-[44px] shrink-0 px-2 text-sm font-bold text-red-400 underline" onclick="unfold(&quot;' + g + '&quot;,1)">Alterar</button></div><div id="fw_' + g + '"' + (on ? ' class="hidden"' : '') + '>' + inner + '</div>' };
+      var fold = function (g, on, a, b, inner) { return '<div id="fs_' + g + '" class="' + (on ? '' : 'hidden ') + 'mt-3 flex items-center justify-between gap-3 rounded-xl bg-stone-800 p-3 ring-1 ring-white/10"><span class="min-w-0 [overflow-wrap:anywhere]"><b class="block">' + esc(a) + '</b><small class="block text-stone-400">' + esc(b) + '</small></span><button type="button" class="min-h-[44px] shrink-0 px-2 text-sm font-bold text-red-400 underline" onclick="unfold(&quot;' + g + '&quot;,1)">Alterar</button></div><div id="fw_' + g + '"' + (on ? ' class="hidden"' : '') + '>' + inner + '</div>' };
       var f = function (id, lbl, t, x) { return '<label class="' + C.lab + '">' + lbl + '<input type="' + (t || "text") + '" id="' + id + '" aria-describedby="e_' + id + '" class="' + C.inp + '" ' + (x || "") + '><span id="e_' + id + '" role="alert" class="hidden mt-1 block text-sm font-bold text-rose-400"></span></label>' };
       var it = "";
       cart.forEach(function (l, i) {
@@ -539,28 +539,28 @@
       });
       var h = steps() + '<div id="st1"' + (cstep === 1 ? '' : ' class="hidden"') + '>' + sec(0, "Itens do pedido", '<div class="mt-1">' + it + '</div>' + sugg() + '<label class="' + C.lab + '">Observações gerais<textarea id="obs" rows="2" class="' + C.inp + '" placeholder="Ex.: ponto da carne, troca de bebida"></textarea></label>') + '</div>';
       h += '<div id="st2"' + (cstep === 2 ? '' : ' class="hidden"') + '><button type="button" onclick="goStep(1)" class="mt-2 inline-flex min-h-[44px] items-center gap-1.5 text-sm font-bold text-red-400 hover:text-red-300">← Voltar aos itens</button>';
-      h += sec(1, "Seus dados", fold("d", foldD, keep.nome || "", keep.tel || "", f("nome", "Nome", "text", 'autocomplete="name" autocapitalize="words"') + f("tel", "WhatsApp / Telefone", "tel", 'autocomplete="tel" inputmode="numeric" maxlength="15" placeholder="(91) 99999-9999" oninput="mask(this,1)"')) + '<p class="mt-2 text-xs text-neutral-400">Seus dados ficam salvos só neste aparelho, para o próximo pedido. <button type="button" class="underline" onclick="clearCli()">Apagar</button></p>');
+      h += sec(1, "Seus dados", fold("d", foldD, keep.nome || "", keep.tel || "", f("nome", "Nome", "text", 'autocomplete="name" autocapitalize="words"') + f("tel", "WhatsApp / Telefone", "tel", 'autocomplete="tel" inputmode="numeric" maxlength="15" placeholder="(91) 99999-9999" oninput="mask(this,1)"')) + '<p class="mt-2 text-xs text-stone-400">Seus dados ficam salvos só neste aparelho, para o próximo pedido. <button type="button" class="underline" onclick="clearCli()">Apagar</button></p>');
       var bf = CFG.bairros.length ? '<label class="' + C.lab + '">Bairro<select id="bai" class="' + C.inp + '" onchange="setBairro(this.value)"><option value="">Escolha o bairro</option>' + CFG.bairros.map(function (b) { return '<option value="' + esc(b[0]) + '"' + (bairroSel === b[0] ? ' selected' : '') + '>' + esc(b[0]) + ' · ' + R(b[1]) + '</option>' }).join("") + '</select><span id="e_bai" role="alert" class="hidden mt-1 block text-sm font-bold text-rose-400"></span></label>' : f("bai", "Bairro");
       var tp = CFG.retirada ? '<div role="radiogroup" aria-label="Como receber" class="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">' + tpc("entrega", "bike", "Entrega", etxt()) + tpc("retirada", "store", "Retirar no balcão", "Sem taxa de entrega") + '</div>' : '';
-      var ad2 = tipo === "retirada" ? '<p class="mt-3 text-sm text-neutral-300">Você retira o pedido na loja, sem taxa de entrega.</p>' : fold("e", foldE, [keep.rua, keep.num].filter(Boolean).join(", ") + (keep.bai ? " – " + keep.bai : ""), keep.ref || "Sem complemento", f("rua", "Rua / Avenida", "text", 'autocomplete="address-line1" autocapitalize="words"') + '<div class="grid grid-cols-2 gap-2.5">' + f("num", "Número", "text", 'inputmode="numeric" maxlength="6" placeholder="Ex.: 123" oninput="mask(this,2)"') + bf + '</div>' + f("ref", "Complemento / Ponto de referência"))
+      var ad2 = tipo === "retirada" ? '<p class="mt-3 text-sm text-stone-300">Você retira o pedido na loja, sem taxa de entrega.</p>' : fold("e", foldE, [keep.rua, keep.num].filter(Boolean).join(", ") + (keep.bai ? " – " + keep.bai : ""), keep.ref || "Sem complemento", f("rua", "Rua / Avenida", "text", 'autocomplete="address-line1" autocapitalize="words"') + '<div class="grid grid-cols-2 gap-2.5">' + f("num", "Número", "text", 'inputmode="numeric" maxlength="6" placeholder="Ex.: 123" oninput="mask(this,2)"') + bf + '</div>' + f("ref", "Complemento / Ponto de referência"))
         + '<div id="locWrap">' + locBtn() + '<p id="locMsg" role="alert" class="hidden"></p></div><small class="' + C.sm + ' mt-2">' + (CFG.lojaLat != null ? "Usamos sua localização para calcular a taxa pelo caminho das ruas (grátis até " + Math.round(CFG.gratisAteKm * 1000) + " m, depois R$ " + String(CFG.porKm).replace(".", ",") + " por km" + (raioTxt() ? "; entregamos até " + raioTxt() : "") + ") e para o entregador chegar até você." : "Ajuda o entregador a achar você mais rápido. Se preferir, só o endereço já basta.") + '</small>';
       h += sec(2, CFG.retirada ? "Entrega ou retirada" : "Endereço de entrega", tp + ad2);
       var po = "";["Pix", "Cartão de crédito", "Cartão de débito", "Dinheiro"].forEach(function (p) {
         po += '<label class="' + C.opt + '"><input type="radio" name="pay" value="' + p + '"' + (pay === p ? ' checked' : '') + ' onchange="setPay(this.value)">' + ic(PAYI[p][0], "h-5 w-5 " + PAYI[p][1]) + p + '</label>'
       });
-      h += sec(3, "Forma de pagamento", '<div class="mt-3 grid grid-cols-2 gap-2">' + po + '</div>' + (CFG.pix ? '<div id="pixBox" class="' + (pay === "Pix" ? '' : 'hidden') + ' mt-3 rounded-lg bg-neutral-800 p-3 ring-1 ring-white/10"><p class="text-sm text-neutral-400">Chave Pix (celular) · copie e pague no app do seu banco</p><p class="break-all text-lg font-extrabold num">' + fmtPix(CFG.pix) + '</p><p class="mt-1 flex items-start gap-1.5 text-sm font-bold text-amber-300">' + ic("receipt", "mt-0.5 h-4 w-4") + '<span>Depois de pagar, envie o comprovante no WhatsApp, na mesma conversa do pedido.</span></p><button type="button" class="' + C.add + ' mt-2 inline-flex items-center gap-2" onclick="copyTxt(CFG.pix,this)">' + ic("copy", "h-4 w-4") + 'Copiar chave</button></div>' : '') + '<div id="trocoBox" class="' + (pay === "Dinheiro" ? '' : 'hidden') + '"><div class="' + C.lab + '">Precisa de troco?</div><div class="mt-1 grid grid-cols-2 gap-2">'
+      h += sec(3, "Forma de pagamento", '<div class="mt-3 grid grid-cols-2 gap-2">' + po + '</div>' + (CFG.pix ? '<div id="pixBox" class="' + (pay === "Pix" ? '' : 'hidden') + ' mt-3 rounded-lg bg-stone-800 p-3 ring-1 ring-white/10"><p class="text-sm text-stone-400">Chave Pix (celular) · copie e pague no app do seu banco</p><p class="break-all text-lg font-extrabold num">' + fmtPix(CFG.pix) + '</p><p class="mt-1 flex items-start gap-1.5 text-sm font-bold text-amber-300">' + ic("receipt", "mt-0.5 h-4 w-4") + '<span>Depois de pagar, envie o comprovante no WhatsApp, na mesma conversa do pedido.</span></p><button type="button" class="' + C.add + ' mt-2 inline-flex items-center gap-2" onclick="copyTxt(CFG.pix,this)">' + ic("copy", "h-4 w-4") + 'Copiar chave</button></div>' : '') + '<div id="trocoBox" class="' + (pay === "Dinheiro" ? '' : 'hidden') + '"><div class="' + C.lab + '">Precisa de troco?</div><div class="mt-1 grid grid-cols-2 gap-2">'
         + '<label class="' + C.opt + '"><input type="radio" name="tr" value="sim"' + (troco === "sim" ? ' checked' : '') + ' onchange="setTroco(this.value)">Sim</label>'
         + '<label class="' + C.opt + '"><input type="radio" name="tr" value="nao"' + (troco === "nao" ? ' checked' : '') + ' onchange="setTroco(this.value)">Não</label></div>'
         + '<div id="trocoVal" class="' + (troco === "sim" ? '' : 'hidden') + '">' + f("trocoPara", "Troco para quanto?", "text", 'inputmode="numeric" placeholder="R$ 0,00" oninput="mask(this,3)"') + '</div></div>');
-      var t = function (a, b, c) { return '<div class="flex justify-between py-1 ' + (c || "text-neutral-300") + '"><span>' + a + '</span><span>' + b + '</span></div>' };
+      var t = function (a, b, c) { return '<div class="flex justify-between py-1 ' + (c || "text-stone-300") + '"><span>' + a + '</span><span>' + b + '</span></div>' };
       h += sec(4, "Resumo", '<div id="resDet" class="mt-2"></div><div class="mt-2 border-t border-white/10 pt-2">' + t("Subtotal", R(sub())) + t(tipo === "retirada" ? "Retirada no balcão" : "Taxa de entrega" + (dist() !== null ? " (" + kmTxt() + ")" : ""), fora() ? "fora da área" : fee() === null ? (CFG.lojaLat != null ? "compartilhe a localização" : "escolha o bairro") : (fee() === 0 ? "Grátis" : R(fee()))) + t("Total", R(sub() + (fee() || 0)), "mt-1.5 border-t border-white/15 pt-3 text-2xl font-extrabold text-white") + '</div>');
       if (CFG.bloquearFechado && st().open === false) h += '<p class="mt-3 text-center font-bold text-rose-400">' + st().msg + '. Você pode montar o pedido, mas o envio só é liberado quando a loja abrir.</p>';
-      h += '<p class="mt-4 text-center text-sm text-neutral-400">O WhatsApp vai abrir com o pedido pronto. Toque em enviar na conversa para a loja receber.</p></div>';
-      var pf = cstep === 1 ? '<div class="flex items-center gap-3"><div class="shrink-0"><div class="text-xs text-neutral-400">Subtotal</div><div class="num text-xl font-extrabold">' + R(sub()) + '</div></div><button type="button" class="flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-xl bg-red-600 py-3.5 text-base font-extrabold text-white transition hover:brightness-110 active:scale-[.97]" onclick="goStep(2)">Continuar' + ic("down", "h-5 w-5 -rotate-90") + '</button></div><div id="err" role="alert" class="sr-only"></div>' : '<div class="min-h-[1em] pb-2 text-center text-sm font-extrabold text-rose-400" id="err" role="alert"></div><div class="flex items-center gap-3"><div class="shrink-0"><div class="text-xs text-neutral-400">Total</div><div class="text-xl font-extrabold">' + R(sub() + (fee() || 0)) + '</div></div><button class="flex flex-1 items-center justify-center gap-2 rounded-xl bg-green-600 py-3.5 text-base font-extrabold text-white transition hover:bg-green-500 active:scale-[.97]" onclick="sendOrder()">' + ic("wa", "h-6 w-6") + 'Enviar pelo WhatsApp</button></div>';
+      h += '<p class="mt-4 text-center text-sm text-stone-400">O WhatsApp vai abrir com o pedido pronto. Toque em enviar na conversa para a loja receber.</p></div>';
+      var pf = cstep === 1 ? '<div class="flex items-center gap-3"><div class="shrink-0"><div class="text-xs text-stone-400">Subtotal</div><div class="num text-xl font-extrabold">' + R(sub()) + '</div></div><button type="button" class="flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-xl bg-red-600 py-3.5 text-base font-extrabold text-white transition hover:brightness-110 active:scale-[.97]" onclick="goStep(2)">Continuar' + ic("down", "h-5 w-5 -rotate-90") + '</button></div><div id="err" role="alert" class="sr-only"></div>' : '<div class="min-h-[1em] pb-2 text-center text-sm font-extrabold text-rose-400" id="err" role="alert"></div><div class="flex items-center gap-3"><div class="shrink-0"><div class="text-xs text-stone-400">Total</div><div class="text-xl font-extrabold">' + R(sub() + (fee() || 0)) + '</div></div><button class="flex flex-1 items-center justify-center gap-2 rounded-xl bg-green-600 py-3.5 text-base font-extrabold text-white transition hover:bg-green-500 active:scale-[.97]" onclick="sendOrder()">' + ic("wa", "h-6 w-6") + 'Enviar pelo WhatsApp</button></div>';
       $("pb").innerHTML = h; restore(keep); $("pf").innerHTML = pf; show($("pf"), true); updRes();
     }
     function steps() {
-      var s = function (n, t) { var on = cstep >= n; return '<li class="min-w-0"' + (cstep === n ? ' aria-current="step"' : '') + '><span class="block h-1 rounded-full ' + (on ? 'bg-red-600' : 'bg-white/15') + '"></span><span class="mt-1.5 block truncate ' + (on ? 'text-white' : 'text-neutral-400') + '">' + n + '. ' + t + '</span></li>' };
+      var s = function (n, t) { var on = cstep >= n; return '<li class="min-w-0"' + (cstep === n ? ' aria-current="step"' : '') + '><span class="block h-1 rounded-full ' + (on ? 'bg-red-600' : 'bg-white/15') + '"></span><span class="mt-1.5 block truncate ' + (on ? 'text-white' : 'text-stone-400') + '">' + n + '. ' + t + '</span></li>' };
       return '<ol aria-label="Etapas do pedido" class="mt-3 grid grid-cols-2 gap-2 text-xs font-bold">' + s(1, "Seu pedido") + s(2, "Entrega e pagamento") + '</ol>';
     }
     function goStep(n) { cstep = n; fill(); $("pb").scrollTop = 0; var b = $("st" + n).querySelector("button,input,textarea"); if (b) b.focus({ preventScroll: true }) }
@@ -600,8 +600,8 @@
       (id ? [id] : [].map.call(document.querySelectorAll('[id^="e_"]'), function (x) { return x.id.slice(2) })).forEach(function (k) { var p = $("e_" + k), i = $(k); if (p) { p.textContent = ""; p.classList.add("hidden") } if (i) { i.removeAttribute("aria-invalid"); i.style.boxShadow = "" } })
     }
     function updRes() {
-      var d = $("resDet"); if (!d) return; var v = function (i) { return $(i) ? ($(i).value || "").trim() : "" }, h = '<div class="space-y-1 text-sm text-neutral-300">';
-      cart.forEach(function (l) { var ex = exList(l); h += '<div class="flex justify-between gap-3"><span class="min-w-0 [overflow-wrap:anywhere]">' + l.q + '× ' + all[l.id].n + (ex.length ? ' <small class="text-neutral-400">(+ ' + ex.join(", ") + ')</small>' : '') + '</span><span class="num shrink-0">' + R(unit(l) * l.q) + '</span></div>' });
+      var d = $("resDet"); if (!d) return; var v = function (i) { return $(i) ? ($(i).value || "").trim() : "" }, h = '<div class="space-y-1 text-sm text-stone-300">';
+      cart.forEach(function (l) { var ex = exList(l); h += '<div class="flex justify-between gap-3"><span class="min-w-0 [overflow-wrap:anywhere]">' + l.q + '× ' + all[l.id].n + (ex.length ? ' <small class="text-stone-400">(+ ' + ex.join(", ") + ')</small>' : '') + '</span><span class="num shrink-0">' + R(unit(l) * l.q) + '</span></div>' });
       var lin = function (a, b) { return '<p class="mt-2 border-t border-white/10 pt-2"><b class="text-white">' + a + ':</b> ' + b + '</p>' };
       h += tipo === "retirada" ? lin("Retirada", "no balcão da loja, sem taxa") : lin("Entrega", esc([v("rua"), v("num"), v("bai")].filter(Boolean).join(", ")) || "<span class=\"text-rose-400\">endereço não informado</span>");
       h += lin("Contato", esc(v("nome") || "—") + (v("tel") ? " · " + esc(v("tel")) : "")) + lin("Pagamento", pay + (pay === "Dinheiro" && troco === "sim" && v("trocoPara") ? " · troco para " + esc(v("trocoPara")) : ""));
@@ -609,7 +609,7 @@
     }
     document.addEventListener("input", function (ev) { if (ev.target.id) clearFe(ev.target.id); updRes() });
     document.addEventListener("change", function (ev) { if (ev.target.id) clearFe(ev.target.id); updRes() });
-    function tpc(v, icn, t, d) { return '<label class="flex cursor-pointer items-start gap-3 rounded-xl bg-neutral-800 p-3 ring-1 ring-white/10 transition-colors focus-within:ring-2 focus-within:ring-red-400 has-[:checked]:bg-red-600/10 has-[:checked]:ring-2 has-[:checked]:ring-red-600"><input type="radio" name="tp" value="' + v + '"' + (tipo === v ? ' checked' : '') + ' onchange="setTipo(this.value)" class="mt-1 h-5 w-5 shrink-0 accent-red-600">' + ic(icn, "mt-0.5 h-6 w-6 text-red-400") + '<span><b class="block">' + t + '</b><small class="block text-neutral-400">' + d + '</small></span></label>' }
+    function tpc(v, icn, t, d) { return '<label class="flex cursor-pointer items-start gap-3 rounded-xl bg-stone-800 p-3 ring-1 ring-white/10 transition-colors focus-within:ring-2 focus-within:ring-red-400 has-[:checked]:bg-red-600/10 has-[:checked]:ring-2 has-[:checked]:ring-red-600"><input type="radio" name="tp" value="' + v + '"' + (tipo === v ? ' checked' : '') + ' onchange="setTipo(this.value)" class="mt-1 h-5 w-5 shrink-0 accent-red-600">' + ic(icn, "mt-0.5 h-6 w-6 text-red-400") + '<span><b class="block">' + t + '</b><small class="block text-stone-400">' + d + '</small></span></label>' }
     function etxt() { return "Receba em casa. " + (CFG.lojaLat != null ? "Taxa pela distância" : CFG.bairros.length ? "Taxa por bairro" : "Taxa de " + R(CFG.taxa)) }
     function sendOrder() {
       var v = function (i) { return ($(i).value || "").trim() }, e = $("err"), tot = sub() + (fee() || 0);
@@ -646,11 +646,11 @@
       doneScreen();
     }
     function doneScreen() {
-      $("panel").innerHTML = hd("Falta só um passo", "closeCart()") + '<div class="' + C.pb + ' text-center"><h3 class="mt-6 font-display text-2xl">Pedido #' + lastOrder.id + ' pronto</h3>'
-        + '<p class="mt-3 text-neutral-300">Abrimos o WhatsApp com seu pedido. <b class="text-white">Toque em enviar na conversa</b> para a Fabi Burguer receber. Sem esse envio, a loja não recebe o pedido. Se o WhatsApp não abriu, use o botão abaixo.</p>'
+      $("panel").innerHTML = hd("Falta só um passo", "closeCart()") + '<div class="' + C.pb + ' text-center"><h3 class="mt-6 font-display text-2xl font-extrabold">Pedido #' + lastOrder.id + ' pronto</h3>'
+        + '<p class="mt-3 text-stone-300">Abrimos o WhatsApp com seu pedido. <b class="text-white">Toque em enviar na conversa</b> para a Fabi Burguer receber. Sem esse envio, a loja não recebe o pedido. Se o WhatsApp não abriu, use o botão abaixo.</p>'
         + pixBox() + '<a class="' + C.send + '" href="' + lastOrder.u1 + '" target="_blank" rel="noopener">' + ic("wa", "h-6 w-6") + 'Abrir o WhatsApp com o pedido</a>'
-        + (CFG.entregador && lastOrder.ent ? '<button class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-800 py-3 font-extrabold" onclick="sendCourier()">' + ic("bike") + 'Enviar localização ao entregador</button>' : '')
-        + '<button class="mt-3 w-full rounded-xl bg-neutral-800 py-3 font-extrabold" onclick="newOrder()">Fazer novo pedido</button></div>';
+        + (CFG.entregador && lastOrder.ent ? '<button class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-stone-800 py-3 font-extrabold" onclick="sendCourier()">' + ic("bike") + 'Enviar localização ao entregador</button>' : '')
+        + '<button class="mt-3 w-full rounded-xl bg-stone-800 py-3 font-extrabold" onclick="newOrder()">Fazer novo pedido</button></div>';
     }
     function sendCourier() { window.open("https://wa.me/" + CFG.entregador + "?text=" + encodeURIComponent(lastOrder.m2), "_blank") }
     function newOrder() { cart = []; loc = null; rota = null; drawMenu(); drawDest(); bar(); closeCart() }
@@ -661,7 +661,7 @@
     document.querySelectorAll('[data-ic]').forEach(function (e) { e.innerHTML = ic(e.getAttribute('data-ic'), e.className.indexOf('h-4') > -1 ? 'h-4 w-4' : 'h-5 w-5') });
     function falhou(e) {
       if (window.console) console.error(e);
-      var m = $("menu"); if (m) m.innerHTML = '<div role="alert" class="py-16 text-center"><p class="text-lg font-extrabold">Não foi possível carregar o cardápio.</p><p class="mt-2 text-neutral-400">Recarregue a página ou faça o pedido pelo WhatsApp.</p><a class="mt-4 inline-flex min-h-[48px] items-center rounded-2xl bg-green-600 px-6 font-extrabold text-white" href="https://wa.me/' + CFG.loja + '">Pedir pelo WhatsApp</a></div>'
+      var m = $("menu"); if (m) m.innerHTML = '<div role="alert" class="py-16 text-center"><p class="text-lg font-extrabold">Não foi possível carregar o cardápio.</p><p class="mt-2 text-stone-400">Recarregue a página ou faça o pedido pelo WhatsApp.</p><a class="mt-4 inline-flex min-h-[48px] items-center rounded-2xl bg-green-600 px-6 font-extrabold text-white" href="https://wa.me/' + CFG.loja + '">Pedir pelo WhatsApp</a></div>'
     }
     if (TESTE) { var tb = document.createElement("div"); tb.setAttribute("role", "status"); tb.className = "fixed inset-x-0 bottom-0 z-[60] bg-amber-400 px-3 py-1.5 text-center text-xs font-extrabold text-black"; tb.innerHTML = 'MODO TESTE: loja simulada como aberta. A mensagem vai marcada como teste. <a class="underline" href="' + location.pathname + '">Sair do modo teste</a>'; document.body.appendChild(tb) }
     try { drawMenu(); drawDest(); bar(); drawStatus(); drawInfo() } catch (e) { falhou(e) }

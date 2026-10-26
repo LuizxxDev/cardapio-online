@@ -9,7 +9,7 @@ module.exports = {
       transitionDuration: { DEFAULT: "180ms" },
       colors: { red: { 400: "#e5604d", 500: "#d93b27", 600: "#c12612", 700: "#a11f0e", 950: "#2b0c07" } },
       fontFamily: {
-        display: ["Inter", "system-ui", "sans-serif"],
+        display: ['"Bricolage Grotesque"', "Inter", "system-ui", "sans-serif"],
         body: ["Inter", "system-ui", "sans-serif"],
       },
     },
